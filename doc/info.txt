@@ -1,0 +1,7 @@
+used technologies:
+
+java
+    hibernate
+    richfaces
+    stripes
+    log4j
