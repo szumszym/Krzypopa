@@ -130,8 +130,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Type getType() {
-        return type;
+    public String getType() {
+        return type.name();
     }
 
     public void setType(Type type) {

@@ -30,15 +30,15 @@ public class Reservation implements Serializable {
     @Column(name = "person_count")
     private Integer person_count;
 
-    @Column(name = "date_edit")
-    private Date date_edit;
+    @Column(name = "update_date")
+    private Date update_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = true)
     private Status status;
 
     @ManyToMany(cascade = {CascadeType.ALL})
@@ -50,25 +50,13 @@ public class Reservation implements Serializable {
     public Reservation() {
     }
 
-    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Date date_edit, Client client, Status status) {
+    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Client client, Status status) {
         this.name = name;
         this.date_from = date_from;
         this.date_to = date_to;
         this.person_count = person_count;
-        this.date_edit = date_edit;
         this.client = client;
         this.status = status;
-    }
-
-    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Date date_edit, Client client) {
-        this.name = name;
-        this.date_from = date_from;
-        this.date_to = date_to;
-        this.person_count = person_count;
-        this.date_edit = date_edit;
-        this.client = client;
-        this.status = new Status("Rezerwacja", "Rezerwacja bez potwierdzenia lub zaplaty");
-        ;
     }
 
 
@@ -112,12 +100,12 @@ public class Reservation implements Serializable {
         this.person_count = person_count;
     }
 
-    public Date getDate_edit() {
-        return date_edit;
+    public Date getUpdate_date() {
+        return update_date;
     }
 
-    public void setDate_edit(Date date_edit) {
-        this.date_edit = date_edit;
+    public void setUpdate_date(Date date_edit) {
+        this.update_date = date_edit;
     }
 
     public Client getClient() {

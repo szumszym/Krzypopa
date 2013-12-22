@@ -9,7 +9,8 @@ import java.util.Set;
 @Entity
 @Table(name = "room")
 
-public class Room implements Serializable {
+public class
+        Room implements Serializable {
 
 
     @Column(name = "id", unique = true)
