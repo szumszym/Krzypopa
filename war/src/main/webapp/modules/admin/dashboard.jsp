@@ -287,6 +287,9 @@
 <%--<script src="./assets/lib/flot/jquery.flot.resize.js"></script>--%>
 <script src="./assets/js/main.js"></script>
 <script src="./assets/js/include.js"></script>
+<script src="./assets/lib/datatables/jquery.dataTables.js"></script>
+<script src="./assets/lib/datatables/DT_bootstrap.js"></script>
+<%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
 <script>
     $(function () {
         dashboard();
