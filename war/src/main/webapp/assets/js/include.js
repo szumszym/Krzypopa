@@ -4,6 +4,23 @@ jQuery(function () {
     //ajaxSubmit();
 });
 
+function ajaxSubmit(formId, outputId) {
+    var $form = $(formId);
+
+    $.ajax({
+        type: 'POST',
+        url: $form.attr('action'),
+        data: {data: $form.serialize()},
+        dataType: 'json',
+        success: function (data) {
+            // if(data.result == "ok")
+            console.log("Success: ", JSON.stringify(data));
+//            $(outputId).text(data);
+        },
+        error: function (data) {
+            console.log("Error: ", JSON.stringify(data));
+        }});
+}
 
 function ajaxInclude() {
     var menuSelectors = '#menu, #top-menu';
@@ -21,28 +38,72 @@ function ajaxDefaultIncudeOnStart() {
         jQuery("#" + contextId).load(defaultContext);
     }
 }
+function ajaxGetDataFromDB(action) {
+
+    $.ajax({
+        type: 'POST',
+        url: action,
+        success: function (data) {
+            console.log("Success: ", JSON.stringify(data));
+            return eval(data).data
+
+//            $(outputId).text(data);
+        },
+        error: function (data) {
+            console.log("Error: ", JSON.stringify(data));
+        }});
+
+
+}
+
+
+function createTableWithDataFromDB(ajaxAction, tableContainerId, tableParams) {
+    var dataTableParams = [];
+    $.ajax({
+        type: 'POST',
+        url: ajaxAction,
+        success: function (data) {
+
+            dataTableParams.aaData = eval(data).data;
+            // dataTableParams.aaSorting = [[0, "asc"], [1, "desc"], [2, "desc"]];
+            dataTableParams.aoColumns = tableParams.columns;
+            dataTableParams.bJQueryUI = true;
+            dataTableParams.bScrollInfinite = true;
+            dataTableParams.bScrollCollapse = true;
+            dataTableParams.bDestroy = true;
+            dataTableParams.bDeferRender = true;
+            //  dataTableParams.iDisplayLength = 50;
+            // dataTableParams.sScrollY = '400px';
+            dataTableParams.sDom = 'Rlfrtip';
+
+            $('#' + tableContainerId).dataTable(dataTableParams);
+        },
+        error: function (data) {
+            console.log("Error: ", data);
+        }});
+
+
+}
+
 
 function ajaxSubmit(formId, resultContainerId) {
-    jQuery('#input').click(function () {
-        var $form = jQuery(formId);
-        var send = $form.formToJSON();
-        var formAction = $form.attr('action');
-
-        jQuery.ajax({
-            url: formAction,
-            type: 'POST',
-            data: send,
-            contentType: "application/json; charset=utf-8", //TODO: check if it working with this
-            dataType: "json",
-            error: function (xhr, error) {
-                window.alert('Error!  Status = ' + xhr.status + ' Message = ' + error);
-            },
-            success: function (data) {
-                jQuery(resultContainerId).text(data);
-            }
-        });
-        return false;
+    var $form = jQuery('#' + formId);
+    var send = $form.formToJSON();
+    var formAction = $form.attr('action');
+    var dataFromForm = {dataFrom: send};
+    jQuery.ajax({
+        url: formAction,
+        type: 'POST',
+        data: dataFromForm,
+        dataType: "json",
+        error: function () {
+            jQuery('#' + resultContainerId).html("<div class='alert alert-error fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Wystąpił bład podczas zapisu do bazy danych!</div>'");
+        },
+        success: function () {
+            jQuery('#' + resultContainerId).html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> Nowa rezerwacja została stworzona!</div>");
+        }
     });
+    return false;
 }
 
 /**
@@ -59,32 +120,35 @@ function ajaxSubmit(formId, resultContainerId) {
  * @returns json
  */
 jQuery.fn.formToJSON = function () {
-    var objectGraph =
+    var objectGraph = {};
+    var that = {};
 
-        function add(objectGraph, name, value) {
-            if (name.length == 1) {
-                //if the array is now one element long, we're done
-                objectGraph[name[0]] = value;
-            }
-            else {
+    that.add = function (objectGraph, name, value) {
+        if (name.length == 1) {
+            //if the array is now one element long, we're done
+            objectGraph[name[0]] = value;
+        }
+        else {
                 //else we've still got more than a single element of depth
-                if (objectGraph[name[0]] == null) {
-                    //create the node if it doesn't yet exist
-                    objectGraph[name[0]] = {};
-                }
-                //recurse, chopping off the first array element
+            if (objectGraph[name[0]] == null) {
+                //create the node if it doesn't yet exist
+                objectGraph[name[0]] = {};
+            }
+            //recurse, chopping off the first array element
                 add(objectGraph[name[0]], name.slice(1), value);
             }
-        };
+    };
+
     //loop through all of the input/textarea elements of the form
     //this.find('input, textarea').each(function() {
-    jQuery(this).children('input, textarea, select').each(function () {
+    $(this).find('input, textarea, select').each(function () {
         //ignore the submit button
-        if (jQuery(this).attr('name') != 'submit') {
+        if ($(this).attr('name') != 'submit') {
             //split the dot notated names into arrays and pass along with the value
-            add(objectGraph, jQuery(this).attr('name').split('.'), jQuery(this).val());
+            that.add(objectGraph, $(this).attr('name').split('.'), $(this).val());
         }
     });
     return JSON.stringify(objectGraph);
+
 };
 

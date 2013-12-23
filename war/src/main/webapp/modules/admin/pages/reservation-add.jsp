@@ -1,7 +1,5 @@
-<div id="content">
-<div class="outer">
+<div id="server-messages"></div>
 
-<div class="inner">
 <div class="row">
 <div class="col-lg-6">
 <div class="box dark">
@@ -24,13 +22,13 @@
 </header>
 
 <div id="form-1" class="accordion-body collapse in body">
-<form class="form-horizontal">
+<form id="client-add" class="form-horizontal" action="client-add">
 
 <div class="form-group">
     <label class="control-label col-lg-4">First Name</label>
 
     <div class="col-lg-8">
-        <input type="text" id="first_name" placeholder="First Name" class="validate[required] form-control">
+        <input type="text" name="first_name" placeholder="First Name" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -39,7 +37,7 @@
     <label class="control-label col-lg-4">Last Name</label>
 
     <div class="col-lg-8">
-        <input type="text" id="last_name" placeholder="Last Name" class="validate[required] form-control">
+        <input type="text" name="last_name" placeholder="Last Name" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -48,7 +46,8 @@
     <label class="control-label col-lg-4">Email</label>
 
     <div class="col-lg-8">
-        <input type="text" id="email" placeholder="sample@sample.com" class="validate[required] form-control">
+        <input type="text" id="ra-email" name="email" placeholder="sample@sample.com"
+               class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -57,16 +56,16 @@
     <label class="control-label col-lg-4">Confirm Email</label>
 
     <div class="col-lg-8">
-        <input type="text" placeholder="sample@sample.com" class="validate[required],equals[email]] form-control">
+        <input type="text" placeholder="sample@sample.com" class="validate[required],equals[ra-email]] form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="pass1" class="control-label col-lg-4">Password</label>
+    <label for="ra-pass1" class="control-label col-lg-4">Password</label>
 
     <div class="col-lg-8">
-        <input class="form-control" type="password" id="pass1" data-original-title="Please use your secure password"
+        <input class="form-control" type="password" id="ra-pass1" data-original-title="Please use your secure password"
                data-placement="top">
     </div>
 </div>
@@ -76,7 +75,7 @@
     <label class="control-label col-lg-4">Confirm Password</label>
 
     <div class=" col-lg-8">
-        <input class="validate[required,equals[pass1]] form-control" type="password" name="pass2" id="pass2">
+        <input class="validate[required,equals[ra-pass1]] form-control" type="password" name="password" id="pass2">
     </div>
 </div>
 <!-- /.form-group -->
@@ -85,7 +84,7 @@
     <label class="control-label col-lg-4">PESEL</label>
 
     <div class="col-lg-8">
-        <input type="text" id="pesel" class="maxSizep[11] ,custom[number] form-control">
+        <input type="text" id="ra-pesel" name="pesel" class="maxSizep[11] ,custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -94,7 +93,7 @@
     <label class="control-label col-lg-4">NIP</label>
 
     <div class="col-lg-8">
-        <input type="text" id="nip" class="maxSizep[10] ,custom[number] form-control">
+        <input type="text" id="ra-nip" name="nip" class="maxSizep[10] ,custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -104,7 +103,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input id="phone_number" class="form-control" type="text" data-mask="+48 999 999 999">
+            <input id="ra-phone_number" name="phone_number" class="form-control" type="text"
+                   data-mask="+99 999 999 999">
             <span class="input-group-addon">+48 999 999 999</span>
         </div>
     </div>
@@ -114,7 +114,8 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" id="city" placeholder="eg: Kraków" class="validate[required] form-control">
+        <input type="text" id="ra-city" name="address.city" placeholder="eg: Kraków"
+               class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -123,7 +124,8 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" id="steet" placeholder="eg: Zakopiańska" class="validate[required] form-control">
+        <input type="text" id="ra-street" name="address.street" placeholder="eg: Zakopiańska"
+               class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -132,7 +134,7 @@
     <label class="control-label col-lg-4">Building No.</label>
 
     <div class="col-lg-8">
-        <input type="text" id="building_no" placeholder="eg: 10"
+        <input type="text" id="ra-building_no" name="address.building_no" placeholder="eg: 10"
                class="validate[required], custom[number] form-control">
     </div>
 </div>
@@ -142,8 +144,8 @@
     <label class="control-label col-lg-4">Apartment No.</label>
 
     <div class="col-lg-8">
-        <input type="text" id="apartment_no" placeholder="eg: 10"
-               class="validate[required], custom[number] form-control">
+        <input type="text" id="ra-apartment_no" name="address.apartment_no" placeholder="eg: 10"
+               class="custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -153,7 +155,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="text" id="postcode" class="validate[required] form-control" data-mask="99-999">
+            <input type="text" id="ra-postcode" name="address.postcode" class="validate[required] form-control"
+                   data-mask="99-999">
             <span class="input-group-addon">32-600</span>
         </div>
     </div>
@@ -165,7 +168,8 @@
 <label class="control-label col-lg-4">Country</label>
 
 <div class="col-lg-8">
-<select data-placeholder="Choose a Country..." class="form-control chzn-select" tabindex="2">
+<select name="address.country" id="ra-country" data-placeholder="Choose a Country..." class="form-control chzn-select"
+        tabindex="2">
 <option value=""></option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
@@ -419,7 +423,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <a href="#" class="btn btn-primary" data-original-title="" title="">Submit</a>
+            <input type="submit" onclick="ajaxSubmit('#reservation-add'); return false;" class="btn btn-primary"
+                   data-original-title="" title="" value="Submit"/>
         </div>
     </div>
 </div>
@@ -516,13 +521,13 @@
             </header>
 
             <div id="div-1" class="accordion-body collapse in body">
-                <form class="form-horizontal">
+                <form id="reservation-add" action="reservation-add" class="form-horizontal">
 
                     <div class="form-group">
                         <label class="control-label col-lg-4">Name</label>
 
                         <div class="col-lg-8">
-                            <input type="text" id="first_name2" placeholder="First Name"
+                            <input type="text" name="name" placeholder="First Name"
                                    class="validate[required] form-control">
                         </div>
                     </div>
@@ -532,7 +537,7 @@
                         <label class="control-label col-lg-4">Start Date</label>
 
                         <div class="col-lg-8">
-                            <input type="date" id="date1" name="date1" class="validate[required] form-control">
+                            <input type="date" name="date_from" class="validate[required] form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
@@ -541,7 +546,7 @@
                         <label class="control-label col-lg-4">End Date</label>
 
                         <div class="col-lg-8">
-                            <input type="date" id="date2" name="date2" class="validate[required] form-control">
+                            <input type="date" name="date_to" class="validate[required] form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
@@ -550,7 +555,7 @@
                         <label class="control-label col-lg-4">Count of person</label>
 
                         <div class="col-lg-8">
-                            <input type="text" id="digits" name="digits" class="validate[required] form-control">
+                            <input type="text" name="person_count" class="validate[required] form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
@@ -559,12 +564,11 @@
                         <label class="control-label col-lg-4">Status</label>
 
                         <div class="col-lg-8">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select name="status_id" class="form-control">
+                                <option value="1" selected="selected">Oczekuje</option>
+                                <option value="2">Potwierdzono</option>
+                                <option value="3">Zaplacono</option>
+                                <option value="4">Anulowano</option>
                             </select>
                         </div>
                     </div>
@@ -574,8 +578,9 @@
                         <div class="col-lg-8">
                             <div class="checkbox">
                                 <label>
-                                    <input class="uniform" type="checkbox" value="option1" checked>AutoSend Email to
-                                    Client whit confirmation
+                                    <input class="uniform" name="send_email" type="checkbox" value="send_email" checked>AutoSend
+                                    Email to
+                                    Client with confirmation
                                 </label>
                             </div>
                         </div>
@@ -586,7 +591,9 @@
 
                         <div class="col-lg-8">
                             <div class="input-group">
-                                <a href="#" class="btn btn-primary" data-original-title="" title="">Submit</a>
+                                <input type="submit" name="submit"
+                                       onclick="ajaxSubmit('reservation-add', 'server-messages'); return false;"
+                                       class="btn btn-primary" data-original-title="" title="" value="Add"/>
                             </div>
                         </div>
                     </div>
@@ -660,12 +667,3 @@
 
 </div>
 <!--row End -->
-</div>
-<!-- end .inner -->
-
-
-</div>
-<!-- end .outer -->
-
-
-</div>
