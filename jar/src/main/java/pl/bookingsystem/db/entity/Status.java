@@ -68,4 +68,8 @@ public class Status implements Serializable {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return this.getType();
+    }
 }

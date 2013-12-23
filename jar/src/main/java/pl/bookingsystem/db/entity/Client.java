@@ -157,29 +157,8 @@ public class Client implements Serializable {
         this.address = address;
     }
 
- /*   public Set<Reservation> getReservations() {
-        return reservations;
+    @Override
+    public String toString() {
+        return this.getFirst_name() + " " + this.getLast_name();
     }
-
-    public void setReservations(Set<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public Set<Hotel> getId_hotel() {
-        return id_hotel;
-    }
-
-    public void setId_hotel(Set<Hotel> id_hotel) {
-        this.id_hotel = id_hotel;
-    }
-
-    public void setReservations(Reservation reservations) {
-        this.reservations.add(reservations);
-    }
-
-    public void setId_hotel(Hotel id_hotel) {
-        this.id_hotel.add(id_hotel);
-    }
-*/
-
 }

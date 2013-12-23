@@ -37,7 +37,12 @@ public class User implements Serializable {
     private String password;
 
     public enum Type {
-        ADMIN, OWNER, EMPLOYEE
+        ADMIN, OWNER, EMPLOYEE;
+
+        @Override
+        public String toString() {
+            return this.name();
+        }
     }
 
     @Column(name = "user_type", columnDefinition = "enum('ADMIN','OWNER','EMPLOYEE')")
@@ -130,8 +135,8 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getType() {
-        return type.name();
+    public Type getType() {
+        return type;
     }
 
     public void setType(Type type) {

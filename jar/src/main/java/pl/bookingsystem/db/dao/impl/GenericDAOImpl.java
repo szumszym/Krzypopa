@@ -3,6 +3,7 @@ package pl.bookingsystem.db.dao.impl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import pl.bookingsystem.db.dao.GenericDAO;
 import pl.bookingsystem.db.utils.HibernateUtil;
 
@@ -60,9 +61,11 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
     public List selectAll(Class clazz) {
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
+        Transaction tx = session.beginTransaction();
         List<? extends Object> list = null;
         Query query = session.createQuery("from " + clazz.getName());
         list = query.list();
+        tx.commit();
         session.close();
         return list;
     }
