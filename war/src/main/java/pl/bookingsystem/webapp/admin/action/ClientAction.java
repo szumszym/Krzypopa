@@ -7,12 +7,9 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ClientDAO;
-import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
-import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Client;
-import pl.bookingsystem.db.entity.Reservation;
 
 import java.util.Date;
 import java.util.List;
@@ -78,6 +75,39 @@ public class ClientAction extends ActionSupport {
 
     }
 
+    @Action(value = "client-getData-small", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String dataFromDBsmall() {
+        try {
+            ClientDAO clientManager = new ClientDAOImpl();
+            List<Client> clients = clientManager.selectAll(Client.class);
+
+            int size = clients.size();
+            data = new String[size][];
+            for (int j = 0; j < clients.size(); j++) {
+                String[] tableS = new String[4];
+                Client c = clients.get(j);
+
+                tableS[0] = String.valueOf(c.getId());
+                tableS[1] = String.valueOf(String.valueOf(c.getLast_name()+" "+c.getFirst_name()));
+                tableS[2] = String.valueOf(c.getEmail());
+                tableS[3] = String.valueOf(c.getPhone_number());
+
+
+                data[j] = tableS;
+            }
+
+            return SUCCESS;
+
+        } catch (Exception e) {
+            data = new String[][]{new String[]{"ERROR!!!"}};
+            return ERROR;
+        }
+
+    }
+
 
     public String jasonConvert(String serialize) {
         String conv = "{\"" + serialize + "\"}";
@@ -98,13 +128,9 @@ public class ClientAction extends ActionSupport {
             System.out.println(dataFrom);
             JSONObject jsonObject = new JSONObject(dataFrom);
             String first_name = (String) jsonObject.get("first_name");
-            System.out.println("First_name: " + first_name );
             String last_name = (String) jsonObject.get("last_name");
-            System.out.println("Last_name: " + last_name );
             String email = (String) jsonObject.get("email");
-            System.out.println("Email: " + first_name );
             Long pesel = Long.parseLong((String) jsonObject.get("pesel"));
-            System.out.println("Email: " + pesel );
             String  phone_number = (String) jsonObject.get("phone_number");
             String  password = (String) jsonObject.get("password");
             String  city = (String) jsonObject.get("city");
@@ -114,16 +140,27 @@ public class ClientAction extends ActionSupport {
             String  country = (String) jsonObject.get("country");
 
             Address address = new Address (city, street, building_no, postcode, country);
-            // Address address = new Address ("Oświecim", "Ruska", 10, "32-600", "Poland");
-            if(!((jsonObject.get("apartment_no")) == null)){
-                address.setApartment_no(Integer.parseInt((String) jsonObject.get(("apartment_no"))));
-            }else{
+
+            if (((String) jsonObject.get("apartment_no")).isEmpty()) {
                 System.out.println("Apartment_NO : NULL");
+
+            } else {
+                System.out.println("Apartment_NO : Kurcze1");
+                address.setApartment_no(Integer.parseInt((String) jsonObject.get(("apartment_no"))));
+
             }
 
             Client client = new Client (first_name,last_name, pesel, email, phone_number, password, address, register_date);
 
-            System.out.println(data);
+            if(((String) jsonObject.get("nip")).isEmpty()){
+                System.out.println("nip : Kurcze");
+                client.setNip(Long.parseLong((String) jsonObject.get(("nip"))));
+
+            }else{
+                System.out.println("nip : NULL");
+            }
+
+
 
             ClientDAO clientManager = new ClientDAOImpl();
             clientManager.save(client);

@@ -37,4 +37,27 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
         return null;
     }
 
+    @Override
+    public User getCurrentUser(String username) {
+        User user = null;
+        Session session = null;
+
+        try {
+            String sql = "SELECT p FROM User p WHERE p.email = :username";
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            Query query = session.createQuery(sql);
+            query.setParameter("username", username);
+
+            user = selectOne(query);
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return user;
+
+
+    }
+
 }

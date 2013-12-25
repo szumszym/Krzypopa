@@ -190,19 +190,8 @@
             </ul>
         </li>
         <li>
-            <a href="#">
-                <i class="fa fa-thumbs-up"></i>&nbsp;Status
-                <span class="fa arrow"></span></a>
-            <ul>
-                <li class="">
-                    <a href="#" data-url="./modules/admin/pages/status-add.jsp" data-placement="#context">
-                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
-                </li>
-                <li class="">
-                    <a href="#" data-url="./modules/admin/pages/status-browse.jsp" data-placement="#context">
-                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
-                </li>
-            </ul>
+            <a href="#" data-url="./modules/admin/pages/status-add.jsp" data-placement="#context">
+                <i class="fa fa fa-plus"></i>&nbsp;Status </a>
         </li>
 
         <li>

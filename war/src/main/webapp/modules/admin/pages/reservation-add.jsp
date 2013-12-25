@@ -454,46 +454,9 @@
         </header>
 
         <div id="sortableTable" class="body collapse in">
-            <table id="dataTable"
+            <table id="client-table-small"
                    class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-                <thead>
-                <tr>
-                    <th class="smalltable">#
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th>Name
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th>Email
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th class="smalltable"></th>
-                    <th class="smalltable"></th>
-                </tr>
-                </thead>
 
-                <tbody>
-                <tr class="smalltable">
-                    <td>1</td>
-                    <td>Zenon Llistowski</td>
-                    <td>zenon@listoski.pl</td>
-                    <td class="smalltable"><i class="fa fa-plus"></i></td>
-                    <td class="smalltable"><i class="fa fa-info"></i></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Aenon Llistowski</td>
-                    <td>Aenon@listoski.pl</td>
-                    <td class="smalltable"><i class="fa fa-plus"></i></td>
-                    <td class="smalltable"><i class="fa fa-info"></i></td>
-                </tr>
-                </tbody>
             </table>
         </div>
     </div>
@@ -670,3 +633,5 @@
 
 </div>
 <!--row End -->
+
+<script src="./assets/js/client.js"></script>

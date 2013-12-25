@@ -71,6 +71,7 @@ public class User implements Serializable {
         this.address = address;
     }
 
+
     public Long getId() {
         return id;
     }

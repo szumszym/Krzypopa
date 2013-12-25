@@ -9,3 +9,4 @@ createTableWithDataFromDB('reservation-getData', 'reservation-table', {
         { "sTitle": "Update Date" }
     ]
 });
+

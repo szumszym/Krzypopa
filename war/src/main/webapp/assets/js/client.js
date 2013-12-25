@@ -9,3 +9,13 @@ createTableWithDataFromDB('client-getData', 'client-table', {
         { "sTitle": "Country" }
     ]
 });
+
+createTableWithDataFromDB('client-getData-small', 'client-table-small', {
+    columns: [
+        { "sTitle": "Id" },
+        { "sTitle": "Name" },
+        { "sTitle": "Email" },
+        { "sTitle": "Phone" }
+
+    ]
+});

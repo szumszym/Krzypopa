@@ -9,6 +9,3 @@ createTableWithDataFromDB('hotel-getData', 'hotel-table', {
         { "sTitle": "Owner" }
     ]
 });
-/**
- * Created by Dwory on 25.12.13.
- */

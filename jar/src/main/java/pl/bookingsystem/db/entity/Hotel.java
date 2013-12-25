@@ -54,6 +54,26 @@ public class Hotel implements Serializable {
         this.rooms.add(room);
     }
 
+    public Hotel(String name, String description, String phone_number, String email, Address address, Set<User> users) {
+        this.name = name;
+        this.description = description;
+        this.phone_number = phone_number;
+        this.email = email;
+        this.address = address;
+        this.users = users;
+    }
+
+    public Hotel(String name, String description, String phone_number, String email, Address address, User user) {
+        this.name = name;
+        this.description = description;
+        this.phone_number = phone_number;
+        this.email = email;
+        this.address = address;
+        this.users.add(user);
+    }
+
+
+
     public Hotel(String name, String phone_number, String email, Address address, Set<Client> clients, Set<User> users) {
         this.name = name;
         this.phone_number = phone_number;

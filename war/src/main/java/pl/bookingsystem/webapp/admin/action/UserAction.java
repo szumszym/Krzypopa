@@ -6,15 +6,9 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.json.JSONObject;
-import pl.bookingsystem.db.dao.ClientDAO;
-import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.dao.UserDAO;
-import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
-import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Address;
-import pl.bookingsystem.db.entity.Client;
-import pl.bookingsystem.db.entity.Reservation;
 import pl.bookingsystem.db.entity.User;
 
 import java.util.Date;
@@ -56,7 +50,6 @@ public class UserAction extends ActionSupport  {
             for (int j = 0; j < users.size(); j++) {
                 String[] tableS = new String[5];
                 User u = users.get(j);
-                Address a = u.getAddress();
                 tableS[0] = String.valueOf(u.getId());
                 tableS[1] = String.valueOf(String.valueOf(u.getLast_name()+" "+u.getFirst_name()));
                 tableS[2] = String.valueOf(u.getEmail());
@@ -92,13 +85,14 @@ public class UserAction extends ActionSupport  {
     })
     public String userAdd() {
         try {
-            Date register_date = new Date();
+            System.out.println(dataFrom);
             JSONObject jsonObject = new JSONObject(dataFrom);
+
             String first_name = (String) jsonObject.get("first_name");
             String last_name = (String) jsonObject.get("last_name");
             String email = (String) jsonObject.get("email");
             Long pesel = Long.parseLong((String) jsonObject.get("pesel"));
-            User.Type type = (User.Type) jsonObject.get("type");
+            User.Type type = getUsertype((String) jsonObject.get("type"));
             String  phone_number = (String) jsonObject.get("phone_number");
             String  password = (String) jsonObject.get("password");
             String  city = (String) jsonObject.get("city");
@@ -107,18 +101,27 @@ public class UserAction extends ActionSupport  {
             String  postcode = (String) jsonObject.get("postcode");
             String  country = (String) jsonObject.get("country");
 
-            Address address = new Address (city, street, building_no, postcode, country);
 
-            if(!((jsonObject.get("apartment_no")) == null)){
-                address.setApartment_no(Integer.parseInt((String) jsonObject.get(("apartment_no"))));
-            }else{
+            Address address = new Address (city, street, building_no, postcode, country);
+            if (((String) jsonObject.get("apartment_no")).isEmpty()) {
                 System.out.println("Apartment_NO : NULL");
+
+            } else {
+                System.out.println("Apartment_NO : Kurcze1");
+                address.setApartment_no(Integer.parseInt((String) jsonObject.get(("apartment_no"))));
+
             }
 
             User user = new User (first_name,last_name, pesel, email, phone_number, password, type, address);
 
+            if(((String) jsonObject.get("nip")).isEmpty()){
+                System.out.println("nip : Kurcze");
+                user.setNip(Long.parseLong((String) jsonObject.get(("nip"))));
 
-            System.out.println(data);
+            }else{
+                System.out.println("nip : NULL");
+            }
+
 
             UserDAO userManager = new UserDAOImpl();
             userManager.save(user);
@@ -131,4 +134,19 @@ public class UserAction extends ActionSupport  {
         }
 
     }
+
+    public User.Type getUsertype (String s){
+        if (s.equals("ADMIN")) {
+            return User.Type.ADMIN;
+
+        } else if (s.equals("EMPLOYEE")) {
+            return User.Type.EMPLOYEE;
+
+        } else if (s.equals("OWNER")) {
+            return User.Type.OWNER;
+
+        }
+        return User.Type.EMPLOYEE;
+    }
+
 }
