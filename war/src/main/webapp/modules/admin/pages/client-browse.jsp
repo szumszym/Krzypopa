@@ -6,7 +6,7 @@
                 <div class="icons">
                     <i class="fa fa-table"></i>
                 </div>
-                <h5>Reservation List</h5>
+                <h5>Client List</h5>
 
                 <div class="toolbar">
                     <ul class="nav">
@@ -21,7 +21,7 @@
             </header>
 
             <div id="div-1" class="accordion-body collapse in body">
-                <table id="reservation-table"
+                <table id="client-table"
                        class="table table-bordered table-condensed sortableTable responsive-table table-striped"></table>
             </div>
         </div>
@@ -31,4 +31,4 @@
 </div>
 <!--row End -->
 
-<script src="./assets/js/reservation.js"></script>
+<script src="./assets/js/client.js"></script>

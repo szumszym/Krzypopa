@@ -1,7 +1,6 @@
-<div id="content">
-<div class="outer">
+<div id="server-messages"></div>
 
-<div class="inner">
+
 <div class="row">
 <div class="col-lg-6">
     <div class="box dark">
@@ -25,62 +24,10 @@
 
         <div id="div-1" class="accordion-body collapse in body">
 
-            <table id="dataTable"
+            <table id="hotel-table"
                    class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-                <thead>
-                <tr>
-                    <th class="smalltable">#
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th>Name
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th>Adress
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th>Email
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th>Phone Number
-                        <i class="icon-sort"></i>
-                        <i class="icon-sort-down"></i>
-                        <i class="icon-sort-up"></i>
-                    </th>
-                    <th class="smalltable"></th>
-                    <th class="smalltable"></th>
-                    <th class="smalltable"></th>
-                </tr>
-                </thead>
 
-                <tbody>
-                <tr class="smalltable">
-                    <td>1</td>
-                    <td>CZArna Górka</td>
-                    <td>Warszawa, ul.Wiejska 1</td>
-                    <td>Rosomak@wpier.pl</td>
-                    <td>966 966 098</td>
-                    <td class="smalltable"><i class="fa fa-info"></i></td>
-                    <td class="smalltable"><i class="fa fa-bitbucket"></i></td>
-                    <td class="smalltable"><i class="fa fa-edit"></i></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Wybidołek</td>
-                    <td>Kraków, ul.Kwiecista 12</td>
-                    <td>Roman@pije.pl</td>
-                    <td>888 999 666</td>
-                    <td class="smalltable"><i class="fa fa-info"></i></td>
-                    <td class="smalltable"><i class="fa fa-bitbucket"></i></td>
-                    <td class="smalltable"><i class="fa fa-edit"></i></td>
-                </tbody>
+
             </table>
         </div>
     </div>
@@ -108,12 +55,12 @@
 
         <div id="div-2" class="accordion-body collapse in body">
 
-            <form class="form-horizontal">
+            <form id="hotel-add" action="hotel-add" class="form-horizontal">
                 <div class="form-group">
                     <label class="control-label col-lg-4">Name</label>
 
                     <div class="col-lg-8">
-                        <input type="text" id="name" placeholder="Name"
+                        <input type="text" name="name" id="ha-name" placeholder="Name"
                                class="validate[required] form-control">
                     </div>
                 </div>
@@ -123,7 +70,7 @@
                     <label class="control-label col-lg-4">Email</label>
 
                     <div class="col-lg-8">
-                        <input type="text" id="email" placeholder="sample@sample.com"
+                        <input type="text" name="email" id="ha-email" placeholder="sample@sample.com"
                                class="validate[required] form-control">
                     </div>
                 </div>
@@ -134,7 +81,7 @@
 
                     <div class="col-lg-8">
                         <div class="input-group">
-                            <input id="phone_number" class="form-control" type="text"
+                            <input name="phone_number" id="ha-phone_number" class="form-control" type="text"
                                    data-mask="+48 999 999 999">
                             <span class="input-group-addon">+48 999 999 999</span>
                         </div>
@@ -145,7 +92,7 @@
                     <label class="control-label col-lg-4">City</label>
 
                     <div class="col-lg-8">
-                        <input type="text" id="city" placeholder="eg: Kraków"
+                        <input type="text" name="city" id="ha-city" placeholder="eg: Kraków"
                                class="validate[required] form-control">
                     </div>
                 </div>
@@ -155,7 +102,7 @@
                     <label class="control-label col-lg-4">Street</label>
 
                     <div class="col-lg-8">
-                        <input type="text" id="steet" placeholder="eg: Zakopianska"
+                        <input type="text" name="street" id="ha-street" placeholder="eg: Zakopianska"
                                class="validate[required] form-control">
                     </div>
                 </div>
@@ -165,7 +112,7 @@
                     <label class="control-label col-lg-4">Building No.</label>
 
                     <div class="col-lg-8">
-                        <input type="text" id="building_no" placeholder="eg: 10"
+                        <input type="text" name="building_no" id="ha-building_no" placeholder="eg: 10"
                                class="validate[required], custom[number] form-control">
                     </div>
                 </div>
@@ -176,7 +123,7 @@
 
                     <div class="col-lg-8">
                         <div class="input-group">
-                            <input type="text" id="postcode" class="validate[required] form-control"
+                            <input type="text" name="postcode" id="ha-postcode" class="validate[required] form-control"
                                    data-mask="99-999">
                             <span class="input-group-addon">32-600</span>
                         </div>
@@ -185,10 +132,10 @@
                 <!-- /.form-group -->
 
                 <div class="form-group">
-                    <label for="description" class="control-label col-lg-4">Description</label>
+                    <label for="ha-description" class="control-label col-lg-4">Description</label>
 
                     <div class="col-lg-8">
-                        <textarea id="description" placeholder="Description"
+                        <textarea name="description" id="ha-description" placeholder="Description"
                                   class="validate[required] form-control"></textarea>
                     </div>
                 </div>
@@ -199,8 +146,9 @@
 
                     <div class="col-lg-8">
                         <div class="input-group">
-                            <a href="#" class="btn btn-primary" data-original-title=""
-                               title="">Submit</a>
+                            <input type="submit" name="submit"
+                                   onclick="ajaxSubmit('hotel-add', 'server-messages'); return false;"
+                                   class="btn btn-primary" data-original-title="" title="" value="Add"/>
                         </div>
                     </div>
                 </div>
@@ -214,12 +162,4 @@
 
 </div>
 <!--row End -->
-</div>
-<!-- end .inner -->
-
-
-</div>
-<!-- end .outer -->
-
-
-</div>
+<script src="./assets/js/hotel.js"></script>

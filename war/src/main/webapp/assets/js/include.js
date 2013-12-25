@@ -100,7 +100,7 @@ function ajaxSubmit(formId, resultContainerId) {
             jQuery('#' + resultContainerId).html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Wystąpił bład podczas zapisu do bazy danych!</div>");
         },
         success: function () {
-            jQuery('#' + resultContainerId).html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> Nowa rezerwacja została stworzona!</div>");
+            jQuery('#' + resultContainerId).html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> Operacja przbiegla pomyślnie</div>");
         }
     });
     return false;

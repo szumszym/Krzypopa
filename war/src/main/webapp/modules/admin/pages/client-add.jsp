@@ -1,7 +1,5 @@
-<div id="content">
-<div class="outer">
+<div id="server-messages"></div>
 
-<div class="inner">
 <div class="row">
 <div class="col-lg-6">
 <div class="box dark">
@@ -24,13 +22,13 @@
 </header>
 
 <div id="div-1" class="accordion-body collapse in body">
-<form class="form-horizontal">
+<form id="client-add" action="client-add" class="form-horizontal">
 
 <div class="form-group">
     <label class="control-label col-lg-4">First Name</label>
 
     <div class="col-lg-8">
-        <input type="text" id="first_name" placeholder="First Name" class="validate[required] form-control">
+        <input type="text" name="first_name" placeholder="First Name" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -39,7 +37,7 @@
     <label class="control-label col-lg-4">Last Name</label>
 
     <div class="col-lg-8">
-        <input type="text" id="last_name" placeholder="Last Name" class="validate[required] form-control">
+        <input type="text" name="last_name" placeholder="Last Name" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -48,7 +46,8 @@
     <label class="control-label col-lg-4">Email</label>
 
     <div class="col-lg-8">
-        <input type="text" id="email" placeholder="sample@sample.com" class="validate[required] form-control">
+        <input type="text" name="email" id="ac-email" placeholder="sample@sample.com"
+               class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -57,16 +56,18 @@
     <label class="control-label col-lg-4">Confirm Email</label>
 
     <div class="col-lg-8">
-        <input type="text" placeholder="sample@sample.com" class="validate[required],equals[email]] form-control">
+        <input type="text" placeholder="sample@sample.com" class="validate[required],equals[ac-email]] form-control"
+               name="emailNull">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="pass1" class="control-label col-lg-4">Password</label>
+    <label for="ac-pass1" class="control-label col-lg-4">Password</label>
 
     <div class="col-lg-8">
-        <input class="form-control" type="password" id="pass1" data-original-title="Please use your secure password"
+        <input class="form-control" type="password" name="password" id="ac-pass1"
+               data-original-title="Please use your secure password"
                data-placement="top">
     </div>
 </div>
@@ -76,7 +77,8 @@
     <label class="control-label col-lg-4">Confirm Password</label>
 
     <div class=" col-lg-8">
-        <input class="validate[required,equals[pass1]] form-control" type="password" name="pass2" id="pass2">
+        <input class="validate[required,equals[ac-pass1]] form-control" type="password" name="passwordNull"
+               id="ac-pass2">
     </div>
 </div>
 <!-- /.form-group -->
@@ -85,7 +87,7 @@
     <label class="control-label col-lg-4">PESEL</label>
 
     <div class="col-lg-8">
-        <input type="text" id="pesel" class="maxSizep[11] ,custom[number] form-control">
+        <input type="text" name="pesel" class="maxSizep[11] ,custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -94,7 +96,7 @@
     <label class="control-label col-lg-4">NIP</label>
 
     <div class="col-lg-8">
-        <input type="text" id="nip" class="maxSizep[10] ,custom[number] form-control">
+        <input type="text" name="nip" class="maxSizep[10] ,custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -104,7 +106,7 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input id="phone_number" class="form-control" type="text" data-mask="+48 999 999 999">
+            <input name="phone_number" class="form-control" type="text" data-mask="+48 999 999 999">
             <span class="input-group-addon">+48 999 999 999</span>
         </div>
     </div>
@@ -114,7 +116,7 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" id="city" placeholder="eg: Kraków" class="validate[required] form-control">
+        <input type="text" name="city" placeholder="eg: Kraków" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -123,7 +125,7 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" id="steet" placeholder="eg: Zakopiańska" class="validate[required] form-control">
+        <input type="text" name="steet" placeholder="eg: Zakopiańska" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -132,7 +134,7 @@
     <label class="control-label col-lg-4">Building No.</label>
 
     <div class="col-lg-8">
-        <input type="text" id="building_no" placeholder="eg: 10"
+        <input type="text" name="building_no" placeholder="eg: 10"
                class="validate[required], custom[number] form-control">
     </div>
 </div>
@@ -142,7 +144,7 @@
     <label class="control-label col-lg-4">Apartment No.</label>
 
     <div class="col-lg-8">
-        <input type="text" id="apartment_no" placeholder="eg: 10"
+        <input type="text" name="apartment_no" placeholder="eg: 10"
                class="validate[required], custom[number] form-control">
     </div>
 </div>
@@ -153,7 +155,7 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="text" id="postcode" class="validate[required] form-control" data-mask="99-999">
+            <input type="text" name="postcode" class="validate[required] form-control" data-mask="99-999">
             <span class="input-group-addon">32-600</span>
         </div>
     </div>
@@ -165,7 +167,7 @@
 <label class="control-label col-lg-4">Country</label>
 
 <div class="col-lg-8">
-<select data-placeholder="Choose a Country..." class="form-control chzn-select" tabindex="2">
+<select name="country" data-placeholder="Choose a Country..." class="form-control chzn-select" tabindex="2">
 <option value=""></option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
@@ -419,7 +421,9 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <a href="#" class="btn btn-primary" data-original-title="" title="">Submit</a>
+            <input type="submit" name="submit"
+                   onclick="ajaxSubmit('client-add', 'server-messages'); return false;"
+                   class="btn btn-primary" data-original-title="" title="" value="Add"/>
         </div>
     </div>
 </div>
@@ -431,12 +435,3 @@
 
 </div>
 <!--row End -->
-</div>
-<!-- end .inner -->
-
-
-</div>
-<!-- end .outer -->
-
-
-</div>

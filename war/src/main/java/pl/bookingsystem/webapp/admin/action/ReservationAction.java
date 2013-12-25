@@ -91,7 +91,7 @@ public class ReservationAction extends ActionSupport {
     })
     public String reservationAdd() {
         try {
-
+            System.out.println(dataFrom);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             JSONObject jsonObject = new JSONObject(dataFrom);
@@ -117,6 +117,7 @@ public class ReservationAction extends ActionSupport {
         }
 
     }
+
 
 
 }

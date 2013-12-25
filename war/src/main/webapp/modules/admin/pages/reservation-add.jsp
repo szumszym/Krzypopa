@@ -56,7 +56,8 @@
     <label class="control-label col-lg-4">Confirm Email</label>
 
     <div class="col-lg-8">
-        <input type="text" placeholder="sample@sample.com" class="validate[required],equals[ra-email]] form-control">
+        <input type="text" name="emailNull" placeholder="sample@sample.com"
+               class="validate[required], equals[ra-email]] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -65,7 +66,8 @@
     <label for="ra-pass1" class="control-label col-lg-4">Password</label>
 
     <div class="col-lg-8">
-        <input class="form-control" type="password" id="ra-pass1" data-original-title="Please use your secure password"
+        <input class="form-control" type="password" name="password" id="ra-pass1"
+               data-original-title="Please use your secure password"
                data-placement="top">
     </div>
 </div>
@@ -75,7 +77,7 @@
     <label class="control-label col-lg-4">Confirm Password</label>
 
     <div class=" col-lg-8">
-        <input class="validate[required,equals[ra-pass1]] form-control" type="password" name="password" id="pass2">
+        <input class="validate[required,equals[ra-pass1]] form-control" type="password" name="passwordNull">
     </div>
 </div>
 <!-- /.form-group -->
@@ -114,7 +116,7 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" id="ra-city" name="address.city" placeholder="eg: Kraków"
+        <input type="text" id="ra-city" name="city" placeholder="eg: Kraków"
                class="validate[required] form-control">
     </div>
 </div>
@@ -124,7 +126,7 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" id="ra-street" name="address.street" placeholder="eg: Zakopiańska"
+        <input type="text" id="ra-street" name="street" placeholder="eg: Zakopiańska"
                class="validate[required] form-control">
     </div>
 </div>
@@ -134,7 +136,7 @@
     <label class="control-label col-lg-4">Building No.</label>
 
     <div class="col-lg-8">
-        <input type="text" id="ra-building_no" name="address.building_no" placeholder="eg: 10"
+        <input type="text" id="ra-building_no" name="building_no" placeholder="eg: 10"
                class="validate[required], custom[number] form-control">
     </div>
 </div>
@@ -144,7 +146,7 @@
     <label class="control-label col-lg-4">Apartment No.</label>
 
     <div class="col-lg-8">
-        <input type="text" id="ra-apartment_no" name="address.apartment_no" placeholder="eg: 10"
+        <input type="text" id="ra-apartment_no" name="apartment_no" placeholder="eg: 10"
                class="custom[number] form-control">
     </div>
 </div>
@@ -155,7 +157,7 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="text" id="ra-postcode" name="address.postcode" class="validate[required] form-control"
+            <input type="text" id="ra-postcode" name="postcode" class="validate[required] form-control"
                    data-mask="99-999">
             <span class="input-group-addon">32-600</span>
         </div>
@@ -168,7 +170,7 @@
 <label class="control-label col-lg-4">Country</label>
 
 <div class="col-lg-8">
-<select name="address.country" id="ra-country" data-placeholder="Choose a Country..." class="form-control chzn-select"
+<select name="country" id="ra-country" data-placeholder="Choose a Country..." class="form-control chzn-select"
         tabindex="2">
 <option value=""></option>
 <option value="United States">United States</option>
@@ -423,8 +425,9 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="submit" onclick="ajaxSubmit('#reservation-add'); return false;" class="btn btn-primary"
-                   data-original-title="" title="" value="Submit"/>
+            <input type="submit" name="submit"
+                   onclick="ajaxSubmit('client-add', 'server-messages'); return false;"
+                   class="btn btn-primary" data-original-title="" title="" value="Add"/>
         </div>
     </div>
 </div>
@@ -527,7 +530,7 @@
                         <label class="control-label col-lg-4">Name</label>
 
                         <div class="col-lg-8">
-                            <input type="text" name="name" placeholder="First Name"
+                            <input type="text" name="name" placeholder="Reservation"
                                    class="validate[required] form-control">
                         </div>
                     </div>
