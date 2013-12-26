@@ -24,15 +24,5 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
         return rooms;
     }
 
-    @Override
-    public User getOwner(Long hotel_id){
-        User owner = null;
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-        Query query = session.createQuery("SELECT u FROM user u, hotel_user  hu WHERE hu.hotel_id = :hotel_id and u.type =\"OWNER\" ");
-        query.setParameter("hotel_id", hotel_id);
-        owner = (User)  query.uniqueResult();
-        return owner;
-    }
 
 }

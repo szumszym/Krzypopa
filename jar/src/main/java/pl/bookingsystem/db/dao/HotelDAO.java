@@ -14,5 +14,4 @@ public interface HotelDAO extends GenericDAO<Hotel, Long> {
 
     public List<Room> getRooms(Long hotel_id);
 
-    public User getOwner(Long hotel_id);
 }

@@ -11,6 +11,8 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     T merge(T entity);
 
+    T saveOrUpdat(T entity);
+
     void delete(T entity);
 
     List selectAll(Class clazz);   //select * from clazz

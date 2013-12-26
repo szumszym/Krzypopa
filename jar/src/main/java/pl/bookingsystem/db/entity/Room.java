@@ -34,8 +34,12 @@ public class
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @OneToMany(mappedBy = "room")
-    private Set<Addition> additions;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "room_addition", joinColumns = {
+            @JoinColumn(name = "room_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "addition_id",
+                    nullable = false, updatable = false)})
+    private Set<Addition> additions= new HashSet<Addition>();
 
     @ManyToMany(mappedBy = "rooms")
     private Set<Reservation> reservations = new HashSet<Reservation>();

@@ -3,8 +3,9 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "hotel")
@@ -36,24 +37,30 @@ public class Hotel implements Serializable {
             @JoinColumn(name = "hotel_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "client_id",
                     nullable = false, updatable = false)})
-    private Set<Client> clients = new HashSet<Client>();
+    private Set<Client> clients;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "hotel_user", joinColumns = {
             @JoinColumn(name = "hotel_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "user_id",
                     nullable = false, updatable = false)})
-    private Set<User> users = new HashSet<User>();
+    private Set<User> users = new LinkedHashSet<User>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", cascade = CascadeType.ALL)
-    private Set<Room> rooms = new HashSet<Room>();
+    private Set<Room> rooms = new LinkedHashSet<Room>();
 
 
     public void addRoom(Room room) {
         room.setHotel(this);
         this.rooms.add(room);
     }
-
+    public Hotel(String name, String description, String phone_number, String email, Address address) {
+        this.name = name;
+        this.description = description;
+        this.phone_number = phone_number;
+        this.email = email;
+        this.address = address;
+    }
     public Hotel(String name, String description, String phone_number, String email, Address address, Set<User> users) {
         this.name = name;
         this.description = description;
@@ -96,7 +103,7 @@ public class Hotel implements Serializable {
     public Hotel() {
     }
 
-    public Hotel(String name, String phone_number, String email, Address address, Set<Client> clients, Set<User> users, HashSet<Room> rooms) {
+    public Hotel(String name, String phone_number, String email, Address address, Set<Client> clients, Set<User> users, Set<Room> rooms) {
         this.name = name;
         this.phone_number = phone_number;
         this.email = email;
@@ -171,6 +178,26 @@ public class Hotel implements Serializable {
         this.users = users;
     }
 
+    public User getOwner(){
+
+        int i=0;
+        int userSize= this.users.size();
+        User u;
+        User[] users = this.users.toArray(new User[0]);
+        do {
+            u=users[i];
+            System.out.println("TYP: "+u.getType());
+            i++;
+            if(u.getType() == User.Type.OWNER){
+                return u;
+            }
+        } while (i<userSize);
+        return null;
+    }
+    public void setOwner(User user){
+        user.setType(User.Type.OWNER);
+        this.users.add(user);
+    }
     public Set<Room> getRooms() {
         return rooms;
     }
@@ -178,4 +205,6 @@ public class Hotel implements Serializable {
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
+
+    public void setRoom(Room room){this.rooms.add(room);}
 }
