@@ -1,5 +1,5 @@
 createTableWithDataFromDB('reservation-getData', 'reservation-table', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
         { "sTitle": "From Date" },

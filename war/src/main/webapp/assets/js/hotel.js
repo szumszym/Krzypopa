@@ -1,5 +1,5 @@
 createTableWithDataFromDB('hotel-getData', 'hotel-table', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
         { "sTitle": "City" },

@@ -63,20 +63,31 @@ function createTableWithDataFromDB(ajaxAction, tableContainerId, tableParams) {
         type: 'POST',
         url: ajaxAction,
         success: function (data) {
+            var aaData = eval(data).data;
+            if (aaData != undefined && aaData[0][0] != "ERROR!!!") {
+                for (var param in tableParams) {
+                    dataTableParams[param] = tableParams[param];
+                }
 
-            dataTableParams.aaData = eval(data).data;
-            // dataTableParams.aaSorting = [[0, "asc"], [1, "desc"], [2, "desc"]];
-            dataTableParams.aoColumns = tableParams.columns;
-            dataTableParams.bJQueryUI = true;
-            dataTableParams.bScrollInfinite = true;
-            dataTableParams.bScrollCollapse = true;
-            dataTableParams.bDestroy = true;
-            dataTableParams.bDeferRender = true;
-            //  dataTableParams.iDisplayLength = 50;
-            // dataTableParams.sScrollY = '400px';
-            dataTableParams.sDom = 'Rlfrtip';
+                dataTableParams.aaData = eval(data).data;
 
-            $('#' + tableContainerId).dataTable(dataTableParams);
+                // dataTableParams.aaSorting = [[0, "asc"], [1, "desc"], [2, "desc"]];
+                dataTableParams.bJQueryUI = true;
+
+                dataTableParams.bDestroy = true;
+                dataTableParams.bDeferRender = true;
+
+                //scrollable - properties:
+                // dataTableParams.bScrollCollapse = true;
+                // dataTableParams.bScrollInfinite = true;
+                // dataTableParams.iDisplayLength = 50;
+                // dataTableParams.sScrollY = '400px';
+
+                $('#' + tableContainerId).dataTable(dataTableParams);
+            } else {
+                $('#' + tableContainerId).html("Server ERROR!");
+                console.log("Error: ", data);
+            }
         },
         error: function (data) {
             console.log("Error: ", data);
@@ -100,6 +111,7 @@ function ajaxSubmit(formId, resultContainerId) {
             jQuery('#' + resultContainerId).html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Wystąpił bład podczas zapisu do bazy danych!</div>");
         },
         success: function () {
+
             jQuery('#' + resultContainerId).html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> Operacja przbiegla pomyślnie</div>");
         }
     });

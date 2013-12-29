@@ -1,5 +1,3 @@
-<div id="server-messages"></div>
-
 <div class="row">
     <div class="col-lg-6">
         <div class="box dark">
@@ -25,7 +23,6 @@
 
                 <table id="status-table"
                        class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-
 
 
                 </table>
@@ -100,7 +97,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label  class="control-label col-lg-4">Add Status</label>
+                            <label class="control-label col-lg-4">Add Status</label>
 
                             <div class="col-lg-8">
                                 <div class="input-group">

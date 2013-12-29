@@ -23,7 +23,8 @@
     <!-- Metis core stylesheet -->
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/theme.css">
-    <%--<link rel="stylesheet" href="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.css">--%>
+    <link rel="stylesheet" href="./assets/css/dashboard.css">
+<%--<link rel="stylesheet" href="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.css">--%>
 
     <!--Modernizr 3.0-->
     <script src="./assets/lib/modernizr-build.min.js"></script>
@@ -238,7 +239,7 @@
 <div id="footer">
     <p>2013 &copy; BS Admin</p>
 </div>
-
+<div id="server-messages"></div>
 <!-- #helpModal -->
 <div id="helpModal" class="modal fade">
     <div class="modal-dialog">
@@ -275,7 +276,7 @@
 <%--<script src="./assets/lib/flot/jquery.flot.selection.js"></script>--%>
 <%--<script src="./assets/lib/flot/jquery.flot.resize.js"></script>--%>
 <script src="./assets/js/main.js"></script>
-<script src="./assets/js/include.js"></script>
+<script src="./assets/js/ajaxFunctions.js"></script>
 <script src="./assets/lib/datatables/jquery.dataTables.js"></script>
 <script src="./assets/lib/datatables/DT_bootstrap.js"></script>
 <%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>

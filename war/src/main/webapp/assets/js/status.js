@@ -1,5 +1,5 @@
 createTableWithDataFromDB('status-getData', 'status-table', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
         { "sTitle": "Description" },

@@ -1,5 +1,5 @@
 createTableWithDataFromDB('client-getData', 'client-table', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
         { "sTitle": "Email" },
@@ -11,7 +11,7 @@ createTableWithDataFromDB('client-getData', 'client-table', {
 });
 
 createTableWithDataFromDB('client-getData-small', 'client-table-small', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
         { "sTitle": "Email" },

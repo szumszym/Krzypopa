@@ -1,5 +1,3 @@
-<div id="server-messages"></div>
-
 <div class="row">
 <div class="col-lg-6">
 <div class="box dark">

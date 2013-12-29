@@ -1,6 +1,7 @@
 package pl.bookingsystem.webapp.admin.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -17,7 +18,7 @@ import java.util.List;
 @ParentPackage("json-default")
 @Namespace("")
 public class ClientAction extends ActionSupport {
-
+    private static final Logger log = Logger.getLogger(ClientAction.class);
     private String[][] data;
 
     public String[][] getData() {
@@ -167,7 +168,7 @@ public class ClientAction extends ActionSupport {
             return SUCCESS;
 
         } catch (Exception e) {
-
+            log.error("Client save error: ", e);
             //  message = new ByteArrayInputStream("Data hasn't been saved".getBytes());
             return ERROR;
         }

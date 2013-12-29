@@ -1,5 +1,5 @@
 createTableWithDataFromDB('user-getData', 'user-table', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
         { "sTitle": "Email" },
