@@ -43,20 +43,6 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         return entity;
     }
 
-    @Override
-    public T saveOrUpdat(T entity) {
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-
-        session.beginTransaction();
-
-        session.saveOrUpdate(entity);
-
-        session.getTransaction().commit();
-
-        session.close();
-        return entity;
-    }
 
     @Override
     public void delete(T entity) {

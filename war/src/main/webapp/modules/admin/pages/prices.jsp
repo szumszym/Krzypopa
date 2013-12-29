@@ -86,19 +86,7 @@
                                     <input name="value" type="text" class="form-control" id="cp1">
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-lg-4"></label>
-
-                                <div class="col-lg-8">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="publish" class="uniform" type="checkbox" value="option1"
-                                                   checked>Published
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+s
 
                             <div class="form-group">
                                 <label class="control-label col-lg-4">Add Addition</label>
