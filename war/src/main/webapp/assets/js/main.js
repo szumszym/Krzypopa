@@ -171,23 +171,31 @@ function metisChart() {
 function dashboard() {
     "use strict";
 
-    //----------- BEGIN SPARKLINE CODE -------------------------*/
-    // required jquery.sparkline.min.js*/
+    /*----------- BEGIN chosen CODE -------------------------*/
 
-    /** This code runs when everything has been loaded on the page */
-    /* Inline sparklines take their values from the contents of the tag */
-    $('.inlinesparkline').sparkline();
+    $(".chzn-select").chosen();
+    $(".chzn-select-deselect").chosen({
+        allow_single_deselect: true
+    });
+    /*----------- END chosen CODE -------------------------*/
 
-    /* Sparklines can also take their values from the first argument
-     passed to the sparkline() function */
+/*    //----------- BEGIN SPARKLINE CODE -------------------------*//*
+    // required jquery.sparkline.min.js*//*
+
+    *//** This code runs when everything has been loaded on the page *//*
+    *//* Inline sparklines take their values from the contents of the tag *//*
+   // $('.inlinesparkline').sparkline();
+
+    *//* Sparklines can also take their values from the first argument
+     passed to the sparkline() function *//*
     var myvalues = [10, 8, 5, 7, 4, 4, 1];
     $('.dynamicsparkline').sparkline(myvalues);
 
-    /* The second argument gives options such as chart type */
+    *//* The second argument gives options such as chart type *//*
     $('.dynamicbar').sparkline(myvalues, {type: 'bar', barColor: 'green'});
 
-    /* Use 'html' instead of an array of values to pass options
-     to a sparkline with data in the tag */
+    *//* Use 'html' instead of an array of values to pass options
+     to a sparkline with data in the tag *//*
     $('.inlinebar').sparkline('html', {type: 'bar', barColor: 'red'});
 
 
@@ -419,13 +427,7 @@ function formGeneral() {
     $('#tags').tagsInput();
     /*----------- END tagsInput CODE -------------------------*/
 
-    /*----------- BEGIN chosen CODE -------------------------*/
 
-    $(".chzn-select").chosen();
-    $(".chzn-select-deselect").chosen({
-        allow_single_deselect: true
-    });
-    /*----------- END chosen CODE -------------------------*/
 
     /*----------- BEGIN spinner CODE -------------------------*/
 

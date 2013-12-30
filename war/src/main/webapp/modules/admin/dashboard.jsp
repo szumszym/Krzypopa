@@ -19,6 +19,7 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="./assets/lib/Font-Awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/lib/chosen/chosen.min.css">
 
     <!-- Metis core stylesheet -->
     <link rel="stylesheet" href="./assets/css/main.css">
@@ -268,6 +269,7 @@
 <!-- /.modal --><!-- /#helpModal -->
 <script src="./assets/lib/jquery.min.js"></script>
 <script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="./assets/lib/chosen/chosen.jquery.js"></script>
 <%--<script type="text/javascript" src="./assets/js/style-switcher.js"></script>--%>
 <%--<script src="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.min.js"></script>--%>
 <%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
@@ -279,6 +281,8 @@
 <script src="./assets/js/ajaxFunctions.js"></script>
 <script src="./assets/lib/datatables/jquery.dataTables.js"></script>
 <script src="./assets/lib/datatables/DT_bootstrap.js"></script>
+<%--<script src="./assets/js/app/formGeneral.js"></script>--%>
+
 <%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
 <script>
     $(function () {

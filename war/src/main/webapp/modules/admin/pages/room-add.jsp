@@ -106,5 +106,9 @@
         </div>
     </div>
 
-<!--row End -->
+    <!--row End -->
 </div>
+
+<script>
+        $(".chzn-select").chosen();
+</script>
