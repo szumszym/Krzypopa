@@ -6,9 +6,9 @@ public class Main {
     public static void main(String[] args) {
 
         //AddToDB.addStatuses();   //jednorazowo
-        // AddToDB.addUser();
+        //  AddToDB.addUser();
         // AddToDB.addHotel();
-        // AddToDB.addReservation();
+        AddToDB.addReservation();
 
         System.exit(0);
     }

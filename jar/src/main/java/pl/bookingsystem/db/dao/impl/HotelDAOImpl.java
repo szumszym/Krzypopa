@@ -17,7 +17,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
         SessionFactory sf = HibernateUtil.getSessionFactory();
         Session session = sf.openSession();
-        Query query = session.createQuery("select h.rooms from hotel h where h.id = :hotel_id");
+        Query query = session.createQuery("select h.rooms from Hotel h where h.id = :hotel_id");
         query.setParameter("hotel_id", hotel_id);
         List<Room> rooms = (List<Room>) query.list();
         session.close();

@@ -57,7 +57,7 @@ public class AddToDB {
     public static void addReservation() {
 
         HotelDAO hotelManager = new HotelDAOImpl();
-        Hotel hotel = hotelManager.selectByID(Hotel.class, 1L);
+        Hotel hotel = hotelManager.selectByID(Hotel.class, 2L);
         List<Room> rooms = hotelManager.getRooms(hotel.getId());
 
         Room room = rooms.get(1);
