@@ -20,13 +20,13 @@
 </header>
 
 <div id="div-1" class="accordion-body collapse in body">
-<form id="client-add" action="client-add" class="form-horizontal">
+<form id="client-add" class="form-horizontal" action="client-add">
 
 <div class="form-group">
     <label class="control-label col-lg-4">First Name</label>
 
     <div class="col-lg-8">
-        <input type="text" name="first_name" placeholder="First Name" class="validate[required] form-control">
+        <input type="text" name="first_name" id="ca-first_name" placeholder="First Name" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -35,7 +35,7 @@
     <label class="control-label col-lg-4">Last Name</label>
 
     <div class="col-lg-8">
-        <input type="text" name="last_name" placeholder="Last Name" class="validate[required] form-control">
+        <input type="text" name="last_name" id="ca-last_name" placeholder="Last Name" class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -44,7 +44,7 @@
     <label class="control-label col-lg-4">Email</label>
 
     <div class="col-lg-8">
-        <input type="text" name="email" id="ac-email" placeholder="sample@sample.com"
+        <input type="text" id="ca-email" name="email" placeholder="sample@sample.com"
                class="validate[required] form-control">
     </div>
 </div>
@@ -54,17 +54,17 @@
     <label class="control-label col-lg-4">Confirm Email</label>
 
     <div class="col-lg-8">
-        <input type="text" placeholder="sample@sample.com" class="validate[required],equals[ac-email]] form-control"
-               name="emailNull">
+        <input type="text" name="emailNull" placeholder="sample@sample.com"
+               class="validate[required], equals[ra-email]] form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="ac-pass1" class="control-label col-lg-4">Password</label>
+    <label for="ca-pass1" class="control-label col-lg-4">Password</label>
 
     <div class="col-lg-8">
-        <input class="form-control" type="password" name="password" id="ac-pass1"
+        <input class="form-control" type="password" name="password" id="ca-pass1"
                data-original-title="Please use your secure password"
                data-placement="top">
     </div>
@@ -75,8 +75,7 @@
     <label class="control-label col-lg-4">Confirm Password</label>
 
     <div class=" col-lg-8">
-        <input class="validate[required,equals[ac-pass1]] form-control" type="password" name="passwordNull"
-               id="ac-pass2">
+        <input class="validate[required,equals[ra-pass1]] form-control" type="password" name="passwordNull">
     </div>
 </div>
 <!-- /.form-group -->
@@ -85,7 +84,7 @@
     <label class="control-label col-lg-4">PESEL</label>
 
     <div class="col-lg-8">
-        <input type="text" name="pesel" class="maxSizep[11] ,custom[number] form-control">
+        <input type="text" id="ca-pesel" name="pesel" class="maxSizep[11] ,custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -94,7 +93,7 @@
     <label class="control-label col-lg-4">NIP</label>
 
     <div class="col-lg-8">
-        <input type="text" name="nip" class="maxSizep[10] ,custom[number] form-control">
+        <input type="text" id="ra-nip" name="nip" class="maxSizep[10] ,custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -104,7 +103,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input name="phone_number" class="form-control" type="text" data-mask="+48 999 999 999">
+            <input id="ca-phone_number" name="phone_number" class="form-control" type="text"
+                   data-mask="+99 999 999 999">
             <span class="input-group-addon">+48 999 999 999</span>
         </div>
     </div>
@@ -114,16 +114,18 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" name="city" placeholder="eg: Kraków" class="validate[required] form-control">
+        <input type="text" id="ca-city" name="city" placeholder="eg: Kraków"
+               class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label class="control-label col-lg-4">City</label>
+    <label class="control-label col-lg-4">Street</label>
 
     <div class="col-lg-8">
-        <input type="text" name="steet" placeholder="eg: Zakopiańska" class="validate[required] form-control">
+        <input type="text" id="ca-street" name="street" placeholder="eg: Zakopiańska"
+               class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -132,7 +134,7 @@
     <label class="control-label col-lg-4">Building No.</label>
 
     <div class="col-lg-8">
-        <input type="text" name="building_no" placeholder="eg: 10"
+        <input type="text" id="ca-building_no" name="building_no" placeholder="eg: 10"
                class="validate[required], custom[number] form-control">
     </div>
 </div>
@@ -142,8 +144,8 @@
     <label class="control-label col-lg-4">Apartment No.</label>
 
     <div class="col-lg-8">
-        <input type="text" name="apartment_no" placeholder="eg: 10"
-               class="validate[required], custom[number] form-control">
+        <input type="text" id="ca-apartment_no" name="apartment_no" placeholder="eg: 10"
+               class="custom[number] form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -153,7 +155,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="text" name="postcode" class="validate[required] form-control" data-mask="99-999">
+            <input type="text" id="ca-postcode" name="postcode" class="validate[required] form-control"
+                   data-mask="99-999">
             <span class="input-group-addon">32-600</span>
         </div>
     </div>
@@ -165,7 +168,8 @@
 <label class="control-label col-lg-4">Country</label>
 
 <div class="col-lg-8">
-<select name="country" data-placeholder="Choose a Country..." class="form-control chzn-select" tabindex="2">
+<select name="country" id="ca-country" data-placeholder="Choose a Country..." class="form-control chzn-select"
+        tabindex="2">
 <option value=""></option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>

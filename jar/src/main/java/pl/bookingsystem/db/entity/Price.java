@@ -22,10 +22,10 @@ public class Price implements Serializable {
     private Long id;
 
     @Column(name = "room_type")
-    private String roomt_type;
+    private String room_type;
 
     @Column(name = "person_type")
-    private String prersone_type;
+    private String person_type;
 
     @Column(name = "value")
     private Integer value;
@@ -37,27 +37,27 @@ public class Price implements Serializable {
         return id;
     }
 
-    public Price(String roomt_type, String prersone_type, Integer value) {
-        this.roomt_type = roomt_type;
-        this.prersone_type = prersone_type;
+    public Price(String room_type, String person_type, Integer value) {
+        this.room_type = room_type;
+        this.person_type = person_type;
         this.value = value;
 
     }
 
-    public String getRoomt_type() {
-        return roomt_type;
+    public String getRoom_type() {
+        return room_type;
     }
 
-    public void setRoomt_type(String roomt_type) {
-        this.roomt_type = roomt_type;
+    public void setRoom_type(String room_type) {
+        this.room_type = room_type;
     }
 
-    public String getPrersone_type() {
-        return prersone_type;
+    public String getPerson_type() {
+        return person_type;
     }
 
-    public void setPrersone_type(String prersone_type) {
-        this.prersone_type = prersone_type;
+    public void setPerson_type(String person_type) {
+        this.person_type = person_type;
     }
 
     public Integer getValue() {

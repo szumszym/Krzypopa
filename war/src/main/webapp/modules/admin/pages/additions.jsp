@@ -21,53 +21,9 @@
 
             <div id="div-1a" class="accordion-body collapse in body">
 
-                <table id="dataTable"
+                <table id="additions-table"
                        class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-                    <thead>
-                    <tr>
-                        <th class="smalltable">#
-                            <i class="icon-sort"></i>
-                            <i class="icon-sort-down"></i>
-                            <i class="icon-sort-up"></i>
-                        </th>
-                        <th>Name
-                            <i class="icon-sort"></i>
-                            <i class="icon-sort-down"></i>
-                            <i class="icon-sort-up"></i>
-                        </th>
-                        <th>Description
-                            <i class="icon-sort"></i>
-                            <i class="icon-sort-down"></i>
-                            <i class="icon-sort-up"></i>
-                        </th>
 
-                        <th>Published
-                            <i class="icon-sort"></i>
-                            <i class="icon-sort-down"></i>
-                            <i class="icon-sort-up"></i>
-                        </th>
-                        <th class="smalltable"></th>
-                        <th class="smalltable"></th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr class="smalltable">
-                        <td>1</td>
-                        <td>Apartament dla dwojga</td>
-                        <td>2 Person</td>
-                        <td>YES</td>
-                        <td class="smalltable"><i class="fa fa-bitbucket"></i></td>
-                        <td class="smalltable"><i class="fa fa-edit"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Room for entire family</td>
-                        <td>4 Person</td>
-                        <td>NO</td>
-                        <td class="smalltable"><i class="fa fa-bitbucket"></i></td>
-                        <td class="smalltable"><i class="fa fa-edit"></i></td>
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -96,23 +52,23 @@
             <div id="div-2" class="accordion-body collapse in body">
 
                 <div id="div-1" class="accordion-body collapse in body">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" action="additions-add" id="additions-add">
 
                         <div class="form-group">
                             <label class="control-label col-lg-4">Name</label>
 
                             <div class="col-lg-8">
-                                <input type="text" id="first_name" placeholder="First Name"
+                                <input type="text" id="aa-name" name="name" placeholder="Name"
                                        class="validate[required] form-control">
                             </div>
                         </div>
                         <!-- /.form-group -->
 
                         <div class="form-group">
-                            <label for="description" class="control-label col-lg-4">Description</label>
+                            <label for="aa-description" class="control-label col-lg-4">Description</label>
 
                             <div class="col-lg-8">
-                                <textarea id="description" placeholder="Description"
+                                <textarea name="description" id="aa-description" placeholder="Description"
                                           class="validate[required] form-control"></textarea>
                             </div>
                         </div>
@@ -125,7 +81,7 @@
                             <div class="col-lg-8">
                                 <div class="checkbox">
                                     <label>
-                                        <input class="uniform" type="checkbox" value="option1" checked>Published
+                                        <input name="publish" class="uniform" type="checkbox" value="YES" checked>Published
                                     </label>
                                 </div>
                             </div>
@@ -136,7 +92,9 @@
 
                             <div class="col-lg-8">
                                 <div class="input-group">
-                                    <a href="#" class="btn btn-primary" data-original-title="" title="">Submit</a>
+                                    <input type="submit" name="submit"
+                                           onclick="ajaxSubmit('additions-add', 'server-messages'); return false;"
+                                           class="btn btn-primary" data-original-title="" title="" value="Add"/>
                                 </div>
                             </div>
                         </div>
@@ -150,3 +108,4 @@
 
 </div>
 <!--row End -->
+<script src="./assets/js/additions.js"></script>

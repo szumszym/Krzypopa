@@ -8,4 +8,6 @@ public interface UserDAO extends GenericDAO<User, Long> {
     public User getCurrentUser(String username);
 
 
+
+    public User getOwner(Long hotel_id);
 }

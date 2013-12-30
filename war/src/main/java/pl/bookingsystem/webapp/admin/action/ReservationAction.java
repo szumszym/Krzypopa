@@ -1,6 +1,7 @@
 package pl.bookingsystem.webapp.admin.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -21,7 +22,7 @@ import java.util.List;
 @ParentPackage("json-default")
 @Namespace("")
 public class ReservationAction extends ActionSupport {
-
+    private static final Logger log = Logger.getLogger(ReservationAction.class);
     private String[][] data;
 
     public String[][] getData() {
@@ -76,13 +77,6 @@ public class ReservationAction extends ActionSupport {
     }
 
 
-    public String jasonConvert(String serialize) {
-        String conv = "{\"" + serialize + "\"}";
-        conv = conv.replaceAll("=", "\":\"");
-        conv = conv.replaceAll("&", "\",\"");
-        System.out.println(conv);
-        return conv;
-    }
 
 
     @Action(value = "reservation-add", results = {

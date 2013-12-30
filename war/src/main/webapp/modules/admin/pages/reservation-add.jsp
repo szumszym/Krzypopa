@@ -121,7 +121,7 @@
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label class="control-label col-lg-4">City</label>
+    <label class="control-label col-lg-4">Street</label>
 
     <div class="col-lg-8">
         <input type="text" id="ra-street" name="street" placeholder="eg: Zakopiańska"

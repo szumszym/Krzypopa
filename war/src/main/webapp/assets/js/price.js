@@ -1,3 +1,9 @@
-/**
- * Created by Dwory on 25.12.13.
- */
+createTableWithDataFromDB('price-getData', 'price-table', {
+    columns: [
+        { "sTitle": "Id" },
+        { "sTitle": "Room type" },
+        { "sTitle": "Person type" },
+        { "sTitle": "Value" }
+
+    ]
+});

@@ -2,6 +2,8 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -19,20 +21,34 @@ public class Addition implements Serializable {
 
     @Column(name = "description")
     private String description;
+    /*
+        @Column(name = "price")
+        private Integer pirce;
 
-    @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    private Room room;
+        @Column(name = "publish")
+        private Boolean publish;
+    */
+
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "additions")
+    private Set<Room> rooms = new HashSet<Room>();
+
+    public void addRoom(Room room) {
+        room.getAdditions().add(this);
+        this.rooms.add(room);
+    }
 
     public Addition(String name, String description) {
         this.name = name;
         this.description = description;
+        //this.publish =true;
     }
 
-    public Addition(String name, String description, Room room) {
+
+    public Addition(String name, String description, Set<Room> room) {
         this.name = name;
         this.description = description;
-        this.room = room;
+        this.rooms = room;
     }
 
     public Addition() {
@@ -58,12 +74,23 @@ public class Addition implements Serializable {
         this.description = description;
     }
 
-    public Room getRoom() {
-        return room;
+    public Set<Room> getRooms() { return rooms; }
+
+    public void setRooms(Set<Room> rooms) { this.rooms = rooms; }
+
+/*
+    public Integer getPirce() { return pirce; }
+
+    public void setPirce(Integer pirce) { this.pirce = pirce; }
+
+
+    public Boolean getPublish() {
+        return publish;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setPublish(Boolean publish) {
+        this.publish = publish;
     }
+    */
 }
 

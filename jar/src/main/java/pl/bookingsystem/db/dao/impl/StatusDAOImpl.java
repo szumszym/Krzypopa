@@ -8,4 +8,5 @@ import pl.bookingsystem.db.entity.Status;
  * Date: 22.12.13 @ 17:03
  */
 public class StatusDAOImpl extends GenericDAOImpl<Status, Long> implements StatusDAO {
+
 }

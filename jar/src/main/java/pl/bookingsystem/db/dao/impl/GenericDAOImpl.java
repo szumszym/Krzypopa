@@ -19,7 +19,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
 
         session.beginTransaction();
 
-        session.saveOrUpdate(entity);
+        session.save(entity);
 
         session.getTransaction().commit();
 
@@ -42,6 +42,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         session.close();
         return entity;
     }
+
 
     @Override
     public void delete(T entity) {

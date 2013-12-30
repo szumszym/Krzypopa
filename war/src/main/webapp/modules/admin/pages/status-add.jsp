@@ -56,10 +56,10 @@
                     <form id="status-add" action="status-add" class="form-horizontal">
 
                         <div class="form-group">
-                            <label for="sa-name" class="control-label col-lg-4">Name</label>
+                            <label for="sa-type" class="control-label col-lg-4">Name</label>
 
                             <div class="col-lg-8">
-                                <input type="text" name="name" id="sa-name" placeholder="First Name"
+                                <input type="text" name="type" id="sa-type" placeholder="Type"
                                        class="validate[required] form-control">
                             </div>
                         </div>
@@ -84,13 +84,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="published" class="control-label col-lg-4"></label>
+                            <label for="sa-published" class="control-label col-lg-4"></label>
 
                             <div class="col-lg-8">
                                 <div class="checkbox">
                                     <label>
-                                        <input name="publish" id="published" class="uniform" type="checkbox"
-                                               value="option1" checked>Published
+                                        <input name="publish" id="sa-published" class="uniform" type="checkbox"
+                                               value="YES" checked>Published
                                     </label>
                                 </div>
                             </div>
