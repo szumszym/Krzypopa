@@ -58,7 +58,7 @@
                         <form class="form-horizontal" id="price-add" action="price-add">
 
                             <div class="form-group">
-                                <label class="control-label col-lg-4">Type</label>
+                                <label class="control-label col-lg-4">Room Type</label>
 
                                 <div class="col-lg-8">
                                     <input type="text" name="type" id="pa-type" placeholder="Type"
@@ -68,13 +68,13 @@
                             <!-- /.form-group -->
 
                             <div class="form-group">
-                                <label class="control-label col-lg-4">For</label>
+                                <label class="control-label col-lg-4">Person Type</label>
 
                                 <div class="col-lg-8">
                                     <select name="for" class="form-control">
-                                        <option>adult</option>
-                                        <option>kid</option>
-                                        <option>pet</option>
+                                        <option>Adult</option>
+                                        <option>Kid</option>
+                                        <option>Pet</option>
                                     </select>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                     <input name="value" type="text" class="form-control" id="cp1">
                                 </div>
                             </div>
-s
+
 
                             <div class="form-group">
                                 <label class="control-label col-lg-4">Add Addition</label>

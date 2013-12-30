@@ -59,7 +59,7 @@ public class ClientAction extends ActionSupport {
                 if(a.getApartment_no()!=null){
                     tableS[5] = String.valueOf(a.getStreet())+" "+String.valueOf(a.getBuilding_no())+"/"+String.valueOf(a.getApartment_no());
                 }else{
-                    tableS[5] = String.valueOf(a.getStreet())+String.valueOf(a.getBuilding_no());
+                    tableS[5] = String.valueOf(a.getStreet())+" "+String.valueOf(a.getBuilding_no());
                 }
                 tableS[6] = String.valueOf(a.getCountry());
 
@@ -152,14 +152,13 @@ public class ClientAction extends ActionSupport {
 
             Client client = new Client (first_name,last_name, pesel, email, phone_number, password, address, register_date);
 
-            if(((String) jsonObject.get("nip")).isEmpty()){
+            if (((String) jsonObject.get("nip")).isEmpty()) {
+                System.out.println("nip : NULL");
+            } else {
                 System.out.println("nip : Kurcze");
                 client.setNip(Long.parseLong((String) jsonObject.get(("nip"))));
 
-            }else{
-                System.out.println("nip : NULL");
             }
-
 
 
             ClientDAO clientManager = new ClientDAOImpl();

@@ -49,7 +49,7 @@ public class StatusAction extends ActionSupport {
             data = new String[size][];
             for (int j = 0; j < statuses.size(); j++) {
 
-                String[] tableS = new String[4];
+                String[] tableS = new String[5];
                 Status s = statuses.get(j);
                 tableS[0] = String.valueOf(s.getId());
                 tableS[1] = String.valueOf(s.getType());
@@ -91,8 +91,12 @@ public class StatusAction extends ActionSupport {
             String type = (String) jsonObject.get("type");
             String color = (String) jsonObject.get("color");
             String description = "EMPTY";
-            Boolean publish = Boolean.valueOf((String) jsonObject.get("publish"));
-
+            Boolean publish=true;
+            if (((String)jsonObject.get("publish")).isEmpty()){
+                publish = false;
+            }else{
+                publish = true;
+            }
             if (!(((String) jsonObject.get("description")).isEmpty())) {
                 description = (String) jsonObject.get("description");
             }

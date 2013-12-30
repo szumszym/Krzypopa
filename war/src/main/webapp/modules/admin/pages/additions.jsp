@@ -59,17 +59,17 @@
                             <label class="control-label col-lg-4">Name</label>
 
                             <div class="col-lg-8">
-                                <input type="text" id="first_name" placeholder="First Name"
+                                <input type="text" id="aa-name" name="name" placeholder="Name"
                                        class="validate[required] form-control">
                             </div>
                         </div>
                         <!-- /.form-group -->
 
                         <div class="form-group">
-                            <label for="description" class="control-label col-lg-4">Description</label>
+                            <label for="aa-description" class="control-label col-lg-4">Description</label>
 
                             <div class="col-lg-8">
-                                <textarea id="description" placeholder="Description"
+                                <textarea name="description" id="aa-description" placeholder="Description"
                                           class="validate[required] form-control"></textarea>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                             <div class="col-lg-8">
                                 <div class="checkbox">
                                     <label>
-                                        <input class="uniform" type="checkbox" value="option1" checked>Published
+                                        <input name="publish" class="uniform" type="checkbox" value="YES" checked>Published
                                     </label>
                                 </div>
                             </div>

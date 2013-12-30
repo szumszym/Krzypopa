@@ -93,8 +93,17 @@ public class AdditionAction extends ActionSupport{
             if(!(((String) jsonObject.get("description")).isEmpty())){
             description = (String) jsonObject.get("description");
             }
+
+            Boolean publish=true;
+            if (((String)jsonObject.get("publish")).isEmpty()){
+                publish = false;
+            }else{
+                publish = true;
+            }
+
             Addition addition= new Addition(name, description);
             //addition.setPrice(price);
+            //addition.setPublish(publish);
             additionManager.save(addition);
             return SUCCESS;
 

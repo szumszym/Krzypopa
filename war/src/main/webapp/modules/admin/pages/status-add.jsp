@@ -62,7 +62,7 @@
                             <label for="sa-type" class="control-label col-lg-4">Name</label>
 
                             <div class="col-lg-8">
-                                <input type="text" name="type" id="sa-type" placeholder="type"
+                                <input type="text" name="type" id="sa-type" placeholder="Type"
                                        class="validate[required] form-control">
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                 <div class="checkbox">
                                     <label>
                                         <input name="publish" id="sa-published" class="uniform" type="checkbox"
-                                               value="option1" checked>Published
+                                               value="YES" checked>Published
                                     </label>
                                 </div>
                             </div>
