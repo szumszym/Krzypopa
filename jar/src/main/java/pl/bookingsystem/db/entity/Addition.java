@@ -33,6 +33,10 @@ public class Addition implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "additions")
     private Set<Room> rooms = new HashSet<Room>();
 
+    public void addRoom(Room room) {
+        room.getAdditions().add(this);
+        this.rooms.add(room);
+    }
 
     public Addition(String name, String description) {
         this.name = name;
@@ -74,7 +78,6 @@ public class Addition implements Serializable {
 
     public void setRooms(Set<Room> rooms) { this.rooms = rooms; }
 
-    public void addRoom(Room room) { this.rooms.add(room); }
 /*
     public Integer getPirce() { return pirce; }
 

@@ -1,6 +1,7 @@
 package pl.bookingsystem.webapp.admin.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -30,6 +31,8 @@ import java.util.Iterator;
 @ParentPackage("json-default")
 @Namespace("")
 public class RoomAction extends ActionSupport {
+    private static final Logger log = Logger.getLogger(RoomAction.class);
+
     private String[][] data;
 
     public String[][] getData() {
@@ -104,14 +107,16 @@ public class RoomAction extends ActionSupport {
             Integer capacity = Integer.parseInt( (String) jsonObject.get("capacity"));
             JSONArray additions = (JSONArray) jsonObject.get("addition");
             Set<Addition> additionSet=new HashSet<Addition>();
-            List<Addition> additionList = new ArrayList<Addition>();
             List<String> addName =  new ArrayList<String>();
+            List<Addition> additionList;
             for (int i=0; i<additions.length(); i++) {
                     addName.add(additions.getString(i));
-                    System.out.println("Name: " + addName.get(i));
+                   log.error("Name: " + addName.get(i));
+
             }
 
             additionList = additionManager.getAdditionsBy(addName,"name");
+
             if (!additionList.isEmpty()){
             additionSet.addAll(additionList);}
 
@@ -125,7 +130,15 @@ public class RoomAction extends ActionSupport {
 
             RoomDAO roomManager = new RoomDAOImpl();
             Room room = new Room (roomno, room_name, "None", capacity,description, hotel, additionSet);
+            for (Addition addition : additionList) {
+                addition.addRoom(room);
+                additionManager.save(addition);
+            }
+
             roomManager.save(room);
+
+            hotel.addRoom(room);
+            hotelManager.save(hotel);
             return SUCCESS;
 
         } catch (Exception e) {

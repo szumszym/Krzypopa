@@ -101,7 +101,14 @@ public class
         this.description = description;
         this.hotel = hotel;
         this.additions = additions;
-        this.reservations = reservations;
+    }
+
+    public Room(Integer no_room, String name, String bed, Integer capacity, String description) {
+        this.no_room = no_room;
+        this.name = name;
+        this.bed = bed;
+        this.capacity = capacity;
+        this.description = description;
     }
 
     public Integer getNo_room() { return no_room; }

@@ -53,8 +53,8 @@ public class PriceAction extends ActionSupport {
                 String[] tableS = new String[4];
                 Price p = prices.get(j);
                 tableS[0] = String.valueOf(p.getId());
-                tableS[1] = String.valueOf(p.getRoomt_type());
-                tableS[2] = String.valueOf(p.getPrersone_type());
+                tableS[1] = String.valueOf(p.getRoom_type());
+                tableS[2] = String.valueOf(p.getPerson_type());
                 tableS[3] = String.valueOf(p.getValue());
 
                 data[j] = tableS;
