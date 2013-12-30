@@ -7,8 +7,10 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.json.JSONObject;
+import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.dao.StatusDAO;
+import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
 import pl.bookingsystem.db.entity.Client;
@@ -93,7 +95,8 @@ public class ReservationAction extends ActionSupport {
             Date date_from = simpleDateFormat.parse((String) jsonObject.get("date_from"));
             Date date_to = simpleDateFormat.parse((String) jsonObject.get("date_to"));
             Integer person_count = Integer.parseInt((String) jsonObject.get("person_count"));
-            Client client = null;
+            ClientDAO clientManager = new ClientDAOImpl();
+            Client client = clientManager.selectByID(Client.class, 1L); //TODO: AAAAAAAAAAAAAAAAA!
             Long statusId = Long.parseLong((String) jsonObject.get("status_id"));
 
             StatusDAO statusManager = new StatusDAOImpl();

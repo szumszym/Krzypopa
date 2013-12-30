@@ -122,8 +122,8 @@ public class HotelAction extends ActionSupport {
            // User user = userManager.getCurrentUser((String) jsonObject.get("owner"));
 
             Address address = new Address (city, street, building_no, postcode, country);
-            User user = new User("TEmp", "Hebel", 80030801234L, "b@b.pl", "888011166", "user", User.Type.OWNER, new Address("Wroclaw", "Wroclawska", 7, 2, "32-234", "Polska"));
 
+            User user = userManager.selectByID(User.class, 12L);      //TODO: AAAAAAAAAAAA!
 
             Hotel hotel = new Hotel (name, description, phone_number, email, address,user);
 
