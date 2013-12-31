@@ -129,6 +129,10 @@ function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectPar
                     $selectElem.children().remove();
                 }
                 $selectElem.append(HTMLtemplate);
+                if (selectParams.multiSelect) {
+                    $selectElem.attr('multiple', '')
+                }
+                $selectElem.chosen();
             } else {
                 $selectElem.html("Server ERROR!");
                 console.log("Error: ", data);
@@ -192,21 +196,21 @@ jQuery.fn.formToJSON = function () {
             objectGraph[name[0]] = value;
         }
         else {
-                //else we've still got more than a single element of depth
+            //else we've still got more than a single element of depth
             if (objectGraph[name[0]] == null) {
                 //create the node if it doesn't yet exist
                 objectGraph[name[0]] = {};
             }
             //recurse, chopping off the first array element
-                add(objectGraph[name[0]], name.slice(1), value);
-            }
+            add(objectGraph[name[0]], name.slice(1), value);
+        }
     };
 
     //loop through all of the input/textarea elements of the form
     //this.find('input, textarea').each(function() {
     $(this).find('input, textarea, select').each(function () {
         //ignore the submit button
-        if ($(this).attr('name') != 'submit') {
+        if ($(this).attr('name') != undefined && $(this).attr('name') != 'submit') {
             //split the dot notated names into arrays and pass along with the value
             that.add(objectGraph, $(this).attr('name').split('.'), $(this).val());
         }

@@ -1,14 +1,12 @@
 createTableWithDataFromDB('room-getData', 'room-table', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
-        { "sTitle": "RoomNo." },
+        { "sTitle": "Room No" },
         { "sTitle": "Name" },
         { "sTitle": "Bed" },
-        { "sTitle": "Capacity" },
         { "sTitle": "Additions" },
-        { "sTitle": "Description" },
-        { "sTitle": "" },
-        { "sTitle": "" },
-        { "sTitle": "" }
-    ]
+        { "sTitle": "Desc" }
+    ],
+    infoColumn: 7,
+    deleteColumn: 8
 });

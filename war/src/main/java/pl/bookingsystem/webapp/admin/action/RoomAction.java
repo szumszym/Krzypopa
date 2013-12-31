@@ -59,7 +59,7 @@ public class RoomAction extends ActionSupport {
         try {
             RoomDAO roomManager = new RoomDAOImpl();
             List<Room> rooms = roomManager.selectAll(Room.class);
-
+            //TODO: select hotel first????
 
             int size = rooms.size();
             data = new String[size][];
@@ -71,12 +71,7 @@ public class RoomAction extends ActionSupport {
                 reservation[2] = String.valueOf(r.getName());
                 reservation[3] = "BED";
                 reservation[4] = String.valueOf(r.getAdditions(3));
-                //reservation[4] = "Additions";
                 reservation[5] = String.valueOf(r.getDescription());
-                reservation[6] = String.valueOf(r.getDescription());
-                reservation[7] = "I";
-                reservation[8] = "E";
-                reservation[9] = "D";
 
                 data[j] = reservation;
             }
@@ -98,38 +93,39 @@ public class RoomAction extends ActionSupport {
     public String roomnAdd() {
         try {
             System.out.println(dataFrom);
-            AdditionDAO additionManager =new AdditionDAOImpl();
+            AdditionDAO additionManager = new AdditionDAOImpl();
 
             JSONObject jsonObject = new JSONObject(dataFrom);
             String room_name = (String) jsonObject.get("room_name");
-            Integer roomno = Integer.parseInt( (String) jsonObject.get("roomno"));
+            Integer roomno = Integer.parseInt((String) jsonObject.get("roomno"));
             String description = (String) jsonObject.get("description");
-            Integer capacity = Integer.parseInt( (String) jsonObject.get("capacity"));
+            Integer capacity = Integer.parseInt((String) jsonObject.get("capacity"));
             JSONArray additions = (JSONArray) jsonObject.get("addition");
-            Set<Addition> additionSet=new HashSet<Addition>();
-            List<String> addName =  new ArrayList<String>();
+            Set<Addition> additionSet = new HashSet<Addition>();
+            List<String> addName = new ArrayList<String>();
             List<Addition> additionList;
-            for (int i=0; i<additions.length(); i++) {
-                    addName.add(additions.getString(i));
-                   log.error("Name: " + addName.get(i));
+            for (int i = 0; i < additions.length(); i++) {
+                addName.add(additions.getString(i));
+                log.error("Name: " + addName.get(i));
 
             }
 
-            additionList = additionManager.getAdditionsBy(addName,"name");
+            additionList = additionManager.getAdditionsBy(addName, "name");
 
-            if (!additionList.isEmpty()){
-            additionSet.addAll(additionList);}
+            if (!additionList.isEmpty()) {
+                additionSet.addAll(additionList);
+            }
 
-            for (int i=0; i<additionList.size(); i++) {
+            for (int i = 0; i < additionList.size(); i++) {
                 System.out.printf("[%d] addition: %s", i, additionList.get(i));
             }
 
-            Long hotel_id =  Long.parseLong((String) jsonObject.get("hotel"));
+            Long hotel_id = Long.parseLong((String) jsonObject.get("hotel"));
             HotelDAO hotelManager = new HotelDAOImpl();
             Hotel hotel = hotelManager.selectByID(Hotel.class, hotel_id);
 
             RoomDAO roomManager = new RoomDAOImpl();
-            Room room = new Room (roomno, room_name, "None", capacity,description, hotel, additionSet);
+            Room room = new Room(roomno, room_name, "None", capacity, description, hotel, additionSet);
             for (Addition addition : additionList) {
                 addition.addRoom(room);
                 additionManager.save(addition);

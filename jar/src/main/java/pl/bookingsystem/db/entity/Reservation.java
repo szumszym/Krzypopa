@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -46,8 +47,8 @@ public class Reservation implements Serializable {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "room_reservation",
-            joinColumns = {@JoinColumn(name = "room_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "reservation_id")})
+            joinColumns = {@JoinColumn(name = "reservation_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "room_id")})
     private Set<Room> rooms = new HashSet<Room>();
 
     public Reservation() {
@@ -62,6 +63,15 @@ public class Reservation implements Serializable {
         this.status = status;
     }
 
+    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Client client, Status status, List<Room> rooms) {
+        this.name = name;
+        this.date_from = date_from;
+        this.date_to = date_to;
+        this.person_count = person_count;
+        this.client = client;
+        this.status = status;
+        this.rooms.addAll(rooms);
+    }
 
     public Long getId() {
         return id;

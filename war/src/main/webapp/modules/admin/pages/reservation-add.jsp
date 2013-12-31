@@ -523,11 +523,21 @@
                         </div>
                     </div>
                     <!-- /.form-group -->
+
                     <div class="form-group">
                         <label class="control-label col-lg-4">Client</label>
 
                         <div class="col-lg-8">
                             <select id="reservation-client-select" name="client_id" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-lg-4">Rooms</label>
+
+                        <div class="col-lg-8">
+                            <select id="reservation-room-select" data-placeholder="Choose rooms..." name="room_ids"
+                                    class="form-control" tabindex="2">
                             </select>
                         </div>
                     </div>
@@ -588,47 +598,8 @@
             </header>
 
             <div id="sortableTable2" class="body collapse in">
-                <table id="dataTable2"
+                <table id="room-table-small"
                        class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-                    <thead>
-                    <tr>
-                        <th class="smalltable">#
-                            <i class="icon-sort"></i>
-                            <i class="icon-sort-down"></i>
-                            <i class="icon-sort-up"></i>
-                        </th>
-                        <th>Name
-                            <i class="icon-sort"></i>
-                            <i class="icon-sort-down"></i>
-                            <i class="icon-sort-up"></i>
-                        </th>
-                        <th>Capacity
-                            <i class="icon-sort"></i>
-                            <i class="icon-sort-down"></i>
-                            <i class="icon-sort-up"></i>
-                        </th>
-                        <th class="smalltable"></th>
-                        <th class="smalltable"></th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr class="smalltable">
-                        <td>1</td>
-                        <td>Apartament dla dwojga</td>
-                        <td>2 Person</td>
-                        <td class="smalltable"><i class="fa fa-plus"></i></td>
-                        <td class="smalltable"><i class="fa fa-info"></i></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Room for entire family</td>
-                        <td>4 Person</td>
-                        <td class="smalltable"><i class="fa fa-plus"></i></td>
-                        <td class="smalltable"><i class="fa fa-info"></i></td>
-                        <td class="smalltable"><i class="fa fa-trash-o"></i></td>
-                    </tr>
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -637,3 +608,6 @@
 </div>
 
 <script src="./assets/js/reservation-add.js"></script>
+<script>
+    $(".chzn-select").chosen();
+</script>

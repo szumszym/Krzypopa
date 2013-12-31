@@ -6,18 +6,23 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.ReservationDAO;
+import pl.bookingsystem.db.dao.RoomDAO;
 import pl.bookingsystem.db.dao.StatusDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
+import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
 import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Reservation;
+import pl.bookingsystem.db.entity.Room;
 import pl.bookingsystem.db.entity.Status;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -98,13 +103,23 @@ public class ReservationAction extends ActionSupport {
             Long clientId = Long.parseLong((String) jsonObject.get("client_id"));
             Long statusId = Long.parseLong((String) jsonObject.get("status_id"));
 
+            RoomDAO roomManager = new RoomDAOImpl();
+            Room room;
+            List<Room> roomList = new ArrayList<Room>();
+            JSONArray roomIds = jsonObject.getJSONArray("room_ids");
+            for (int i = 0; i < roomIds.length(); i++) {
+                Long id = Long.valueOf((String) roomIds.get(i));
+                room = roomManager.selectByID(Room.class, id);
+                roomList.add(room);
+            }
+
             StatusDAO statusManager = new StatusDAOImpl();
             Status status = statusManager.selectByID(Status.class, statusId);
 
             ClientDAO clientManager = new ClientDAOImpl();
             Client client = clientManager.selectByID(Client.class, clientId);
 
-            Reservation reservation = new Reservation(name, date_from, date_to, person_count, client, status);
+            Reservation reservation = new Reservation(name, date_from, date_to, person_count, client, status, roomList);
             ReservationDAO reservationManager = new ReservationDAOImpl();
             reservationManager.save(reservation);
             return SUCCESS;
