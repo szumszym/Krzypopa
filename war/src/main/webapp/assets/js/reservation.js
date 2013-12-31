@@ -6,7 +6,10 @@ createTableWithDataFromDB('reservation-getData', 'reservation-table', {
         { "sTitle": "To Date" },
         { "sTitle": "Count of person" },
         { "sTitle": "Status" },
-        { "sTitle": "Update Date" }
-    ]
+        { "sTitle": "Entry Date" },
+        { "sTitle": "Update Date", sDefaultContent: "-"}
+    ],
+    infoColumn: 9,
+    editColumn: 10,
+    deleteColumn: 11
 });
-

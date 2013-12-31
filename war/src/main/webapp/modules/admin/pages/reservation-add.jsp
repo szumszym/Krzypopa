@@ -523,16 +523,20 @@
                         </div>
                     </div>
                     <!-- /.form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-lg-4">Client</label>
+
+                        <div class="col-lg-8">
+                            <select id="reservation-client-select" name="client_id" class="form-control">
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-lg-4">Status</label>
 
                         <div class="col-lg-8">
-                            <select name="status_id" class="form-control">
-                                <option value="1" selected="selected">Oczekuje</option>
-                                <option value="2">Potwierdzono</option>
-                                <option value="3">Zaplacono</option>
-                                <option value="4">Anulowano</option>
+                            <select id="reservation-status-select" name="status_id" class="form-control">
                             </select>
                         </div>
                     </div>
@@ -622,6 +626,7 @@
                         <td>4 Person</td>
                         <td class="smalltable"><i class="fa fa-plus"></i></td>
                         <td class="smalltable"><i class="fa fa-info"></i></td>
+                        <td class="smalltable"><i class="fa fa-trash-o"></i></td>
                     </tr>
                     </tbody>
                 </table>
@@ -630,6 +635,5 @@
     </div>
 
 </div>
-<!--row End -->
 
-<script src="./assets/js/client.js"></script>
+<script src="./assets/js/reservation-add.js"></script>

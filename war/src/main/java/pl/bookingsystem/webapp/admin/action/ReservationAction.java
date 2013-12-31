@@ -56,7 +56,7 @@ public class ReservationAction extends ActionSupport {
             int size = reservations.size();
             data = new String[size][];
             for (int j = 0; j < reservations.size(); j++) {
-                String[] reservation = new String[7];
+                String[] reservation = new String[8];
                 Reservation r = reservations.get(j);
                 reservation[0] = String.valueOf(r.getId());
                 reservation[1] = String.valueOf(r.getName());
@@ -64,7 +64,8 @@ public class ReservationAction extends ActionSupport {
                 reservation[3] = String.valueOf(r.getDate_to());
                 reservation[4] = String.valueOf(r.getPerson_count());
                 reservation[5] = String.valueOf(r.getStatus());
-                reservation[6] = String.valueOf(r.getUpdate_date());
+                reservation[6] = String.valueOf(r.getEntry_date());
+                reservation[7] = String.valueOf(r.getUpdate_date());
 
                 data[j] = reservation;
             }
@@ -77,8 +78,6 @@ public class ReservationAction extends ActionSupport {
         }
 
     }
-
-
 
 
     @Action(value = "reservation-add", results = {
@@ -95,12 +94,15 @@ public class ReservationAction extends ActionSupport {
             Date date_from = simpleDateFormat.parse((String) jsonObject.get("date_from"));
             Date date_to = simpleDateFormat.parse((String) jsonObject.get("date_to"));
             Integer person_count = Integer.parseInt((String) jsonObject.get("person_count"));
-            ClientDAO clientManager = new ClientDAOImpl();
-            Client client = clientManager.selectByID(Client.class, 1L); //TODO: AAAAAAAAAAAAAAAAA!
+
+            Long clientId = Long.parseLong((String) jsonObject.get("client_id"));
             Long statusId = Long.parseLong((String) jsonObject.get("status_id"));
 
             StatusDAO statusManager = new StatusDAOImpl();
             Status status = statusManager.selectByID(Status.class, statusId);
+
+            ClientDAO clientManager = new ClientDAOImpl();
+            Client client = clientManager.selectByID(Client.class, clientId);
 
             Reservation reservation = new Reservation(name, date_from, date_to, person_count, client, status);
             ReservationDAO reservationManager = new ReservationDAOImpl();
@@ -114,7 +116,6 @@ public class ReservationAction extends ActionSupport {
         }
 
     }
-
 
 
 }

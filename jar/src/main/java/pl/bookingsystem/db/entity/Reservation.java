@@ -30,6 +30,9 @@ public class Reservation implements Serializable {
     @Column(name = "person_count")
     private Integer person_count;
 
+    @Column(name = "entry_date")
+    private Date entry_date;
+
     @Column(name = "update_date")
     private Date update_date;
 
@@ -98,6 +101,14 @@ public class Reservation implements Serializable {
 
     public void setPerson_count(Integer person_count) {
         this.person_count = person_count;
+    }
+
+    public Date getEntry_date() {
+        return entry_date;
+    }
+
+    public void setEntry_date(Date entry_date) {
+        this.entry_date = entry_date;
     }
 
     public Date getUpdate_date() {
