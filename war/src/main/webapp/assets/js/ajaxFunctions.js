@@ -219,3 +219,51 @@ jQuery.fn.formToJSON = function () {
 
 };
 
+function bindSelectTable(selectId, tableId) {
+    setTimeout(function () { //because of getting content of table by ajax
+        var $tableElem = $('#' + tableId);
+        var $selectElem = $("#" + selectId);
+        var $tableRows = $tableElem.find('tr');
+
+        //from select to table
+        $selectElem.chosen().change(function () {
+            var selectIndexes = $(this).val();
+
+            $tableRows.each(function (index) {
+                var $this = $(this);
+                if (jQuery.inArray('' + index, selectIndexes) > -1) {
+                    $this.addClass('row-selected');
+                } else {
+                    $this.removeClass('row-selected');
+                }
+            })
+
+        });
+
+        //from table to select
+        $tableRows.click(function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('row-selected')) {
+                $this.addClass('row-selected');
+            } else {
+                $this.removeClass('row-selected');
+            }
+
+            var indexes = [];
+            $tableRows.each(function (index) {
+                if ($(this).hasClass('row-selected')) {
+                    indexes.push(index);
+                } else {
+                    var position = jQuery.inArray(index, indexes);
+                    if (~position) indexes.splice(position, 1);
+                }
+
+            });
+
+            $selectElem.chosen().val(indexes);
+            $selectElem.trigger("chosen:updated");
+        });
+
+    }, 1000);
+}
+

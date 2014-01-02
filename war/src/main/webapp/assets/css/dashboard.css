@@ -5,3 +5,11 @@
     width: 100%;
     position: fixed;
 }
+
+.row-selected {
+    background: #428bca;
+}
+
+.table-striped > tbody > tr:nth-child(odd).row-selected > td {
+    background-color: #357ebd;
+}
