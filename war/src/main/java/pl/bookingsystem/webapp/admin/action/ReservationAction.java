@@ -132,6 +132,27 @@ public class ReservationAction extends ActionSupport {
 
     }
 
+    @Action(value = "reservation-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String delate() {
+        try {
+
+            ReservationDAO reservationManager = new ReservationDAOImpl();
+            List<Reservation> reservations = reservationManager.selectAll(Reservation.class);
+
+
+
+            return SUCCESS;
+
+        } catch (Exception e) {
+
+            return ERROR;
+        }
+
+    }
+
 
 }
 
