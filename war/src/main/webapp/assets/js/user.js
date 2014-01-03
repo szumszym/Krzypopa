@@ -1,4 +1,4 @@
-createTableWithDataFromDB('user-getData', 'user-table', {
+createTableWithDataFromDB({get: 'user-getData'}, 'user-table', {
     aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },

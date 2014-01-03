@@ -1,5 +1,6 @@
 package pl.bookingsystem.common;
 
+import org.hibernate.Hibernate;
 import pl.bookingsystem.db.dao.*;
 import pl.bookingsystem.db.dao.impl.*;
 import pl.bookingsystem.db.entity.*;
@@ -98,5 +99,14 @@ public class AddToDB {
         statusManager.save(paid);
         Status canceled = new Status("Anulowano", "Rezerwacja do usunięcia");
         statusManager.save(canceled);
+    }
+
+    public static void getHotelsRooms(Long hotelId) {
+
+        HotelDAO hotelManager = new HotelDAOImpl();
+        List<Room> rooms = hotelManager.getRooms(hotelId);
+        for (Room room : rooms) {
+            System.out.println(room.getId() + " " + room.getName());
+        }
     }
 }

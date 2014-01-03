@@ -43,6 +43,17 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         return entity;
     }
 
+    @Override
+    public void deleteByID(Class clazz, ID id) {
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+        Session session = sf.openSession();
+        Transaction tx = session.beginTransaction();
+
+        T t = (T) session.get(clazz, id);
+        session.delete(t);
+        tx.commit();
+        session.close();
+    }
 
     @Override
     public void delete(T entity) {

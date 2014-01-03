@@ -10,7 +10,7 @@ createTableWithDataFromDB('client-getData', 'client-table', {
     ]
 });
 
-createTableWithDataFromDB('client-getData-small', 'client-table-small', {
+createTableWithDataFromDB({get: 'client-getData-small'}, 'client-table-small', {
     aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },

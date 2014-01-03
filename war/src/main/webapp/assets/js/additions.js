@@ -1,8 +1,8 @@
-createTableWithDataFromDB('additions-getData', 'additions-table', {
+createTableWithDataFromDB({get: 'additions-getData'}, 'additions-table', {
     columns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
-       // { "sTitle": "Price" },
+        // { "sTitle": "Price" },
         { "sTitle": "Description" },
         { "sTitle": "Published" }
 

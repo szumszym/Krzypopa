@@ -20,11 +20,11 @@ function ajaxDefaultIncudeOnStart() {
 }
 
 
-function createTableWithDataFromDB(ajaxAction, tableContainerId, tableParams) {
+function createTableWithDataFromDB(ajaxActions, tableContainerId, tableParams) {
     var dataTableParams = [];
     $.ajax({
         type: 'POST',
-        url: ajaxAction,
+        url: ajaxActions.get,
         success: function (data) {
             var aaData = eval(data).data;
             if (aaData != undefined && aaData[0] != undefined && aaData[0][0] != "ERROR!!!") {
@@ -53,7 +53,7 @@ function createTableWithDataFromDB(ajaxAction, tableContainerId, tableParams) {
                     dataTableParams.infoColumn = null;
                 }
 
-                if (dataTableParams.editColumn != undefined) {
+                if (dataTableParams.editColumn != undefined && ajaxActions.edit != undefined) {
                     var columnNo = dataTableParams.editColumn;
 
                     dataTableParams.aoColumnDefs.push(
@@ -61,14 +61,14 @@ function createTableWithDataFromDB(ajaxAction, tableContainerId, tableParams) {
                             aTargets: [columnNo - 1],
                             mData: null,
                             mRender: function (data, type, full) {
-                                return '<a href="#" onclick="alert(\'' + full[0] + ' ' + full[1] + '\');"><i class="fa fa-edit"></i></a>';
+                                return '<a href="#" onclick="editRow(this, \'' + ajaxActions.edit + '\');"><i class="fa fa-edit"></i></a>';
                             }
                         }
                     );
                     dataTableParams.editColumn = null;
                 }
 
-                if (dataTableParams.deleteColumn != undefined) {
+                if (dataTableParams.deleteColumn != undefined && ajaxActions.delete != undefined) {
                     var columnNo = dataTableParams.deleteColumn;
 
                     dataTableParams.aoColumnDefs.push(
@@ -76,7 +76,7 @@ function createTableWithDataFromDB(ajaxAction, tableContainerId, tableParams) {
                             aTargets: [columnNo - 1],
                             mData: null,
                             mRender: function (data, type, full) {
-                                return '<a href="#" onclick="alert(\'' + full[0] + ' ' + full[1] + '\');"><i class="fa fa-trash-o"></i></a>';
+                                return '<a href="#" onclick="deleteRow(this, \'' + ajaxActions.delete + '\');"><i class="fa fa-trash-o"></i></a>';
                             }
                         }
                     );
@@ -102,6 +102,29 @@ function createTableWithDataFromDB(ajaxAction, tableContainerId, tableParams) {
 
 }
 
+
+function deleteRow(that, action) {
+    if (confirm("Are you sure?")) {
+        var $this = $(that);
+        var $thisRow = $this.parents('tr');
+        var index = $thisRow.find('td:first').text();
+        var table = $this.parents('table').dataTable();
+
+        $.ajax({
+            type: 'POST',
+            url: action,
+            data: {dataFrom: "{'index':'" + index + "'}"},
+            success: function (msg) {
+                console.log(action, msg);
+                if (msg.data == "success") {
+                    table.fnDeleteRow($thisRow[0]);
+                } else {
+                    window.alert("Error occured during executing " + action + " action!\n" + msg.data);
+                }
+            }
+        });
+    }
+}
 
 function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectParams) {
     var params = selectParams;
@@ -219,8 +242,10 @@ jQuery.fn.formToJSON = function () {
 
 };
 
-function bindSelectTable(selectId, tableId) {
+function bindSelectTable(selectId, tableId, multiselectOpt) {
     setTimeout(function () { //because of getting content of table by ajax
+        var multisectable = multiselectOpt || false;
+
         var $tableElem = $('#' + tableId);
         var $selectElem = $("#" + selectId);
         var $tableRows = $tableElem.find('tr');
@@ -243,10 +268,17 @@ function bindSelectTable(selectId, tableId) {
         //from table to select
         $tableRows.click(function (e) {
             var $this = $(this);
-            if (!$this.hasClass('row-selected')) {
-                $this.addClass('row-selected');
-            } else {
-                $this.removeClass('row-selected');
+            if (multisectable) {  //multi select
+                if (!$this.hasClass('row-selected')) {
+                    $this.addClass('row-selected');
+                } else {
+                    $this.removeClass('row-selected');
+                }
+            } else {   //single select
+                if (!$this.hasClass('row-selected')) {
+                    $tableRows.removeClass('row-selected');
+                    $this.addClass('row-selected');
+                }
             }
 
             var indexes = [];

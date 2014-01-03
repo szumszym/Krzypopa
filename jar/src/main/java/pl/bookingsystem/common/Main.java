@@ -8,7 +8,9 @@ public class Main {
         //AddToDB.addStatuses();   //jednorazowo
         //  AddToDB.addUser();
         // AddToDB.addHotel();
-        AddToDB.addReservation();
+        //AddToDB.addReservation();
+
+        // AddToDB.getHotelsRooms(1L);
 
         System.exit(0);
     }
