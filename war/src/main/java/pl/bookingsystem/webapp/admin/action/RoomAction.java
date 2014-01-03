@@ -6,9 +6,6 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-
-import java.util.*;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.AdditionDAO;
@@ -21,7 +18,10 @@ import pl.bookingsystem.db.entity.Addition;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Author: thx-
@@ -57,9 +57,12 @@ public class RoomAction extends ActionSupport {
     })
     public String dataFromDB() {
         try {
+          /*  HotelDAO hotelManager = new HotelDAOImpl();
+            List<Room> rooms = hotelManager.getRooms(hotelID); //TODO: hotelId saved in session??
+            */
+
             RoomDAO roomManager = new RoomDAOImpl();
             List<Room> rooms = roomManager.selectAll(Room.class);
-            //TODO: select hotel first????
 
             int size = rooms.size();
             data = new String[size][];
@@ -90,9 +93,8 @@ public class RoomAction extends ActionSupport {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
-    public String roomnAdd() {
+    public String roomAdd() {
         try {
-            System.out.println(dataFrom);
             AdditionDAO additionManager = new AdditionDAOImpl();
 
             JSONObject jsonObject = new JSONObject(dataFrom);
@@ -140,6 +142,32 @@ public class RoomAction extends ActionSupport {
         } catch (Exception e) {
 
             //  message = new ByteArrayInputStream("Data hasn't been saved".getBytes());
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "room-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String roomDelete() {
+        try {
+            JSONObject jsonObject = new JSONObject(dataFrom);
+            Long index = Long.parseLong((String) jsonObject.get("index"));
+
+            RoomDAO roomManager = new RoomDAOImpl();
+            Room room = roomManager.selectByID(Room.class, index);
+            if (room == null) {
+                data = new String[][]{new String[]{"Room with index:" + index + " not found in DB!"}};
+                return ERROR;
+            }
+            roomManager.delete(room);    //TODO: nie działa! usuwa wszystkich userów i roomy ?o.O
+            data = new String[][]{new String[]{SUCCESS}};
+            return SUCCESS;
+
+        } catch (Exception e) {
+            data = new String[][]{new String[]{e.getMessage()}};
             return ERROR;
         }
 
