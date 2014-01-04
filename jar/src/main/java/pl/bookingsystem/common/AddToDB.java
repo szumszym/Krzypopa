@@ -1,6 +1,5 @@
 package pl.bookingsystem.common;
 
-import org.hibernate.Hibernate;
 import pl.bookingsystem.db.dao.*;
 import pl.bookingsystem.db.dao.impl.*;
 import pl.bookingsystem.db.entity.*;
@@ -108,5 +107,20 @@ public class AddToDB {
         for (Room room : rooms) {
             System.out.println(room.getId() + " " + room.getName());
         }
+    }
+
+    public static void deleteRoomByID(String table, Long id) {
+        RoomDAO roomManager = new RoomDAOImpl();
+        roomManager.deleteByID(table, id);
+    }
+
+    public static void deleteRoom() {  //TODO: not working!!!
+        HotelDAO hotelManager = new HotelDAOImpl();
+        Hotel hotel = hotelManager.selectByID(Hotel.class, 3L);
+        List<Room> rooms = hotelManager.getRooms(hotel.getId());
+
+        Room room = rooms.get(1);
+        RoomDAO roomDAO = new RoomDAOImpl();
+        roomDAO.delete(room);
     }
 }

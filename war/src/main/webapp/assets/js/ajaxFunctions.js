@@ -117,6 +117,8 @@ function deleteRow(that, action) {
             success: function (msg) {
                 console.log(action, msg);
                 if (msg.data == "success") {
+                    $thisRow.trigger("rowclick");
+                    $thisRow.removeClass('row-selected');
                     table.fnDeleteRow($thisRow[0]);
                 } else {
                     window.alert("Error occured during executing " + action + " action!\n" + msg.data);
@@ -248,14 +250,15 @@ function bindSelectTable(selectId, tableId, multiselectOpt) {
 
         var $tableElem = $('#' + tableId);
         var $selectElem = $("#" + selectId);
-        var $tableRows = $tableElem.find('tr');
+        var $tableRows = $tableElem.find('tbody tr');
 
         //from select to table
         $selectElem.chosen().change(function () {
             var selectIndexes = $(this).val();
 
-            $tableRows.each(function (index) {
+            $tableRows.each(function () {
                 var $this = $(this);
+                var index = $this.find('td:first').text();
                 if (jQuery.inArray('' + index, selectIndexes) > -1) {
                     $this.addClass('row-selected');
                 } else {
@@ -266,7 +269,7 @@ function bindSelectTable(selectId, tableId, multiselectOpt) {
         });
 
         //from table to select
-        $tableRows.click(function (e) {
+        $tableRows.on('click rowclick', function (e) {
             var $this = $(this);
             if (multisectable) {  //multi select
                 if (!$this.hasClass('row-selected')) {
@@ -282,7 +285,8 @@ function bindSelectTable(selectId, tableId, multiselectOpt) {
             }
 
             var indexes = [];
-            $tableRows.each(function (index) {
+            $tableRows.each(function () {
+                var index = $(this).find('td:first').text();
                 if ($(this).hasClass('row-selected')) {
                     indexes.push(index);
                 } else {

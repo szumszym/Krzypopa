@@ -157,12 +157,12 @@ public class RoomAction extends ActionSupport {
             Long index = Long.parseLong((String) jsonObject.get("index"));
 
             RoomDAO roomManager = new RoomDAOImpl();
-            Room room = roomManager.selectByID(Room.class, index);
+            /*Room room = roomManager.selectByID(Room.class, index);
             if (room == null) {
                 data = new String[][]{new String[]{"Room with index:" + index + " not found in DB!"}};
                 return ERROR;
-            }
-            roomManager.delete(room);    //TODO: nie działa! usuwa wszystkich userów i roomy ?o.O
+            }*/
+            roomManager.deleteByID("Room", index);
             data = new String[][]{new String[]{SUCCESS}};
             return SUCCESS;
 
