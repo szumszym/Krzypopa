@@ -2,6 +2,7 @@ jQuery(function () {
     ajaxInclude();
     ajaxDefaultIncudeOnStart();
 });
+
 function ajaxInclude() {
     var menuSelectors = '#menu, #top-menu';
     jQuery(menuSelectors).on('click', 'a[data-url]', function () {
@@ -20,7 +21,11 @@ function ajaxDefaultIncudeOnStart() {
 }
 
 
-function createTableWithDataFromDB(ajaxActions, tableContainerId, tableParams) {
+function createTableWithDataFromDB(params) {
+    var ajaxActions = params.actions;
+    var tableContainerId = params.table.id;
+    var tableParams = params.table.params;
+
     var dataTableParams = [];
     $.ajax({
         type: 'POST',
@@ -170,80 +175,6 @@ function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectPar
 
 }
 
-
-function ajaxSubmit(formId, resultContainerId) {
-    var $form = jQuery('#' + formId);
-    var send = $form.formToJSON();
-    var formAction = $form.attr('action');
-    var dataFromForm = {dataFrom: send};
-    var $resultContainer = jQuery('#' + resultContainerId);
-    jQuery.ajax({
-        url: formAction,
-        type: 'POST',
-        data: dataFromForm,
-        dataType: "json",
-        error: function () {
-            $resultContainer.html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Wystąpił bład podczas zapisu do bazy danych!</div>").delay(1000).hide();
-            setTimeout(function () {
-                $resultContainer.hide()
-            }, 1000);
-        },
-        success: function () {
-            $resultContainer.html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> Operacja przbiegla pomyślnie</div>").delay(1000).hide();
-            setTimeout(function () {
-                $resultContainer.hide()
-            }, 1000);
-        }
-    });
-    return false;
-}
-
-/**
- * Generates json from html form elements - nested properties supported.
- *
- * <input type="text" name="foo.bar.bar"/>
- * <input type="text" name="foo.barfoo"/>
- * <input type="text" name="bar.bar.foo"/>
- * <input type="text" name="foo.bar.foo"/>
- *
- * returns:
- *{foo: {bar: {bar: '', foo: ''}, barfoo: '' }, bar: {bar: {foo: ''}}}
- *
- * @returns json
- */
-jQuery.fn.formToJSON = function () {
-    var objectGraph = {};
-    var that = {};
-
-    that.add = function (objectGraph, name, value) {
-        if (name.length == 1) {
-            //if the array is now one element long, we're done
-            objectGraph[name[0]] = value;
-        }
-        else {
-            //else we've still got more than a single element of depth
-            if (objectGraph[name[0]] == null) {
-                //create the node if it doesn't yet exist
-                objectGraph[name[0]] = {};
-            }
-            //recurse, chopping off the first array element
-            add(objectGraph[name[0]], name.slice(1), value);
-        }
-    };
-
-    //loop through all of the input/textarea elements of the form
-    //this.find('input, textarea').each(function() {
-    $(this).find('input, textarea, select').each(function () {
-        //ignore the submit button
-        if ($(this).attr('name') != undefined && $(this).attr('name') != 'submit') {
-            //split the dot notated names into arrays and pass along with the value
-            that.add(objectGraph, $(this).attr('name').split('.'), $(this).val());
-        }
-    });
-    return JSON.stringify(objectGraph);
-
-};
-
 function bindSelectTable(selectId, tableId, multiselectOpt) {
     setTimeout(function () { //because of getting content of table by ajax
         var multisectable = multiselectOpt || false;
@@ -302,4 +233,110 @@ function bindSelectTable(selectId, tableId, multiselectOpt) {
 
     }, 1000);
 }
+
+function ajaxSubmit(formId, resultContainerId) {
+    var $form = jQuery('#' + formId);
+    var $resultContainer = jQuery('#' + resultContainerId);
+    if ($form.valid()) {
+        var send = $form.formToJSON();
+        var formAction = $form.attr('action');
+        var dataFromForm = {dataFrom: send};
+        jQuery.ajax({
+            url: formAction,
+            type: 'POST',
+            data: dataFromForm,
+            dataType: "json",
+            error: function () {
+                $resultContainer.html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Wystąpił bład podczas zapisu do bazy danych!</div>").show();
+                setTimeout(function () {
+                    $resultContainer.hide()
+                }, 2000);
+            },
+            success: function () {
+                $resultContainer.html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> Operacja przbiegla pomyślnie</div>").show();
+                setTimeout(function () {
+                    $resultContainer.hide()
+                }, 2000);
+            }
+        });
+    } else {
+        $resultContainer.html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Błędnie wypełniony formularz!</div>").show();
+        setTimeout(function () {
+            $resultContainer.hide()
+        }, 2000);
+    }
+
+    return false;
+}
+
+function formValidate(formId, rules) {
+
+    jQuery.validator.addMethod("accept", function (value, element, param) {
+        return value.match(new RegExp("^" + param + "$"));
+    });
+
+    $('#' + formId).validate({
+        rules: rules,
+        errorClass: 'help-block col-lg-6',
+        errorElement: 'span',
+        onfocusout: function (element) {
+            $(element).valid();
+        },
+        highlight: function (element, errorClass, validClass) {
+            $(element).parents('.form-group').removeClass('has-success').addClass('has-error');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).parents('.form-group').removeClass('has-error').addClass('has-success');
+        }
+    });
+}
+
+
+/**
+ * Generates json from html form elements - nested properties supported.
+ *
+ * <input type="text" name="foo.bar.bar"/>
+ * <input type="text" name="foo.barfoo"/>
+ * <input type="text" name="bar.bar.foo"/>
+ * <input type="text" name="foo.bar.foo"/>
+ *
+ * returns:
+ *{foo: {bar: {bar: '', foo: ''}, barfoo: '' }, bar: {bar: {foo: ''}}}
+ *
+ * @returns json
+ */
+jQuery.fn.formToJSON = function () {
+    var objectGraph = {};
+    var that = {};
+
+    that.add = function (objectGraph, name, value) {
+        if (name.length == 1) {
+            //if the array is now one element long, we're done
+            objectGraph[name[0]] = value;
+        }
+        else {
+            //else we've still got more than a single element of depth
+            if (objectGraph[name[0]] == null) {
+                //create the node if it doesn't yet exist
+                objectGraph[name[0]] = {};
+            }
+            //recurse, chopping off the first array element
+            add(objectGraph[name[0]], name.slice(1), value);
+        }
+    };
+
+    //loop through all of the input/textarea elements of the form
+    //this.find('input, textarea').each(function() {
+    $(this).find('input, textarea, select').each(function () {
+        //ignore the submit button
+        if ($(this).attr('name') != undefined && $(this).attr('name') != 'submit') {
+            //split the dot notated names into arrays and pass along with the value
+            that.add(objectGraph, $(this).attr('name').split('.'), $(this).val());
+        }
+    });
+    return JSON.stringify(objectGraph);
+
+};
+
+
 
