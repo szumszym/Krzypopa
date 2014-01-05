@@ -1,5 +1,5 @@
 createTableWithDataFromDB('additions-getData', 'additions-table', {
-    columns: [
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
        // { "sTitle": "Price" },
