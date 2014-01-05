@@ -1,4 +1,4 @@
-createTableWithDataFromDB('room-getData', 'room-table', {
+createTableWithDataFromDB({get: 'room-getData'}, 'room-table', {
     aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Room No" },

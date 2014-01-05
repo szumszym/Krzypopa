@@ -11,7 +11,7 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     T merge(T entity);
 
-
+    void deleteByID(String table, ID id);
 
     void delete(T entity);
 

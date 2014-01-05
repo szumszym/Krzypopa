@@ -99,4 +99,28 @@ public class AddToDB {
         Status canceled = new Status("Anulowano", "Rezerwacja do usunięcia");
         statusManager.save(canceled);
     }
+
+    public static void getHotelsRooms(Long hotelId) {
+
+        HotelDAO hotelManager = new HotelDAOImpl();
+        List<Room> rooms = hotelManager.getRooms(hotelId);
+        for (Room room : rooms) {
+            System.out.println(room.getId() + " " + room.getName());
+        }
+    }
+
+    public static void deleteRoomByID(String table, Long id) {
+        RoomDAO roomManager = new RoomDAOImpl();
+        roomManager.deleteByID(table, id);
+    }
+
+    public static void deleteRoom() {  //TODO: not working!!!
+        HotelDAO hotelManager = new HotelDAOImpl();
+        Hotel hotel = hotelManager.selectByID(Hotel.class, 3L);
+        List<Room> rooms = hotelManager.getRooms(hotel.getId());
+
+        Room room = rooms.get(1);
+        RoomDAO roomDAO = new RoomDAOImpl();
+        roomDAO.delete(room);
+    }
 }

@@ -1,24 +1,34 @@
-createTableWithDataFromDB('client-getData-small', 'client-table-small', {
-    aoColumns: [
-        { "sTitle": "Id" },
-        { "sTitle": "Name" },
+createTableWithDataFromDB({
+        get: 'client-getData-small'
+    },
+    'client-table-small',
+    {
+        aoColumns: [
+            { "sTitle": "Id" },
+            { "sTitle": "Name" },
         { "sTitle": "Email" },
         { "sTitle": "Phone" }
 
     ]
 });
-
-createTableWithDataFromDB('room-getData', 'room-table-small', {
-    aoColumns: [
-        { "sTitle": "Id" },
+createTableWithDataFromDB({
+        get: 'room-getData',
+        edit: 'room-edit',
+        delete: 'room-delete'
+    }
+    , 'room-table-small',
+    {
+        aoColumns: [
+            { "sTitle": "Id" },
         { "sTitle": "Room No" },
         { "sTitle": "Name" },
         { "sTitle": "Bed" },
         { "sTitle": "Additions" },
         { "sTitle": "Desc" }
     ],
-    infoColumn: 7
-});
+        infoColumn: 7,
+        deleteColumn: 8
+    });
 createSelectListWithDataFromDB('client-getData', 'reservation-client-select', {
     label: 1,
     value: 0,

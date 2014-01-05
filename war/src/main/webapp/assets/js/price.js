@@ -1,4 +1,4 @@
-createTableWithDataFromDB('price-getData', 'price-table', {
+createTableWithDataFromDB({get: 'price-getData'}, 'price-table', {
     columns: [
         { "sTitle": "Id" },
         { "sTitle": "Room type" },

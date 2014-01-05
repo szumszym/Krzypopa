@@ -1,4 +1,4 @@
-createTableWithDataFromDB('status-getData', 'status-table', {
+createTableWithDataFromDB({get: 'status-getData'}, 'status-table', {
     aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },

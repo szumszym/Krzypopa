@@ -1,4 +1,4 @@
-createTableWithDataFromDB('reservation-getData', 'reservation-table', {
+createTableWithDataFromDB({get: 'reservation-getData'}, 'reservation-table', {
     aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Name" },
