@@ -1,5 +1,5 @@
-createTableWithDataFromDB({get: 'price-getData'}, 'price-table', {
-    columns: [
+createTableWithDataFromDB('price-getData', 'price-table', {
+    aoColumns: [
         { "sTitle": "Id" },
         { "sTitle": "Room type" },
         { "sTitle": "Person type" },
