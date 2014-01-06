@@ -79,7 +79,7 @@
                             <label class="control-label col-lg-4">Select Color</label>
 
                             <div class="col-lg-8">
-                                <input type="text" name="color" class="form-control" value="#8fff00" id="cp1">
+                                <input type="color" name="color" class="form-control" id="cp1">
                             </div>
                         </div>
 

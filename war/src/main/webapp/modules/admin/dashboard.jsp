@@ -23,7 +23,6 @@
 
     <!-- Metis core stylesheet -->
     <link rel="stylesheet" href="./assets/css/main.css">
-    <link rel="stylesheet" href="./assets/css/theme.css">
     <link rel="stylesheet" href="./assets/css/dashboard.css">
 <%--<link rel="stylesheet" href="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.css">--%>
 
@@ -270,6 +269,7 @@
 <script src="./assets/lib/jquery.min.js"></script>
 <script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="./assets/lib/chosen/chosen.jquery.js"></script>
+<script src="./assets/lib/jquery-validation-1.11.1/dist/jquery.validate.js"></script>
 <%--<script type="text/javascript" src="./assets/js/style-switcher.js"></script>--%>
 <%--<script src="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.min.js"></script>--%>
 <%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
@@ -277,17 +277,19 @@
 <%--<script src="./assets/lib/flot/jquery.flot.js"></script>--%>
 <%--<script src="./assets/lib/flot/jquery.flot.selection.js"></script>--%>
 <%--<script src="./assets/lib/flot/jquery.flot.resize.js"></script>--%>
-<script src="./assets/js/main.js"></script>
-<script src="./assets/js/ajaxFunctions.js"></script>
 <script src="./assets/lib/datatables/jquery.dataTables.js"></script>
 <script src="./assets/lib/datatables/DT_bootstrap.js"></script>
+
+<script src="./assets/js/app/metisMenu.js"></script>
+<script src="./assets/js/main.js"></script>
+<script src="./assets/js/ajaxFunctions.js"></script>
 <%--<script src="./assets/js/app/formGeneral.js"></script>--%>
 
 <%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
-<script>
+<%--<script>
     $(function () {
         dashboard();
     });
-</script>
+</script>--%>
 </body>
 </html>
