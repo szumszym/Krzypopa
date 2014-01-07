@@ -58,8 +58,8 @@
                                 <label class="control-label col-lg-4">Room Type</label>
 
                                 <div class="col-lg-8">
-                                    <input type="text" name="type" id="pa-type" placeholder="Type"
-                                           class="validate[required] form-control">
+                                    <input type="text" name="type" placeholder="Type"
+                                           class="form-control">
                                 </div>
                             </div>
                             <!-- /.form-group -->
@@ -68,7 +68,7 @@
                                 <label class="control-label col-lg-4">Person Type</label>
 
                                 <div class="col-lg-8">
-                                    <select name="for" class="form-control">
+                                    <select name="for" class="form-control chzn-select">
                                         <option>Adult</option>
                                         <option>Kid</option>
                                         <option>Pet</option>
@@ -80,7 +80,7 @@
                                 <label class="control-label col-lg-4">Value</label>
 
                                 <div class="col-lg-8">
-                                    <input name="value" type="text" class="form-control" id="cp1">
+                                    <input name="value" type="text" class="form-control">
                                 </div>
                             </div>
 
@@ -106,4 +106,7 @@
 
     </div>
 <script src="./assets/js/price.js"></script>
+    <script>
+        $(".chzn-select").chosen();
+    </script>
 

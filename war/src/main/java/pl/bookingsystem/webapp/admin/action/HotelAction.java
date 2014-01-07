@@ -126,7 +126,6 @@ public class HotelAction extends ActionSupport {
             User user = userManager.selectByID(User.class, 12L);      //TODO: AAAAAAAAAAAA!
 
             Hotel hotel = new Hotel (name, description, phone_number, email, address,user);
-
             //user.setHotel(hotel);
             //userManager.save(user);
             //hotel.setOwner(user);

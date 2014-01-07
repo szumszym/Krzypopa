@@ -114,12 +114,12 @@ public class UserAction extends ActionSupport  {
 
             User user = new User (first_name,last_name, pesel, email, phone_number, password, type, address);
 
-            if(((String) jsonObject.get("nip")).isEmpty()){
+            if (((String) jsonObject.get("nip")).isEmpty()) {
+                System.out.println("nip : NULL");
+            } else {
                 System.out.println("nip : Kurcze");
                 user.setNip(Long.parseLong((String) jsonObject.get(("nip"))));
 
-            }else{
-                System.out.println("nip : NULL");
             }
 
 

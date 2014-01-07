@@ -58,7 +58,8 @@ createSelectListWithDataFromDB('room-getData', 'reservation-room-select', {
 formValidate('reservation-add', {
     name: {
         required: true,
-        accept: "[a-zA-Z0-9]+"    //only letters and digits
+        //rangelength: [2, 25],
+        accept: "[a-zA-Z0-9 ążźćśóęłĘÓĄŚŁŻŹŃń]+"    //only letters and digits
     },
     date_from: {
         required: true,
@@ -70,8 +71,7 @@ formValidate('reservation-add', {
     person_count: {
         required: true,
         digits: true,
-        min: 1,
-        max: 99
+        range: [1, 99]
     },
     client_id: {
         required: true

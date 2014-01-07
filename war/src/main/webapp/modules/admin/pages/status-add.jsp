@@ -56,21 +56,20 @@
                     <form id="status-add" action="status-add" class="form-horizontal">
 
                         <div class="form-group">
-                            <label for="sa-type" class="control-label col-lg-4">Name</label>
+                            <label class="control-label col-lg-4">Name</label>
 
                             <div class="col-lg-8">
-                                <input type="text" name="type" id="sa-type" placeholder="Type"
-                                       class="validate[required] form-control">
+                                <input type="text" name="type" placeholder="Type" class="form-control">
                             </div>
                         </div>
                         <!-- /.form-group -->
 
                         <div class="form-group">
-                            <label for="sa-description" class="control-label col-lg-4">Description</label>
+                            <label class="control-label col-lg-4">Description</label>
 
                             <div class="col-lg-8">
-                                <textarea name="description" id="sa-description" placeholder="Description"
-                                          class="validate[required] form-control"></textarea>
+                                <textarea name="description" placeholder="Description"
+                                          class="form-control"></textarea>
                             </div>
                         </div>
                         <!-- /.row -->
@@ -84,13 +83,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="sa-published" class="control-label col-lg-4"></label>
+                            <label class="control-label col-lg-4"></label>
 
                             <div class="col-lg-8">
                                 <div class="checkbox">
                                     <label>
-                                        <input name="publish" id="sa-published" class="uniform" type="checkbox"
-                                               value="YES" checked>Published
+                                        <input name="publish" class="uniform" type="checkbox" value="YES" checked>Published
                                     </label>
                                 </div>
                             </div>
@@ -120,3 +118,6 @@
 </div>
 <!--row End -->
 <script src="./assets/js/status.js"></script>
+<script>
+    $(".chzn-select").chosen();
+</script>

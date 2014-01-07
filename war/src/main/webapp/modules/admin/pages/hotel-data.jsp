@@ -52,23 +52,24 @@
 
 <div id="div-2" class="accordion-body collapse in body">
 
-<form id="hotel-add" action="hotel-add" class="form-horizontal">
+<form action="hotel-add" class="form-horizontal" id="hotel-add">
 <div class="form-group">
     <label class="control-label col-lg-4">Name</label>
 
     <div class="col-lg-8">
-        <input type="text" name="name" id="ha-name" placeholder="Name"
-               class="validate[required] form-control">
+        <input type="text" name="name"  placeholder="Name"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
+
 
 <div class="form-group">
     <label class="control-label col-lg-4">Email</label>
 
     <div class="col-lg-8">
         <input type="text" name="email" id="ha-email" placeholder="sample@sample.com"
-               class="validate[required] form-control">
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -78,9 +79,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input name="phone_number" id="ha-phone_number" class="form-control" type="text"
+            <input name="phone_number" class="form-control" type="text"
                    data-mask="+48 999 999 999">
-            <span class="input-group-addon">+48 999 999 999</span>
         </div>
     </div>
 </div>
@@ -89,8 +89,8 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" name="city" id="ha-city" placeholder="eg: Kraków"
-               class="validate[required] form-control">
+        <input type="text" name="city" id="ha-city" placeholder="eg: Warszawa"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -99,8 +99,8 @@
     <label class="control-label col-lg-4">Street</label>
 
     <div class="col-lg-8">
-        <input type="text" name="street" id="ha-street" placeholder="eg: Zakopianska"
-               class="validate[required] form-control">
+        <input type="text" name="street"placeholder="eg: Zakopianska"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -109,8 +109,8 @@
     <label class="control-label col-lg-4">Building No.</label>
 
     <div class="col-lg-8">
-        <input type="text" name="building_no" id="ha-building_no" placeholder="eg: 10"
-               class="validate[required], custom[number] form-control">
+        <input type="text" name="building_no" placeholder="eg: 10"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -120,9 +120,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="text" name="postcode" id="ha-postcode" class="validate[required] form-control"
+            <input type="text" name="postcode"class="form-control"
                    data-mask="99-999">
-            <span class="input-group-addon">32-600</span>
         </div>
     </div>
 </div>
@@ -383,22 +382,21 @@
 </div>
 
 <div class="form-group">
-    <label for="ha-description" class="control-label col-lg-4">Description</label>
+    <label  class="control-label col-lg-4">Description</label>
 
     <div class="col-lg-8">
-        <textarea name="description" id="ha-description" placeholder="Description"
-                  class="validate[required] form-control"></textarea>
+        <textarea name="description" placeholder="Description"
+                  class=" form-control"></textarea>
     </div>
 </div>
 <!-- /.row -->
 
 <div class="form-group">
-    <label for="ha-description" class="control-label col-lg-4">Current User - Username</label>
+    <label  class="control-label col-lg-4">Current User - Username</label>
 
     <div class="col-lg-8">
-        <input type="text" name="owner" id="ha-owner" value="z@gmail.pl"
-
-               class="validate[required], form-control">
+        <input type="text" name="owner"  value="z@gmail.pl"
+               class="form-control">
         <%--<s:hidden name="owner" value="1" />--%>
     </div>
 </div>
@@ -429,3 +427,6 @@
 </div>
 <!--row End -->
 <script src="./assets/js/hotel.js"></script>
+<script>
+    $(".chzn-select").chosen();
+</script>

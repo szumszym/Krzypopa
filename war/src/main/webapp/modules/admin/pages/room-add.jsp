@@ -1,4 +1,57 @@
-<div id="server-messages"></div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="box">
+            <header>
+                <div class="icons">
+                    <i class="fa fa-table"></i>
+                </div>
+                <h5>Select Hotel</h5>
+
+                <div class="toolbar">
+                    <div class="btn-group">
+                        <a href="#sortableTable" data-toggle="collapse" class="minimize-box">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <div id="sortableTable" class="body collapse in">
+                <table id="hotel-table-small"
+                       class="table table-bordered table-condensed sortableTable responsive-table table-striped">
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="box">
+            <header>
+                <div class="icons">
+                    <i class="fa fa-table"></i>
+                </div>
+                <h5>Select Additions</h5>
+
+                <div class="toolbar">
+                    <div class="btn-group">
+                        <a href="#sortableTable" data-toggle="collapse" class="minimize-box">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <div id="sortableTable2" class="body collapse in">
+                <table id="addition-table-small"
+                       class="table table-bordered table-condensed sortableTable responsive-table table-striped">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <div class="row">
     <div class="col-lg-6">
@@ -25,11 +78,11 @@
                 <form id="room-add" class="form-horizontal" action="room-add">
 
                     <div class="form-group">
-                        <label for="roa-room_name" class="control-label col-lg-4">Room Name</label>
+                        <label class="control-label col-lg-4">Room Name</label>
 
                         <div class="col-lg-8">
-                            <input type="text" name="room_name" id="roa-room_name" placeholder="Room"
-                                   class="validate[required] form-control">
+                            <input type="text" name="room_name" placeholder="Room"
+                                   class="form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
@@ -38,18 +91,18 @@
                         <label class="control-label col-lg-4">RoomNo.</label>
 
                         <div class="col-lg-8">
-                            <input type="text" name="roomno" id="roa-roomno"
-                                   class="validate[required],custom[number] form-control">
+                            <input type="text" name="roomno"
+                                   class="form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
 
                     <div class="form-group">
-                        <label for="roa-description" class="control-label col-lg-4">Description</label>
+                        <label class="control-label col-lg-4">Description</label>
 
                         <div class="col-lg-8">
-                            <textarea name="description" id="roa-description" placeholder="Description"
-                                      class="validate[required] form-control"></textarea>
+                            <textarea name="description"  placeholder="Description"
+                                      class="form-control"></textarea>
                         </div>
                     </div>
                     <!-- /.row -->
@@ -59,7 +112,7 @@
 
                         <div class="col-lg-8">
                             <input type="text" name="capacity" id="roa-capacity"
-                                   class="validate[required],custom[number] form-control">
+                                   class="form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
@@ -67,12 +120,7 @@
                     <div class="form-group">
                         <label class="control-label col-lg-4">Select Additions</label>
                         <div class="col-lg-8">
-                            <select name="addition" multiple class="form-control chzn-select" tabindex="8">
-                                <option value=""></option>
-                                <option>Sample-1</option>
-                                <option>Sample-2</option>
-                                <option>Sample-3</option>
-                                <option>Sample-4</option>
+                            <select id="room-addition-select" name="addition"  class="form-control">
                             </select>
                         </div>
                     </div>
@@ -80,12 +128,7 @@
                     <div class="form-group">
                         <label class="control-label col-lg-4">Select Hotel</label>
                         <div class="col-lg-8">
-                            <select name="hotel" data-placeholder="Select Hotel" class="form-control chzn-select" tabindex="7">
-                                <option value=""></option>
-                                <option value="1">Hotel_01</option>
-                                <option>Sample-1</option>
-                                <option>Sample-2</option>
-                                <option>Sample-3</option>
+                            <select  id="room-hotel-select" name="hotel"  class="form-control">
                             </select>
                         </div>
                     </div>
@@ -109,6 +152,12 @@
     <!--row End -->
 </div>
 
+<script src="./assets/js/room.js"></script>
 <script>
         $(".chzn-select").chosen();
+        bindSelectTable('room-hotel-select', 'hotel-table-small', false);
+        bindSelectTable('room-addition-select', 'addition-table-small', true);
 </script>
+
+
+

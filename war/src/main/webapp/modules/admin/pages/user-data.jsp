@@ -58,50 +58,50 @@
 
 <form id="user-add" action="user-add" class="form-horizontal">
 <div class="form-group">
-    <label for="au-first_name" class="control-label col-lg-4">First Name</label>
-
+    <label class="control-label col-lg-4">First Name</label>
     <div class="col-lg-8">
-        <input type="text" name="first_name" id="au-first_name" placeholder="First Name"
+        <input type="text" name="first_name" placeholder="First Name"
                class="validate[required] form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
+
 <div class="form-group">
-    <label for="au-last_name" class="control-label col-lg-4">Last Name</label>
+    <label class="control-label col-lg-4">Last Name</label>
 
     <div class="col-lg-8">
-        <input type="text" name="last_name" id="au-last_name" placeholder="Last Name"
-               class="validate[required] form-control">
+        <input type="text" name="last_name" placeholder="Last Name"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-email" class="control-label col-lg-4">Email</label>
+    <label  class="control-label col-lg-4">Email</label>
 
     <div class="col-lg-8">
-        <input type="email" name="email" id="au-email" placeholder="sample@sample.com"
-               class="validate[required] form-control">
+        <input type="email" name="email" id="au-email-1" placeholder="sample@sample.com"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-email2" class="control-label col-lg-4">Confirm Email</label>
+    <label  class="control-label col-lg-4">Confirm Email</label>
 
     <div class="col-lg-8">
-        <input type="text" name="emailNull" id="au-email2" placeholder="sample@sample.com"
-               class="validate[required],equals[au-email]] form-control">
+        <input type="text" name="emailNull" id="au-email-2" placeholder="sample@sample.com"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-pass1" class="control-label col-lg-4">Password</label>
+    <label for="au-pass-1" class="control-label col-lg-4">Password</label>
 
     <div class="col-lg-8">
-        <input class="form-control" type="password" name="password" id="au-pass1"
+        <input class="form-control" type="password" name="password" id="au-pass-1"
                data-original-title="Please use your secure password" data-placement="top">
     </div>
 </div>
@@ -111,89 +111,89 @@
     <label for="au-pass2" class="control-label col-lg-4">Confirm Password</label>
 
     <div class=" col-lg-8">
-        <input class="validate[required,equals[au-pass1]] form-control" type="password" name="passwordNull"
+        <input class="form-control" type="password" name="passwordNull"
                id="au-pass2">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-pesel" class="control-label col-lg-4">PESEL</label>
+    <label class="control-label col-lg-4">PESEL</label>
 
     <div class="col-lg-8">
-        <input type="text" name="pesel" id="au-pesel" class="maxSizep[11] ,custom[number] form-control">
+        <input type="text" name="pesel" class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-nip" class="control-label col-lg-4">NIP</label>
+    <label class="control-label col-lg-4">NIP</label>
 
     <div class="col-lg-8">
-        <input type="text" name="nip" id="au-nip" class="maxSizep[10] ,custom[number] form-control">
+        <input type="text" name="nip" class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-phone_number" class="control-label col-lg-4">Phone</label>
+    <label  class="control-label col-lg-4">Phone</label>
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input name="phone_number" id="au-phone_number" class="form-control" type="text"
+            <input name="phone_number" class="form-control" type="text"
                    data-mask="+48 999 999 999">
-            <span class="input-group-addon">+48 999 999 999</span>
+            <%--<span class="input-group-addon">+48 999 999 999</span>--%>
         </div>
     </div>
 </div>
 
 <div class="form-group">
-    <label for="au-city" class="control-label col-lg-4">City</label>
+    <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" name="city" id="au-city" placeholder="eg: Kraków" class="validate[required] form-control">
+        <input type="text" name="city"  placeholder="eg: Warszawa" class=" form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-street" class="control-label col-lg-4">Street</label>
+    <label class="control-label col-lg-4">Street</label>
 
     <div class="col-lg-8">
-        <input type="text" name="street" id="au-street" placeholder="eg: Zakopianska"
-               class="validate[required] form-control">
+        <input type="text" name="street" placeholder="eg: Zakopianska"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-building_no" class="control-label col-lg-4">Building No.</label>
+    <label class="control-label col-lg-4">Building No.</label>
 
     <div class="col-lg-8">
-        <input type="text" name="building_no" id="au-building_no" placeholder="eg: 10"
-               class="validate[required], custom[number] form-control">
+        <input type="text" name="building_no" placeholder="eg: 10"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-apartment_no" class="control-label col-lg-4">Apartment No.</label>
+    <label  class="control-label col-lg-4">Apartment No.</label>
 
     <div class="col-lg-8">
-        <input type="text" name="apartment_no" id="au-apartment_no" placeholder="eg: 10"
-               class="validate[required], custom[number] form-control">
+        <input type="text" name="apartment_no" placeholder="eg: 10"
+               class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-postcode" class="control-label col-lg-4">Post code</label>
+    <label class="control-label col-lg-4">Post code</label>
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="text" name="postcode" id="au-postcode" class="validate[required] form-control"
+            <input type="text" name="postcode" class="form-control"
                    data-mask="99-999">
-            <span class="input-group-addon">32-600</span>
+            <%--<span class="input-group-addon">32-600</span>--%>
         </div>
     </div>
 </div>
@@ -203,8 +203,7 @@
 <label class="control-label col-lg-4">Country</label>
 
 <div class="col-lg-8">
-<select name="country" id="au-country" data-placeholder="Choose a Country..." class="form-control chzn-select"
-        tabindex="2">
+<select name="country" data-placeholder="Choose a Country..." class="form-control chzn-select">
 <option value=""></option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
@@ -454,10 +453,10 @@
 </div>
 
 <div class="form-group">
-    <label for="au-select-type" class="control-label col-lg-4">Type</label>
+    <label class="control-label col-lg-4">Type</label>
 
     <div class="col-lg-8">
-        <select name="type" id="au-select-type" class="form-control">
+        <select name="type"class="form-control chzn-select">
             <option>ADMIN</option>
             <option>OWNER</option>
             <option>EMPLOYEE</option>

@@ -15,3 +15,16 @@ createTableWithDataFromDB({
         }
     }
 });
+
+formValidate('status-add', {
+    typ: {
+        required: true,
+        maxlength: 50,
+        accept: "[a-zA-Z0-9 ążźćśóęłĘÓĄŚŁŻŹŃń-]+"    //only letters and digits
+    },
+
+    description: {
+        required: true,
+        accept: "[a-zA-Z0-9 ążźćśóęłĘÓĄŚŁŻŹŃń.,-]+"
+    }
+});

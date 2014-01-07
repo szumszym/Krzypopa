@@ -1,3 +1,4 @@
+
 <div class="row">
     <div class="col-lg-6">
         <div class="box">
@@ -49,6 +50,7 @@
         </div>
     </div>
 </div>
+
 
 <div class="row">
     <div class="col-lg-12">
@@ -175,3 +177,4 @@
     bindSelectTable('reservation-client-select', 'client-table-small', false);
     bindSelectTable('reservation-room-select', 'room-table-small', true);
 </script>
+

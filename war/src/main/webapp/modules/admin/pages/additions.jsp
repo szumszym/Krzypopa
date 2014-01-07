@@ -58,18 +58,18 @@
                             <label class="control-label col-lg-4">Name</label>
 
                             <div class="col-lg-8">
-                                <input type="text" id="aa-name" name="name" placeholder="Name"
-                                       class="validate[required] form-control">
+                                <input type="text" name="name" placeholder="Name"
+                                       class="form-control">
                             </div>
                         </div>
                         <!-- /.form-group -->
 
                         <div class="form-group">
-                            <label for="aa-description" class="control-label col-lg-4">Description</label>
+                            <label class="control-label col-lg-4">Description</label>
 
                             <div class="col-lg-8">
-                                <textarea name="description" id="aa-description" placeholder="Description"
-                                          class="validate[required] form-control"></textarea>
+                                <textarea name="description" placeholder="Description"
+                                          class="form-control"></textarea>
                             </div>
                         </div>
                         <!-- /.row -->
@@ -109,3 +109,6 @@
 </div>
 <!--row End -->
 <script src="./assets/js/additions.js"></script>
+<script>
+    $(".chzn-select").chosen();
+</script>
