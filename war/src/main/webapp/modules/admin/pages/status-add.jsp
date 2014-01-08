@@ -88,7 +88,7 @@
                             <div class="col-lg-8">
                                 <div class="checkbox">
                                     <label>
-                                        <input name="publish" class="uniform" type="checkbox" value="YES" checked>Published
+                                        <input name="publish" class="uniform" type="checkbox" checked>Published
                                     </label>
                                 </div>
                             </div>

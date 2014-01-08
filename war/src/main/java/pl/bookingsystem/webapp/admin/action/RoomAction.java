@@ -72,8 +72,8 @@ public class RoomAction extends ActionSupport {
                 reservation[0] = String.valueOf(r.getId());
                 reservation[1] = String.valueOf(r.getNo_room());
                 reservation[2] = String.valueOf(r.getName());
-                reservation[3] = "BED";
-                reservation[4] = String.valueOf(r.getAdditions(3));
+                reservation[3] = String.valueOf(r.getPriceAndAdditions());
+                reservation[4] = String.valueOf(r.getAdditions(4));  // liczba pozwala ograniczyć wyświetlaną liczbe dodatków
                 reservation[5] = String.valueOf(r.getDescription());
 
                 data[j] = reservation;
@@ -102,24 +102,25 @@ public class RoomAction extends ActionSupport {
             Integer roomno = Integer.parseInt((String) jsonObject.get("roomno"));
             String description = (String) jsonObject.get("description");
             Integer capacity = Integer.parseInt((String) jsonObject.get("capacity"));
+            Double price = Double.parseDouble((String) jsonObject.get("price"));
             JSONArray additions = (JSONArray) jsonObject.get("addition");
             Set<Addition> additionSet = new HashSet<Addition>();
             List<String> addName = new ArrayList<String>();
             List<Addition> additionList;
             for (int i = 0; i < additions.length(); i++) {
                 addName.add(additions.getString(i));
-                log.error("Name: " + addName.get(i));
+                log.info("Name: " + addName.get(i));
 
             }
 
-            additionList = additionManager.getAdditionsBy(addName, "name");
+            additionList = additionManager.getAdditionsBy(addName, "id");
+            for (String id : addName){
+                additionList.add(additionManager.selectByID(Addition.class, Long.parseLong(id)));
+
+            }
 
             if (!additionList.isEmpty()) {
                 additionSet.addAll(additionList);
-            }
-
-            for (int i = 0; i < additionList.size(); i++) {
-                System.out.printf("[%d] addition: %s", i, additionList.get(i));
             }
 
             Long hotel_id = Long.parseLong((String) jsonObject.get("hotel"));
@@ -128,15 +129,17 @@ public class RoomAction extends ActionSupport {
 
             RoomDAO roomManager = new RoomDAOImpl();
             Room room = new Room(roomno, room_name, "None", capacity, description, hotel, additionSet);
-            for (Addition addition : additionList) {
+            room.setPrice(price);
+            room.setAdditions(additionSet);
+            room.setHotel(hotel);
+/*            for (Addition addition : additionList) {
                 addition.addRoom(room);
                 additionManager.save(addition);
-            }
-
+            }*/
             roomManager.save(room);
 
-            hotel.addRoom(room);
-            hotelManager.save(hotel);
+            /*hotel.addRoom(room);
+            hotelManager.save(hotel);*/
             return SUCCESS;
 
         } catch (Exception e) {

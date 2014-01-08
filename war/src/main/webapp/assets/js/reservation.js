@@ -11,13 +11,14 @@ createTableWithDataFromDB({
                 { "sTitle": "From Date" },
                 { "sTitle": "To Date" },
                 { "sTitle": "Count of person" },
+                { "sTitle": "Price" },
                 { "sTitle": "Status" },
                 { "sTitle": "Entry Date" },
                 { "sTitle": "Update Date", sDefaultContent: "-"}
             ],
-            infoColumn: 9,
-            editColumn: 10,
-            deleteColumn: 11
+            infoColumn: 10,
+            editColumn: 11,
+            deleteColumn: 12
         }
     }
 });

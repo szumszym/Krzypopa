@@ -31,6 +31,9 @@ public class Reservation implements Serializable {
     @Column(name = "person_count")
     private Integer person_count;
 
+    @Column(name = "price")
+    private Double price;
+
     @Column(name = "entry_date")
     private Date entry_date;
 
@@ -151,6 +154,14 @@ public class Reservation implements Serializable {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
 

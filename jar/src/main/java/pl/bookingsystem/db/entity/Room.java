@@ -33,7 +33,7 @@ public class
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
@@ -47,6 +47,9 @@ public class
     @ManyToMany(mappedBy = "rooms")
     private Set<Reservation> reservations = new HashSet<Reservation>();
     //TODO: add Price field   ?
+
+    @Column (name = "price")
+    private Double price;
 
     public Room() {
     }
@@ -150,7 +153,7 @@ public class
                 lista= lista+ ", ";
             }
         }
-        if(limit<additionSize){
+        if(limit<this.additions.size()){
             lista=lista+", ...";
         }
         return lista;
@@ -170,5 +173,26 @@ public class
 
     public void setDescription(String description) { this.description = description; }
 
+    public double getAdditionsPrice(){
+        double sum = 0;
+        int additionSize= this.additions.size();
+        Addition[] addit = this.additions.toArray(new Addition[0]);
+        for(int i= 0 ; i < additionSize; i++){
+            sum= sum+addit[i].getPirce();
+        }
+        return sum;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public Double getPriceAndAdditions() {
+        return price+getAdditionsPrice();
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 }
 

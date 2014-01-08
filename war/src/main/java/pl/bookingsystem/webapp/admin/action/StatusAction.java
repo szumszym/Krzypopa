@@ -54,16 +54,16 @@ public class StatusAction extends ActionSupport {
                 tableS[0] = String.valueOf(s.getId());
                 tableS[1] = String.valueOf(s.getType());
                 tableS[2] = String.valueOf(s.getDescription());
-                tableS[3] = "COLOR";
-                //tableS[3] = String.valueOf(s.getColor());
-                tableS[4] = "PUBLISH";
-                /*
-                if (a.getPublish()){
-                    tableS[3] = "Published";
+                tableS[3] = String.valueOf(s.getColor()); ////TODO można by dodać zamiast textu kolor do komurki jako bg
+
+                //tableS[4] = "PUBLISH";
+
+                if (s.getPublish()){
+                    tableS[4] = "Published";
                 }else{
-                    tableS[3] = "Not Published";
+                    tableS[4] = "Not Published";
                 }
-               */
+
                 data[j] = tableS;
             }
 
@@ -91,18 +91,20 @@ public class StatusAction extends ActionSupport {
             String type = (String) jsonObject.get("type");
             String color = (String) jsonObject.get("color");
             String description = "EMPTY";
+
             Boolean publish=true;
-            if (((String)jsonObject.get("publish")).isEmpty()){
-                publish = false;
-            }else{
+
+            if (((String) jsonObject.get("publish")).matches("on")){
                 publish = true;
+            }else{
+                publish = false;
             }
             if (!(((String) jsonObject.get("description")).isEmpty())) {
                 description = (String) jsonObject.get("description");
             }
             Status status = new Status(type, description);
-            //status.setColor(color);
-            //status.setPublish(publish);
+            status.setColor(color);
+            status.setPublish(publish);
             statusManager.save(status);
             return SUCCESS;
 

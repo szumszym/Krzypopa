@@ -24,12 +24,9 @@ formValidate('price-add', {
     for: {
         required: true
     },
-    email: {
+    price: {
         required: true,
-        email: true
-    },
-    value: {
-        required: true,
+        accept: "[0-9 .]+",
         number: true
     }
 });

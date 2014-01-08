@@ -74,6 +74,15 @@
                         </div>
                         <!-- /.row -->
 
+                        <div class="form-group">
+                            <label class="control-label col-lg-4">Price</label>
+
+                            <div class="col-lg-8">
+                                <input name="price" type="text" class="form-control">
+                            </div>
+                        </div>
+
+
 
                         <div class="form-group">
                             <label class="control-label col-lg-4"></label>
@@ -81,7 +90,7 @@
                             <div class="col-lg-8">
                                 <div class="checkbox">
                                     <label>
-                                        <input name="publish" class="uniform" type="checkbox" value="YES" checked>Published
+                                        <input name="publish" class="uniform" type="checkbox" checked>Published
                                     </label>
                                 </div>
                             </div>

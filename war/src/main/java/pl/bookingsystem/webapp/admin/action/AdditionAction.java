@@ -54,19 +54,20 @@ public class AdditionAction extends ActionSupport{
             data = new String[size][];
             for (int j = 0; j < additions.size(); j++) {
                 
-                String[] tableS = new String[4];
+                String[] tableS = new String[5];
                 Addition a = additions.get(j);
                 tableS[0] = String.valueOf(a.getId());
                 tableS[1] = String.valueOf(a.getName());
                 tableS[2] = String.valueOf(a.getDescription());
-                tableS[3] = "Publish";
-                /*
+                tableS[3] = String.valueOf(a.getPirce());
+//                tableS[4] = String.valueOf(a.getPublish());
+
                 if (a.getPublish()){
-                    tableS[3] = "Published";
+                    tableS[4] = "Published";
                 }else{
-                    tableS[3] = "Not Published";
+                    tableS[4] = "Not Published";
                 }
-               */
+
                 data[j] = tableS;
             }
 
@@ -88,22 +89,24 @@ public class AdditionAction extends ActionSupport{
             AdditionDAO additionManager = new AdditionDAOImpl();
             JSONObject jsonObject = new JSONObject(dataFrom);
             String name = (String) jsonObject.get("name");
-           // Integer price = Integer.parseInt((String) jsonObject.get("price"));
+            Double price = Double.parseDouble((String) jsonObject.get("price"));
             String description="EMPTY";
             if(!(((String) jsonObject.get("description")).isEmpty())){
             description = (String) jsonObject.get("description");
             }
+            System.out.println(dataFrom);
 
             Boolean publish=true;
-            if (((String)jsonObject.get("publish")).isEmpty()){
-                publish = false;
-            }else{
+
+            if (((String) jsonObject.get("publish")).matches("on")){
                 publish = true;
+            }else{
+                publish = false;
             }
 
             Addition addition= new Addition(name, description);
-            //addition.setPrice(price);
-            //addition.setPublish(publish);
+            addition.setPirce(price);
+            addition.setPublish(publish);
             additionManager.save(addition);
             return SUCCESS;
 

@@ -25,6 +25,9 @@
             </div>
         </div>
     </div>
+
+
+
     <div class="col-lg-6">
         <div class="box">
             <header>
@@ -116,6 +119,14 @@
                         </div>
                     </div>
                     <!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-label col-lg-4">Price for Room</label>
+
+                        <div class="col-lg-8">
+                            <input name="price" type="text" class="form-control">
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-lg-4">Select Additions</label>

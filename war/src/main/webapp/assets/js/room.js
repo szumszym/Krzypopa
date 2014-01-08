@@ -9,7 +9,7 @@ createTableWithDataFromDB({
                 { "sTitle": "Id" },
                 { "sTitle": "Room No" },
                 { "sTitle": "Name" },
-                { "sTitle": "Bed" },
+                { "sTitle": "Price" },
                 { "sTitle": "Additions" },
                 { "sTitle": "Desc" }
             ],
@@ -91,6 +91,12 @@ formValidate('room-add', {
     addition: {
 
     },
+    price: {
+        required: true,
+        accept: "[0-9 .]+",
+        number: true
+    },
+
     hotel: {
         required: true
     }

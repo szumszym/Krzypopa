@@ -28,7 +28,7 @@ createTableWithDataFromDB({
                 { "sTitle": "Id" },
                 { "sTitle": "Room No" },
                 { "sTitle": "Name" },
-                { "sTitle": "Bed" },
+                { "sTitle": "Price" },
                 { "sTitle": "Additions" },
                 { "sTitle": "Desc" }
             ],

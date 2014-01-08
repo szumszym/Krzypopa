@@ -61,16 +61,17 @@ public class ReservationAction extends ActionSupport {
             int size = reservations.size();
             data = new String[size][];
             for (int j = 0; j < reservations.size(); j++) {
-                String[] reservation = new String[8];
+                String[] reservation = new String[9];
                 Reservation r = reservations.get(j);
                 reservation[0] = String.valueOf(r.getId());
                 reservation[1] = String.valueOf(r.getName());
                 reservation[2] = String.valueOf(r.getDate_from());
                 reservation[3] = String.valueOf(r.getDate_to());
                 reservation[4] = String.valueOf(r.getPerson_count());
-                reservation[5] = String.valueOf(r.getStatus());
-                reservation[6] = String.valueOf(r.getEntry_date());
-                reservation[7] = String.valueOf(r.getUpdate_date());
+                reservation[5] = String.valueOf(r.getPrice());
+                reservation[6] = String.valueOf(r.getStatus().getType());
+                reservation[7] = String.valueOf(r.getEntry_date());
+                reservation[8] = String.valueOf(r.getUpdate_date());
 
                 data[j] = reservation;
             }
@@ -93,7 +94,7 @@ public class ReservationAction extends ActionSupport {
         try {
             System.out.println(dataFrom);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+            double price = 0;
             JSONObject jsonObject = new JSONObject(dataFrom);
             String name = (String) jsonObject.get("name");
             Date date_from = simpleDateFormat.parse((String) jsonObject.get("date_from"));
@@ -113,6 +114,62 @@ public class ReservationAction extends ActionSupport {
                 roomList.add(room);
             }
 
+            //TODO oBLICZANIE CENY DLA POKOJI   + DODTKI W POKOJACH
+
+
+            //Stare Oblicznie ceny
+
+/*            /// Proste liczenie ceny rezerwacji UWAGA NIE JEST DOKLADNE
+            Integer personTemp = 0;
+            Integer capacityTemp = 0;
+            Double priceTemp = 0.0;
+            for(Room roomTemp: roomList ){
+               personTemp += roomTemp.getCapacity();
+            }
+            if(personTemp>=person_count){
+                personTemp=person_count;
+                for(Room roomTemp: roomList ){
+                    capacityTemp = roomTemp.getCapacity();
+                    priceTemp = roomTemp.getPrice();
+                    price += roomTemp.getAdditionsPrice();
+
+                    if(personTemp>=capacityTemp){
+                        personTemp-=capacityTemp ;
+                        price += capacityTemp*priceTemp;
+                    }else{
+                        price += personTemp*priceTemp;
+                        personTemp =0;
+                        break;                             // powinno wyjść z pętli
+                    }
+                }
+            }else{
+                log.error("Wybrane pokoje nie są wstanie pomieścić takiej ilości gości");
+            }*/
+
+
+                        /// Proste liczenie ceny rezerwacji UWAGA NIE JEST DOKLADNE
+            Integer personTemp = 0;
+            Integer capacityTemp = 0;
+            for(Room roomTemp: roomList ){
+               personTemp += roomTemp.getCapacity();
+            }
+            if(personTemp>=person_count){
+                personTemp=person_count;
+                for(Room roomTemp: roomList ){
+                    capacityTemp = roomTemp.getCapacity();
+                    price += roomTemp.getAdditionsPrice();
+                    price += roomTemp.getPrice();
+                    if(personTemp>=capacityTemp){
+                        personTemp-=capacityTemp ;
+                    }else{
+                        personTemp =0;
+                        break;                             // powinno wyjść z pętli
+                    }
+                }
+            }else{
+                log.error("Wybrane pokoje nie są wstanie pomieścić takiej ilości gości");
+            }
+
             StatusDAO statusManager = new StatusDAOImpl();
             Status status = statusManager.selectByID(Status.class, statusId);
 
@@ -121,6 +178,7 @@ public class ReservationAction extends ActionSupport {
 
             Reservation reservation = new Reservation(name, date_from, date_to, person_count, client, status, roomList);
             ReservationDAO reservationManager = new ReservationDAOImpl();
+            reservation.setPrice(price);
             reservationManager.save(reservation);
             return SUCCESS;
 

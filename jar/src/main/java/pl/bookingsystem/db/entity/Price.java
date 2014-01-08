@@ -28,7 +28,7 @@ public class Price implements Serializable {
     private String person_type;
 
     @Column(name = "value")
-    private Integer value;
+    private Double value;
 
     public Price() {
     }
@@ -37,7 +37,7 @@ public class Price implements Serializable {
         return id;
     }
 
-    public Price(String room_type, String person_type, Integer value) {
+    public Price(String room_type, String person_type, Double value) {
         this.room_type = room_type;
         this.person_type = person_type;
         this.value = value;
@@ -60,11 +60,13 @@ public class Price implements Serializable {
         this.person_type = person_type;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
+
+
 }

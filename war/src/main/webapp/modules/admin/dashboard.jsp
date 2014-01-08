@@ -195,10 +195,10 @@
                 <i class="fa fa fa-plus"></i>&nbsp;Status </a>
         </li>
 
-        <li>
+<%--        <li>
             <a href="#" data-url="./modules/admin/pages/prices.jsp" data-placement="#context">
                 <i class="fa fa-btc"></i>&nbsp;Prices</a>
-        </li>
+        </li>--%>
         <li>
             <a href="#" data-url="./modules/admin/pages/additions.jsp" data-placement="#context">
                 <i class="fa fa-foursquare"></i>&nbsp;Additions</a>

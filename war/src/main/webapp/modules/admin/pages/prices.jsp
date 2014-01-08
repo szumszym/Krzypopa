@@ -77,16 +77,16 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-lg-4">Value</label>
+                                <label class="control-label col-lg-4">price</label>
 
                                 <div class="col-lg-8">
-                                    <input name="value" type="text" class="form-control">
+                                    <input name="price" type="text" class="form-control">
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                                <label class="control-label col-lg-4">Add Addition</label>
+                                <label class="control-label col-lg-4">Add Price</label>
 
                                 <div class="col-lg-8">
                                     <div class="input-group">

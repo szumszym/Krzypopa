@@ -83,7 +83,7 @@ public class PriceAction extends ActionSupport {
             JSONObject jsonObject = new JSONObject(dataFrom);
             String typeRoom = (String) jsonObject.get("type");
             String typePerson = (String) jsonObject.get("for");
-            Integer value = Integer.parseInt((String) jsonObject.get("value"));
+            Double value = Double.parseDouble((String) jsonObject.get("price"));
             Price price = new Price(typeRoom,typePerson,value);
             priceManager.save(price);
             return SUCCESS;
