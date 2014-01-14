@@ -10,20 +10,15 @@ import pl.bookingsystem.db.utils.HibernateUtil;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T, ID> {
+public class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T, ID> {
 
     @Override
     public T save(T entity) {
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-
-        session.beginTransaction();
+        Session session = HibernateUtil.start();
 
         session.save(entity);
 
-        session.getTransaction().commit();
-
-        session.close();
+        HibernateUtil.stop(true);
 
         return entity;
     }
@@ -95,8 +90,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
 
     @Override
     public List<T> selectMany(String hql) {
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
+        Session session = HibernateUtil.start(false);
         Query query = session.createQuery(hql);
 
         List<T> t = (List<T>) query.list();
@@ -137,5 +131,33 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         tx.commit();
         session.close();
         return t;
+    }
+
+    @Override
+    public List selectByIDS(Class clazz, List<String> ids) {
+        String idsString = generateIdsString(ids);
+
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+        Session session = sf.openSession();
+        Transaction tx = session.beginTransaction();
+        List<? extends Object> list = null;
+        Query query = session.createQuery("from " + clazz.getName() + " as x where x.id in " + idsString);
+        list = query.list();
+        tx.commit();
+        session.close();
+        return list;
+    }
+
+    private String generateIdsString(List<String> ids) {
+        String idsString = "(";
+        int idsSize = ids.size();
+        for (int i = 0; i < idsSize; i++) {
+            idsString += ids.get(i);
+            if (i < idsSize - 1) {
+                idsString += ",";
+            }
+        }
+        idsString += ")";
+        return idsString;
     }
 }

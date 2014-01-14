@@ -1,6 +1,8 @@
 createTableWithDataFromDB({
     actions: {
-        get: 'reservation-getData'
+        get: 'reservation-getData',
+        edit: 'reservation-edit',
+        delete: 'reservation-delete'
     },
     table: {
         id: 'reservation-table',
@@ -13,11 +15,15 @@ createTableWithDataFromDB({
                 { "sTitle": "Count of person" },
                 { "sTitle": "Status" },
                 { "sTitle": "Entry Date" },
-                { "sTitle": "Update Date", sDefaultContent: "-"}
+                { "sTitle": "Update Date" },
+                { "sTitle": "Price"},
+                { "sTitle": "User Email" },
+                { "sTitle": "Room Ids" },
+                { "sTitle": "Hotel Id" }
             ],
-            infoColumn: 9,
-            editColumn: 10,
-            deleteColumn: 11
+            infoColumn: 13,
+            editColumn: 14,
+            deleteColumn: 15
         }
     }
 });

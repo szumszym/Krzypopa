@@ -34,12 +34,23 @@ CREATE TABLE IF NOT EXISTS `addition` (
   `id`          BIGINT(20)   NOT NULL AUTO_INCREMENT,
   `name`        VARCHAR(255) NOT NULL,
   `description` VARCHAR(255) DEFAULT NULL,
+  `price` DOUBLE NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '0',
+
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
   AUTO_INCREMENT =1;
 
+--
+-- Zrzut danych tabeli `address`
+--
+
+INSERT INTO `addition` (`id`, `name`, `description`, `price`, `published`) VALUES
+  (1, 'TV', 'telewizor FullHD', '5', 1),
+  (2, 'Balkon', 'wymiary 2x1m', '20', 1),
+  (3, 'Radio', 'radio stereo', '5', 0);
 -- --------------------------------------------------------
 
 --
@@ -58,18 +69,20 @@ CREATE TABLE IF NOT EXISTS `address` (
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =6;
+  AUTO_INCREMENT =1;
 
 --
 -- Zrzut danych tabeli `address`
 --
 
 INSERT INTO `address` (`id`, `city`, `street`, `building_no`, `apartment_no`, `postcode`, `country`) VALUES
-  (1, 'Krakow', 'Wadowicka', 6, NULL, '12-234', 'Polska'),
+  (1, 'Krakow', 'Wadowicka', 6, NULL, '30-234', 'Polska'),
   (2, 'Wroclaw', 'Wroclawska', 7, 2, '32-234', 'Polska'),
   (3, 'Krakow', 'Lubicz', 1, NULL, '30-200', 'Polska'),
-  (4, 'Wrocław', 'Swidnicka', 120, 10, '44-450', 'Polska'),
-  (5, 'Wrocław', 'Swidnicka', 120, 10, '44-450', 'Polska');
+  (4, 'Wrocław', 'Komandosow', 10, 6, '44-460', 'Polska'),
+  (5, 'Wrocław', 'Swidnicka', 120, 10, '44-450', 'Polska'),
+  (6, 'Katowice', 'Krakowska', 2, 1, '33-450', 'Polska'),
+  (7, 'Szczecin', 'Gdanska', 56, 7, '12-450', 'Polska');
 
 -- --------------------------------------------------------
 
@@ -93,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `client` (
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =3;
+  AUTO_INCREMENT =1;
 
 --
 -- Zrzut danych tabeli `client`
@@ -101,8 +114,9 @@ CREATE TABLE IF NOT EXISTS `client` (
 
 INSERT INTO `client` (`id`, `first_name`, `last_name`, `pesel`, `nip`, `email`, `phone_number`, `pass`, `address_id`, `register_date`, `update_date`)
 VALUES
-  (1, 'Jan', 'Nowak', 85010101234, NULL, 'jan.nowak@gmail.com', '791234123', 'pass', 4, '2014-01-04 09:11:25', NULL),
-  (2, 'Jan', 'Nowak', 85010101234, NULL, 'jan.nowak@gmail.com', '791234123', 'pass', 5, '2014-01-04 09:11:26', NULL);
+  (1, 'Jan', 'Nowak', 85010101234, NULL, 'jan.nowak@gmail.com', '791234123', 'jan', 6, '2014-01-04 09:11:25', NULL),
+  (2, 'Jerzy', 'Kowalski', 85010101234, NULL, 'jerzy.kowalski@gmail.com', '791234123', 'jerzy', 7,
+   '2014-01-04 09:11:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -121,15 +135,15 @@ CREATE TABLE IF NOT EXISTS `hotel` (
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =3;
+  AUTO_INCREMENT =1;
 
 --
 -- Zrzut danych tabeli `hotel`
 --
 
 INSERT INTO `hotel` (`id`, `name`, `description`, `phone_number`, `email`, `address_id`) VALUES
-  (1, 'Hotel BLABLA', NULL, '+48 0123456789', 'kontakt@hotelblabla.pl', 3),
-  (2, 'Hotel BLABLA', NULL, '+48 0123456789', 'kontakt@hotelblabla.pl', 3);
+  (1, 'Hotel 123', NULL, '+48 0123456789', 'kontakt@hotel123.pl', 4),
+  (2, 'Hotel BLA', NULL, '+48 0123456789', 'kontakt@hotelbla.pl', 5);
 
 -- --------------------------------------------------------
 
@@ -150,7 +164,8 @@ CREATE TABLE IF NOT EXISTS `hotel_client` (
 --
 
 INSERT INTO `hotel_client` (`client_id`, `hotel_id`) VALUES
-  (1, 2);
+  (1, 2),
+  (2, 1);
 
 -- --------------------------------------------------------
 
@@ -171,25 +186,12 @@ CREATE TABLE IF NOT EXISTS `hotel_user` (
 --
 
 INSERT INTO `hotel_user` (`hotel_id`, `user_id`) VALUES
-  (2, 1),
-  (2, 2);
+  (1, 1),
+  (1, 4),
+  (2, 2),
+  (1, 3),
+  (2, 3);
 
--- --------------------------------------------------------
-
---
--- Struktura tabeli dla tabeli `price`
---
-
-CREATE TABLE IF NOT EXISTS `price` (
-  `id`          BIGINT(20)  NOT NULL AUTO_INCREMENT,
-  `room_type`   VARCHAR(10) DEFAULT NULL,
-  `person_type` VARCHAR(10) NOT NULL,
-  `value`       INT(11)     NOT NULL,
-  PRIMARY KEY (`id`)
-)
-  ENGINE =InnoDB
-  DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =1;
 
 -- --------------------------------------------------------
 
@@ -208,19 +210,20 @@ CREATE TABLE IF NOT EXISTS `reservation` (
   `status_id`    BIGINT(20) NOT NULL,
   `entry_date`   TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date`  TIMESTAMP  NULL DEFAULT NULL,
+  `price` DOUBLE NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =2;
+  AUTO_INCREMENT =1;
 
 --
 -- Zrzut danych tabeli `reservation`
 --
 
-INSERT INTO `reservation` (`id`, `name`, `date_from`, `date_to`, `person_count`, `date_edit`, `client_id`, `status_id`, `entry_date`, `update_date`)
+INSERT INTO `reservation` (`id`, `name`, `date_from`, `date_to`, `person_count`, `date_edit`, `client_id`, `status_id`, `entry_date`, `update_date`, `price`)
 VALUES
-  (1, 'Rezerwacja 1', '2014-01-04', '2014-01-30', 3, NULL, 2, 1, '2014-01-04 09:11:26', NULL);
+  (1, 'Rezerwacja 1', '2014-01-04', '2014-01-30', 3, NULL, 2, 1, '2014-01-04 09:11:26', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -236,20 +239,23 @@ CREATE TABLE IF NOT EXISTS `room` (
   `bed`         VARCHAR(5) DEFAULT NULL,
   `capacity`    INT(11) DEFAULT NULL,
   `hotel_id`    BIGINT(20) DEFAULT NULL,
+  `price` DOUBLE NOT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =4;
+  AUTO_INCREMENT =1;
 
 --
 -- Zrzut danych tabeli `room`
 --
 
-INSERT INTO `room` (`id`, `room_no`, `name`, `description`, `bed`, `capacity`, `hotel_id`) VALUES
-  (1, 1, 'Pokoj goscinny nr 1', NULL, '2x1', 2, 2),
-  (2, 1, 'Pokoj goscinny nr 2', NULL, '2x1', 2, 2),
-  (3, 1, 'Pokoj goscinny nr 3', NULL, '2x1', 2, 2);
+INSERT INTO `room` (`id`, `room_no`, `name`, `description`, `bed`, `capacity`, `hotel_id`, `price`, `published`) VALUES
+  (1, 1, 'Pokoj goscinny nr 1', NULL, '2x1', 2, 2, 60, 1),
+  (2, 1, 'Pokoj goscinny nr 2', NULL, '3x1', 3, 2, 30, 0),
+  (3, 1, 'Pokoj goscinny nr 3', NULL, '2x2', 4, 2, 90, 1),
+  (4, 1, 'Pokoj goscinny nr 4', NULL, '2x2', 4, 1, 80, 1);
 
 -- --------------------------------------------------------
 
@@ -264,19 +270,14 @@ CREATE TABLE IF NOT EXISTS `room_addition` (
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8;
 
--- --------------------------------------------------------
-
 --
--- Struktura tabeli dla tabeli `room_price`
+-- Zrzut danych tabeli `room`
 --
 
-CREATE TABLE IF NOT EXISTS `room_price` (
-  `room_id`  BIGINT(20) NOT NULL,
-  `price_id` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`room_id`, `price_id`)
-)
-  ENGINE =InnoDB
-  DEFAULT CHARSET =utf8;
+INSERT INTO `room_addition` (`room_id`, `addition_id`) VALUES
+  (1, 1),
+  (1, 2),
+  (2, 1);
 
 -- --------------------------------------------------------
 
@@ -309,21 +310,22 @@ CREATE TABLE IF NOT EXISTS `status` (
   `id`          BIGINT(20) NOT NULL AUTO_INCREMENT,
   `status_type` VARCHAR(255) DEFAULT NULL,
   `description` VARCHAR(255) DEFAULT NULL,
+  `color` VARCHAR(8) DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =5;
+  AUTO_INCREMENT =1;
 
 --
 -- Zrzut danych tabeli `status`
 --
 
-INSERT INTO `status` (`id`, `status_type`, `description`) VALUES
-  (1, 'Oczekuje', 'Rezerwacja oczekuje na potwierdzenie'),
-  (2, 'Potwierdzono', 'Potwierdzono ale jeszcze nei zaplacono'),
-  (3, 'Zapłacono', 'Gotowa rezerwacja'),
-  (4, 'Anulowano', 'Rezerwacja do usunięcia');
+INSERT INTO `status` (`id`, `status_type`, `description`, `color`) VALUES
+  (1, 'Oczekuje', 'Rezerwacja oczekuje na potwierdzenie', '#478903'),
+  (2, 'Potwierdzono', 'Potwierdzono ale jeszcze nei zaplacono', '#0893cf'),
+  (3, 'Zapłacono', 'Gotowa rezerwacja', '#fff800'),
+  (4, 'Anulowano', 'Rezerwacja do usunięcia', '#b11262');
 
 -- --------------------------------------------------------
 
@@ -348,7 +350,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
-  AUTO_INCREMENT =3;
+  AUTO_INCREMENT =1;
 
 --
 -- Zrzut danych tabeli `user`
@@ -356,9 +358,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `pesel`, `nip`, `email`, `address_id`, `phone_number`, `pass`, `user_type`, `register_date`, `update_date`)
 VALUES
-  (1, 'Zenon', 'Breszka', 90030801234, NULL, 'z@gmail.pl', 1, '792011166', 'admin', 'ADMIN', '2014-01-04 09:11:25',
+  (1, 'Zenon', 'Breszka', 90030801234, NULL, 'admin@gmail.pl', 1, '792011166', 'admin', 'ADMIN', '2014-01-04 09:11:25',
    NULL),
-  (2, 'Rysiu', 'Hebel', 80030801234, NULL, 'r@gmail.pl', 2, '888011166', 'user', 'EMPLOYEE', '2014-01-04 09:11:25',
+  (2, 'Rysiu', 'Hebel', 83030801134, NULL, 'emp@gmail.pl', 2, '888011166', 'emp', 'EMPLOYEE', '2014-01-04 09:11:25',
+   NULL),
+  (3, 'Marek', 'Nowak', 80070801234, NULL, 'owner@gmail.pl', 3, '555011166', 'owner', 'OWNER', '2014-01-04 09:11:25',
+   NULL),
+  (4, 'Mariusz', 'Walec', 80070801234, NULL, 'emp2@gmail.pl', 2, '555011166', 'emp2', 'EMPLOYEE', '2014-01-04 09:11:25',
    NULL);
 
 /*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;

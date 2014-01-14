@@ -25,4 +25,9 @@ public class RoomDAOImpl extends GenericDAOImpl<Room, Long> implements RoomDAO {
         return rooms;
     }
 
+    @Override
+    public void deleteByID(Long id) {
+        deleteByID("Room", id);
+    }
+
 }

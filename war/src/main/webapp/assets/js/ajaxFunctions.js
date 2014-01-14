@@ -2,7 +2,6 @@ jQuery(function () {
     ajaxInclude();
     ajaxDefaultIncudeOnStart();
 });
-
 function ajaxInclude() {
     var menuSelectors = '#menu, #top-menu';
     jQuery(menuSelectors).on('click', 'a[data-url]', function () {
@@ -32,7 +31,10 @@ function createTableWithDataFromDB(params) {
         url: ajaxActions.get,
         success: function (data) {
             var aaData = eval(data).data;
-            if (aaData != undefined && aaData[0] != undefined && aaData[0][0] != "ERROR!!!") {
+            if (aaData == undefined) {
+                $('#' + tableContainerId).html("No data!");
+            }
+            else if (aaData != undefined && aaData[0] != undefined && aaData[0][0] != "ERROR!!!") {
                 for (var param in tableParams) {
                     dataTableParams[param] = tableParams[param];
                 }
@@ -41,7 +43,7 @@ function createTableWithDataFromDB(params) {
                 dataTableParams.bJQueryUI = true;
                 dataTableParams.bDestroy = true;
                 dataTableParams.bDeferRender = true;
-                dataTableParams.aoColumnDefs = [];
+                dataTableParams.aoColumnDefs = dataTableParams.aoColumnDefs || [];
 
                 if (dataTableParams.infoColumn != undefined) {
                     var columnNo = dataTableParams.infoColumn;
@@ -107,6 +109,18 @@ function createTableWithDataFromDB(params) {
 
 }
 
+function generateAlertSuccess($resultContainer, message) {
+    $resultContainer.html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong>" + message + "</div>").show();
+    setTimeout(function () {
+        $resultContainer.hide()
+    }, 2000);
+}
+function generateAlertError($resultContainer, message) {
+    $resultContainer.html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> " + message + "</div>").show();
+    setTimeout(function () {
+        $resultContainer.hide();
+    }, 2000);
+}
 
 function deleteRow(that, action) {
     if (confirm("Are you sure?")) {
@@ -114,6 +128,7 @@ function deleteRow(that, action) {
         var $thisRow = $this.parents('tr');
         var index = $thisRow.find('td:first').text();
         var table = $this.parents('table').dataTable();
+        var $resultContainer = jQuery('#server-messages');
 
         $.ajax({
             type: 'POST',
@@ -121,13 +136,20 @@ function deleteRow(that, action) {
             data: {dataFrom: "{'index':'" + index + "'}"},
             success: function (msg) {
                 console.log(action, msg);
-                if (msg.data == "success") {
-                    $thisRow.trigger("rowclick");
-                    $thisRow.removeClass('row-selected');
-                    table.fnDeleteRow($thisRow[0]);
-                } else {
-                    window.alert("Error occured during executing " + action + " action!\n" + msg.data);
+                try {
+                    if (msg.data[0][0] == "success") {
+                        $thisRow.trigger("rowclick");
+                        $thisRow.removeClass('row-selected');
+                        table.fnDeleteRow($thisRow[0]);
+                    } else {
+                        generateAlertError($resultContainer, "Error occured during deleting action!");
+                    }
+                } catch (error) {
+                    generateAlertError($resultContainer, "JavaScript ERROR: " + error);
                 }
+            },
+            error: function (msg) {
+                generateAlertError($resultContainer, "Wystąpił bład podczas zapisu do bazy danych!");
             }
         });
     }
@@ -234,6 +256,7 @@ function bindSelectTable(selectId, tableId, multiselectOpt) {
     }, 1000);
 }
 
+
 function ajaxSubmit(formId, resultContainerId) {
     var $form = jQuery('#' + formId);
     var $resultContainer = jQuery('#' + resultContainerId);
@@ -247,23 +270,22 @@ function ajaxSubmit(formId, resultContainerId) {
             data: dataFromForm,
             dataType: "json",
             error: function () {
-                $resultContainer.html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Wystąpił bład podczas zapisu do bazy danych!</div>").show();
-                setTimeout(function () {
-                    $resultContainer.hide()
-                }, 2000);
+                generateAlertError($resultContainer, "Wystąpił bład podczas zapisu do bazy danych!");
             },
-            success: function () {
-                $resultContainer.html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> Operacja przbiegla pomyślnie</div>").show();
-                setTimeout(function () {
-                    $resultContainer.hide()
-                }, 2000);
+            success: function (msg) {
+                try{
+                    if (msg.data[0][0] == "success") {
+                        generateAlertSuccess($resultContainer, "Operacja przbiegla pomyślnie");
+                    } else {
+                        generateAlertError($resultContainer, "Error occured during add action!");
+                    }
+                } catch(error){
+                    generateAlertError($resultContainer, "JavaScript ERROR: "+error);
+                }
             }
         });
     } else {
-        $resultContainer.html("<div class='alert alert-danger fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Error!</strong> Błędnie wypełniony formularz!</div>").show();
-        setTimeout(function () {
-            $resultContainer.hide()
-        }, 2000);
+        generateAlertError($resultContainer, "Błędnie wypełniony formularz!")
     }
 
     return false;
@@ -271,8 +293,18 @@ function ajaxSubmit(formId, resultContainerId) {
 
 function formValidate(formId, rules) {
 
+
     jQuery.validator.addMethod("accept", function (value, element, param) {
         return value.match(new RegExp("^" + param + "$"));
+    });
+    jQuery.validator.addMethod("letter_and_digit", function (value, element, param) {
+        return value.match(new RegExp("^[a-zA-Z0-9 ążźćśóęłĘÓĄŚŁŻŹŃń,.-]+$"));
+    });
+    jQuery.validator.addMethod("letter", function (value, element, param) {
+        return value.match(new RegExp("^[a-zA-Z ążźćśóęłĘÓĄŚŁŻŹŃń,.-]+$"));
+    });
+    jQuery.validator.addMethod("phone", function (value, element, param) {
+        return value.match(new RegExp("^[0-9 -+()]+$"));
     });
 
     $('#' + formId).validate({
@@ -288,6 +320,13 @@ function formValidate(formId, rules) {
         unhighlight: function (element, errorClass, validClass) {
             $(element).parents('.form-group').removeClass('has-error').addClass('has-success');
         }
+    });
+
+    jQuery.extend(jQuery.validator.messages, {
+        accept: "Please fix this field.",
+        letter_and_digit: "Please enter only letters and digits.",
+        letter: "Please enter only letters.",
+        phone: "Please enter a valid phone number."
     });
 }
 

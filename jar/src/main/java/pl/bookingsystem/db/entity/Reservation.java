@@ -51,19 +51,13 @@ public class Reservation implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "room_id")})
     private Set<Room> rooms = new HashSet<Room>();
 
+    @Column(name = "price")
+    private Double price;
+
     public Reservation() {
     }
 
-    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Client client, Status status) {
-        this.name = name;
-        this.date_from = date_from;
-        this.date_to = date_to;
-        this.person_count = person_count;
-        this.client = client;
-        this.status = status;
-    }
-
-    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Client client, Status status, List<Room> rooms) {
+    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Client client, Status status, List<Room> rooms, Double price) {
         this.name = name;
         this.date_from = date_from;
         this.date_to = date_to;
@@ -71,6 +65,7 @@ public class Reservation implements Serializable {
         this.client = client;
         this.status = status;
         this.rooms.addAll(rooms);
+        this.price = price;
     }
 
     public Long getId() {
@@ -151,6 +146,14 @@ public class Reservation implements Serializable {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
 

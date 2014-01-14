@@ -24,7 +24,7 @@
     <!-- Metis core stylesheet -->
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/dashboard.css">
-<%--<link rel="stylesheet" href="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.css">--%>
+    <%--<link rel="stylesheet" href="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.css">--%>
 
     <!--Modernizr 3.0-->
     <script src="./assets/lib/modernizr-build.min.js"></script>
@@ -61,9 +61,9 @@
                     </a>
                 </div>
                 <div class="btn-group">
-                    <a data-url="./modules/admin/pages/settings.jsp" data-placement="#context"
+                    <a data-url="./views/account_settings/settings.jsp" data-placement="#context"
                        data-original-title="Settings" class="btn btn-warning btn-sm" id="settings">
-                        <i class="fa fa-cog"></i>
+                        <i class="fa fa-cogs"></i>
                     </a>
                 </div>
                 <div class="btn-group">
@@ -85,12 +85,12 @@
             <!-- .nav -->
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#" data-url="./modules/admin/pages/reservation-browse.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
                         <i class="fa fa-tasks"></i>&nbsp;Reservations
                     </a>
                 </li>
                 <li>
-                    <a href="#" data-url="./modules/admin/pages/client-browse.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/client/client-browse.jsp" data-placement="#context">
                         <i class="fa fa-users"></i>&nbsp;Clients
                     </a>
                 </li>
@@ -143,6 +143,7 @@
                 <span class="link-title">Dashboard</span>
             </a>
         </li>
+        <%--RESRVATIONS--%>
         <li class="">
             <a href="#">
                 <i class="fa fa-tasks"></i>&nbsp;Reservations
@@ -150,73 +151,128 @@
             </a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./modules/admin/pages/reservation-add.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/reservation/reservation-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
-                    <a href="#" data-url="./modules/admin/pages/reservation-browse.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
                         <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
                 </li>
             </ul>
         </li>
+        <%--CLIENTS--%>
         <li class="">
-            <a href="javascript:;">
+            <a href="#">
                 <i class="fa fa-users"></i>&nbsp;Clients
                 <span class="fa arrow"></span>
             </a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./modules/admin/pages/client-add.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/client/client-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new</a>
                 </li>
                 <li class="">
-                    <a href="#" data-url="./modules/admin/pages/client-browse.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/client/client-browse.jsp" data-placement="#context">
                         <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
                 </li>
             </ul>
         </li>
+        <%--ROOMS--%>
         <li>
             <a href="#">
-                <i class="fa fa-suitcase"></i>&nbsp; Rooms
+                <i class="fa fa-bitbucket"></i>&nbsp; Rooms
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./modules/admin/pages/room-add.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/room/room-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
-                    <a href="#" data-url="./modules/admin/pages/room-browse.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/room/room-browse.jsp" data-placement="#context">
                         <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
                 </li>
             </ul>
         </li>
+        <%--ADDITIONS--%>
         <li>
-            <a href="#" data-url="./modules/admin/pages/status-add.jsp" data-placement="#context">
-                <i class="fa fa fa-plus"></i>&nbsp;Status </a>
+            <a href="#">
+                <i class="fa fa-foursquare"></i>&nbsp; Additions
+                <span class="fa arrow"></span></a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/additions/additions-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/additions/additions-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
         </li>
-
+        <%--STATUSES--%>
         <li>
-            <a href="#" data-url="./modules/admin/pages/prices.jsp" data-placement="#context">
-                <i class="fa fa-btc"></i>&nbsp;Prices</a>
+            <a href="#">
+                <i class="fa fa-warning"></i>&nbsp; Statuses
+                <span class="fa arrow"></span></a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/status/status-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/status/status-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
         </li>
+        <%--HOTEL--%>
         <li>
-            <a href="#" data-url="./modules/admin/pages/additions.jsp" data-placement="#context">
-                <i class="fa fa-foursquare"></i>&nbsp;Additions</a>
+            <a href="#">
+                <i class="fa fa-plus"></i>&nbsp; Hotels
+                <span class="fa arrow"></span></a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/hotel/hotel-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/hotel/hotel-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
         </li>
+        <%--USERS--%>
         <li>
-            <a href="#" data-url="./modules/admin/pages/hotel-data.jsp" data-placement="#context">
-                <i class="fa  fa-home"></i>&nbsp;Hotel Data</a>
+            <a href="#">
+                <i class="fa fa-credit-card"></i>&nbsp; Users
+                <span class="fa arrow"></span></a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/user/user-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/user/user-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
         </li>
+        <%--USERS--%>
         <li>
-            <a href="#" data-url="./modules/admin/pages/user-data.jsp" data-placement="#context">
-                <i class="fa fa-credit-card"></i>&nbsp;User Data</a>
+            <a href="#">
+                <i class="fa fa-bar-chart-o"></i>&nbsp; Statistics
+                <span class="fa arrow"></span></a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/statistics/clients.jsp" data-placement="#context">
+                        <i class="fa fa fa-user"></i>&nbsp;Clients </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/statistics/income.jsp" data-placement="#context">
+                        <i class="fa fa-money"></i>&nbsp;Financial</a>
+                </li>
+            </ul>
         </li>
-        <%--
-                <li class="nav-divider"></li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-sign-in"></i>&nbsp;Login Page</a>
-                </li>--%>
     </ul>
     <!-- /#menu -->
 </div>
@@ -224,7 +280,7 @@
 <div id="content">
     <div class="outer">
         <div class="inner">
-            <div id=context data-default="./modules/admin/pages/reservation-browse.jsp"></div>
+            <div id=context data-default="./views/reservation/reservation-browse.jsp"></div>
         </div>
     </div>
 

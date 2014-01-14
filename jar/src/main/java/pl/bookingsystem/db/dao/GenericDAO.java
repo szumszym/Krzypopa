@@ -1,9 +1,11 @@
 package pl.bookingsystem.db.dao;
 
 import org.hibernate.Query;
+import pl.bookingsystem.db.entity.Room;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public interface GenericDAO<T, ID extends Serializable> {
 
@@ -27,4 +29,5 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     T selectByID(Class clazz, ID id);
 
+    List selectByIDS(Class clazz, List<String> ids);
 }

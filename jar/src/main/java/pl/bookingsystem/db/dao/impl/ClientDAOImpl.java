@@ -13,6 +13,34 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
 
     private static Logger logger = Logger.getLogger(ClientDAOImpl.class);
 
+
+    @Override
+    public Client checkRegisteredClient(String clientname, String password) {
+        Client client = null;
+        Session session = null;
+        try {
+            String sql = "SELECT c FROM Client c WHERE c.email = :email AND c.password = :password";
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            Query query = session.createQuery(sql);
+            query.setParameter("email", clientname).setParameter("password", password);
+
+            client = selectOne(query);
+            if (client != null) return client;
+
+        } catch (NonUniqueResultException ex) {
+            System.out.println("Query returned more than one results.");
+        } catch (HibernateException ex) {
+            System.out.println("FIND Client.java: " + ex.getMessage());
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
+
     public Client findByClientName(String name, String surname) {
         Client client = null;
         try {

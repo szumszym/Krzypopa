@@ -9,9 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name = "room")
 
-public class
-        Room implements Serializable {
-
+public class Room implements Serializable {
 
     @Column(name = "id", unique = true)
     @Id
@@ -46,69 +44,53 @@ public class
 
     @ManyToMany(mappedBy = "rooms")
     private Set<Reservation> reservations = new HashSet<Reservation>();
-    //TODO: add Price field   ?
+
+    @Column(name = "price")
+    private Double price;
+
+    @Column(name = "published")
+    private Boolean published;
 
     public Room() {
     }
 
     /**
-     * Constructor without reservation, addidtions and hotel
-     */
-    public Room(Integer no_room, String name, String bed, Integer capacity) {
-        this.no_room = no_room;
-        this.name = name;
-        this.bed = bed;
-        this.capacity = capacity;
-    }
-
-    /**
      * Constructor without reservation and addidtions
      */
-    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel) {
+    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Double price) {
         this.no_room = no_room;
         this.name = name;
         this.bed = bed;
         this.capacity = capacity;
         this.hotel = hotel;
+        this.price = price;
+    }
+
+    /**
+     * Constructor without reservation
+     */
+    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Set<Addition> additions, Double price) {
+        this.no_room = no_room;
+        this.name = name;
+        this.bed = bed;
+        this.capacity = capacity;
+        this.hotel = hotel;
+        this.additions = additions;
+        this.price = price;
     }
 
     /**
      * Constructor with all fields
      */
-    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Set<Addition> additions) {
+    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Set<Addition> additions, Set<Reservation> reservations, Double price) {
         this.no_room = no_room;
         this.name = name;
         this.bed = bed;
         this.capacity = capacity;
         this.hotel = hotel;
         this.additions = additions;
-    }
-
-    public Room(Integer no_room, String name, String bed, Integer capacity, String description, Hotel hotel) {
-        this.no_room = no_room;
-        this.name = name;
-        this.bed = bed;
-        this.capacity = capacity;
-        this.description = description;
-        this.hotel = hotel;
-    }
-
-    public Room(Integer no_room, String name, String bed, Integer capacity, String description, Hotel hotel, Set<Addition> additions) {
-        this.no_room = no_room;
-        this.name = name;
-        this.bed = bed;
-        this.capacity = capacity;
-        this.description = description;
-        this.hotel = hotel;
-        this.additions = additions;
-    }
-
-    public Room(Integer no_room, String name, String bed, Integer capacity, String description) {
-        this.no_room = no_room;
-        this.name = name;
-        this.bed = bed;
-        this.capacity = capacity;
-        this.description = description;
+        this.reservations = reservations;
+        this.price = price;
     }
 
     public Integer getNo_room() { return no_room; }
@@ -134,7 +116,7 @@ public class
     public Set<Addition> getAdditions() { return additions; }
 
     public String getAdditions(int limit){
-        String lista = "None";
+        String lista = "-";
 
         int additionSize= this.additions.size();
         if(additionSize>limit){
@@ -170,5 +152,20 @@ public class
 
     public void setDescription(String description) { this.description = description; }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
 }
 

@@ -152,9 +152,15 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public Set<Hotel> getHotels() { return hotels; }
+    public Set<Hotel> getHotels() {
+        return hotels;
+    }
 
-    public void setHotels(Set<Hotel> hotels) { this.hotels = hotels; }
+    public void setHotels(Set<Hotel> hotels) {
+        this.hotels = hotels;
+    }
 
-    public void setHotel(Hotel hotel) { this.hotels.add(hotel); }
+    public void setHotel(Hotel hotel) {
+        this.hotels.add(hotel);
+    }
 }

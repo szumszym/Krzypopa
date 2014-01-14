@@ -41,7 +41,6 @@
         <mapping class="pl.bookingsystem.db.entity.Hotel"/>
         <mapping class="pl.bookingsystem.db.entity.Room"/>
         <mapping class="pl.bookingsystem.db.entity.Addition"/>
-        <mapping class="pl.bookingsystem.db.entity.Price"/>
         <mapping class="pl.bookingsystem.db.entity.Reservation"/>
         <mapping class="pl.bookingsystem.db.entity.Status"/>
         <mapping class="pl.bookingsystem.db.entity.Invoice"/>

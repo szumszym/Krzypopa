@@ -7,8 +7,11 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.SessionAware;
+import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.UserDAO;
+import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
+import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.User;
 
 import java.util.Map;
@@ -25,21 +28,40 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
     private Map<String, Object> session;
 
     @Action(value = "dashboard", results = {
-            @Result(name = "userlogged", location = "/modules/user/dashboard.jsp"),
             @Result(name = "adminlogged", location = "/modules/admin/dashboard.jsp"),
+            @Result(name = "employeelogged", location = "/modules/employee/dashboard.jsp"),
+            @Result(name = "ownerlogged", location = "/modules/owner/dashboard.jsp"),
+            @Result(name = "clientlogged", location = "/modules/client/dashboard.jsp"),
+
             @Result(name = "error", location = "/modules/login/register_user.jsp")  //TODO: incorrect user or pass moze byc wyswietlany na tej samej stronie
     })
-    public String execute() {
+    public String checkCredentials() {
 
         UserDAO userManager = new UserDAOImpl();
+        User user = userManager.checkRegisteredUser(username, password);
+        if (user != null) {
 
-        User.Type userType = userManager.checkRegisteredUser(username, password);
-        if (User.Type.ADMIN.equals(userType)) {
+            User.Type userType = user.getType();
             session.put("username", getUsername());
-            return "adminlogged";
-        } else if (User.Type.EMPLOYEE.equals(userType)) {
-            session.put("username", getUsername());
-            return "userlogged";
+            session.put("user", user);
+            //TODO: session.put("isClient", false);
+
+            if (User.Type.ADMIN.equals(userType)) {
+                return "adminlogged";
+            } else if (User.Type.EMPLOYEE.equals(userType)) {
+                return "employeelogged";
+            } else if (User.Type.OWNER.equals(userType)) {
+                return "ownerlogged";
+            }
+        } else {
+            ClientDAO clientManager = new ClientDAOImpl();
+            Client client = clientManager.checkRegisteredClient(username, password);
+            if (client != null) {
+                session.put("client", client);
+                //TODO: session.put("isClient", true);
+                return "clientlogged";
+            }
+
         }
         return ERROR;
     }
@@ -52,8 +74,8 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
         setUsername("");
         setPassword("");
         session.put("username", "");
-        application.put("username", "");
-        application.put("password", "");
+        session.put("user", null);
+        session.put("client", null);
         return SUCCESS;
     }
 

@@ -3,6 +3,7 @@ package pl.bookingsystem.db.dao.impl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
@@ -22,6 +23,25 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
         List<Room> rooms = (List<Room>) query.list();
         session.close();
         return rooms;
+    }
+
+    public List selectAllWithAddress() {
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+        Session session = sf.openSession();
+        Transaction tx = session.beginTransaction();
+        List<? extends Object> list = null;
+        Query query = session.createQuery("from Hotel as h left join fetch address");
+        list = query.list();
+        tx.commit();
+        session.close();
+        return list;
+    }
+    @Override
+    public void addRoom(Room room, Hotel hotel) {
+        Session session = HibernateUtil.start();
+        hotel.getRooms().add(room);
+        session.save(hotel);
+        HibernateUtil.stop(true);
     }
 
 

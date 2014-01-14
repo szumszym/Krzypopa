@@ -14,4 +14,7 @@ public interface HotelDAO extends GenericDAO<Hotel, Long> {
 
     public List<Room> getRooms(Long hotel_id);
 
+    public List selectAllWithAddress();
+
+    void addRoom(Room room, Hotel hotel);
 }

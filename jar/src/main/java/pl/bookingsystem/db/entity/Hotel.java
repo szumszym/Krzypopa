@@ -39,7 +39,7 @@ public class Hotel implements Serializable {
                     nullable = false, updatable = false)})
     private Set<Client> clients;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "hotel_user", joinColumns = {
             @JoinColumn(name = "hotel_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "user_id",
@@ -50,10 +50,6 @@ public class Hotel implements Serializable {
     private Set<Room> rooms = new LinkedHashSet<Room>();
 
 
-    public void addRoom(Room room) {
-        room.setHotel(this);
-        this.rooms.add(room);
-    }
     public Hotel(String name, String description, String phone_number, String email, Address address) {
         this.name = name;
         this.description = description;
@@ -61,6 +57,7 @@ public class Hotel implements Serializable {
         this.email = email;
         this.address = address;
     }
+
     public Hotel(String name, String description, String phone_number, String email, Address address, Set<User> users) {
         this.name = name;
         this.description = description;
@@ -78,7 +75,6 @@ public class Hotel implements Serializable {
         this.address = address;
         this.users.add(user);
     }
-
 
 
     public Hotel(String name, String phone_number, String email, Address address, Set<Client> clients, Set<User> users) {
@@ -178,26 +174,6 @@ public class Hotel implements Serializable {
         this.users = users;
     }
 
-    public User getOwner(){
-
-        int i=0;
-        int userSize= this.users.size();
-        User u;
-        User[] users = this.users.toArray(new User[0]);
-        do {
-            u=users[i];
-            System.out.println("TYP: "+u.getType());
-            i++;
-            if(u.getType() == User.Type.OWNER){
-                return u;
-            }
-        } while (i<userSize);
-        return null;
-    }
-    public void setOwner(User user){
-        user.setType(User.Type.OWNER);
-        this.users.add(user);
-    }
     public Set<Room> getRooms() {
         return rooms;
     }
@@ -206,5 +182,7 @@ public class Hotel implements Serializable {
         this.rooms = rooms;
     }
 
-    public void setRoom(Room room){this.rooms.add(room);}
+    public void setRoom(Room room) {
+        this.rooms.add(room);
+    }
 }

@@ -8,8 +8,15 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.Session;
+import pl.bookingsystem.db.dao.GenericDAO;
+import pl.bookingsystem.db.dao.impl.GenericDAOImpl;
+import pl.bookingsystem.db.entity.Hotel;
+import pl.bookingsystem.db.entity.User;
+import pl.bookingsystem.db.utils.HibernateUtil;
 
 import java.util.Map;
+import java.util.Set;
 
 
 @Namespace("")
@@ -26,8 +33,12 @@ public class AdminDashboardAction extends ActionSupport implements SessionAware,
             @Result(name = "success", location = "/modules/admin/dashboard.jsp")
     })
     public String execute() {
-        setUsername((String) session.get("username")); //retrieve username from session context
-        setPassword((String) application.get("password"));
+        User user = (User) session.get("user");
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+        Set<Hotel> hotels = user.getHotels();
+        System.out.println(hotels.size());
+        session.clear();
         return SUCCESS;
     }
 

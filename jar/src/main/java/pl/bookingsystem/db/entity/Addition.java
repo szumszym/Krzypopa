@@ -21,13 +21,12 @@ public class Addition implements Serializable {
 
     @Column(name = "description")
     private String description;
-    /*
-        @Column(name = "price")
-        private Integer pirce;
 
-        @Column(name = "publish")
-        private Boolean publish;
-    */
+    @Column(name = "price")
+    private Double price;
+
+    @Column(name = "published")
+    private Boolean published;
 
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "additions")
@@ -78,19 +77,28 @@ public class Addition implements Serializable {
 
     public void setRooms(Set<Room> rooms) { this.rooms = rooms; }
 
-/*
-    public Integer getPirce() { return pirce; }
-
-    public void setPirce(Integer pirce) { this.pirce = pirce; }
-
-
-    public Boolean getPublish() {
+   /* public Boolean getPublish() {
         return publish;
     }
 
     public void setPublish(Boolean publish) {
         this.publish = publish;
+    }*/
+
+    public Double getPrice() {
+        return price;
     }
-    */
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
 }
 

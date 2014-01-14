@@ -23,38 +23,25 @@ public class Status implements Serializable {
 
     @OneToMany(mappedBy = "status")
     private Set<Reservation> reservations = new HashSet<Reservation>();
-/*
 
     @Column (name = "color")
     private String color;
 
-    @Column(name = "publish")
-    private Boolean publish;
-
-*/
-
     public Status() {
     }
 
-    public Status(String type, String description) {
+    public Status(String type, String description, String color) {
         this.type = type;
         this.description = description;
+        this.color = color;
     }
 
-    public Status(String type, String description, Set<Reservation> reservations) {
-        this.type = type;
-        this.description = description;
-        this.reservations = reservations;
-    }
-
-/*    public Status(String type, String description, Set<Reservation> reservations, String color) {
+    public Status(String type, String description, String color, Set<Reservation> reservations) {
         this.type = type;
         this.description = description;
         this.reservations = reservations;
         this.color = color;
-        this.publish =true;
     }
-*/
 
     public Set<Reservation> getReservations() {
         return reservations;
@@ -84,17 +71,9 @@ public class Status implements Serializable {
         this.description = description;
     }
 
-/*
-    public Boolean getPublish() { return publish; }
-
-    public void setPublish(Boolean publish) { this.publish = publish; }
-
     public String getColor() { return color; }
 
     public void setColor(String color) { this.color = color; }
-
-*/
-
 
     @Override
     public String toString() {

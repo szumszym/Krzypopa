@@ -13,3 +13,10 @@
 .table-striped > tbody > tr:nth-child(odd).row-selected > td {
     background-color: #357ebd;
 }
+
+.status-color {
+    width: 50%;
+    height: 30px;
+    border-radius: 100%;
+    margin: 0 auto;
+}
