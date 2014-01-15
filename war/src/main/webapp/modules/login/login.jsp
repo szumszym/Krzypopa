@@ -10,26 +10,13 @@
     <link rel="stylesheet" href="./assets/lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/lib/magic/magic.css">
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                    m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-        ga('create', 'UA-1669764-16', 'onokumus.com');
-        ga('send', 'pageview');
-    </script>
 </head>
 <body class="login">
 <div class="container">
     <div class="text-center">
-        <a href="/bookingsystem"><img src="./assets/img/logo.png" alt="Metis Logo"></a>
+        <s:a action="" namespace="">
+            <img src="./assets/img/logo.png" alt="Metis Logo">
+        </s:a>
     </div>
     <div class="tab-content">
         <div id="login" class="tab-pane active">
