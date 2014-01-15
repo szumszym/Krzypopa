@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
-<html>
 <head>
     <title>BookingSystem</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
