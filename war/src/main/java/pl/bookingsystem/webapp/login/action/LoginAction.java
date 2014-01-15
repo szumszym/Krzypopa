@@ -19,9 +19,7 @@ import java.util.Map;
 
 @Namespace("/")
 @ResultPath(value = "/")
-public class LoginAction extends ActionSupport implements SessionAware, ApplicationAware {
-
-    private Map<String, Object> application;
+public class LoginAction extends ActionSupport implements SessionAware {
 
     private String username;
     private String password;
@@ -113,11 +111,5 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public void setApplication(Map<String, Object> application) {
-        this.application = application;
-
     }
 }
