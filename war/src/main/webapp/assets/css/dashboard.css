@@ -20,3 +20,43 @@
     border-radius: 100%;
     margin: 0 auto;
 }
+
+.menu-select-hotel {
+    float: right;
+    padding-top: 5px;
+}
+
+
+/*TODO: position fixed for menu?*/
+/*
+#top{
+    position: fixed;
+    z-index: 1001;
+    width: 100%;
+    background: #404040;
+}
+
+#left{
+    position: fixed;
+    z-index: 1001;
+    top: 113px;
+    background: #404040;
+}
+
+#content{
+    position: absolute;
+    top: 114px;
+    left: 220px;
+    padding-bottom: 48px;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1001;
+}
+
+html {
+    background: #333;
+}*/

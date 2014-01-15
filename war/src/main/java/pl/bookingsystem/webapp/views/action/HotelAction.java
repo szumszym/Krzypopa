@@ -5,6 +5,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.LazyInitializationException;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.HotelDAO;
@@ -16,14 +17,16 @@ import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
 @Namespace("")
-public class HotelAction extends ActionSupport {
+public class HotelAction extends ActionSupport implements SessionAware {
 
     private String[][] data;
+    private Map<String, Object> session;
 
     public String[][] getData() {
 
@@ -45,7 +48,7 @@ public class HotelAction extends ActionSupport {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
-    public String dataFromDBsmall() {
+    public String dataFromDB() {
         try {
             HotelDAO hotelManager = new HotelDAOImpl();
             List<Hotel> hotels = hotelManager.selectAllWithAddress();
@@ -66,6 +69,33 @@ public class HotelAction extends ActionSupport {
                 data[j] = tableS;
             }
 
+            return SUCCESS;
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "hotel-getOwnerList", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String getOwnerHotelList() {
+        try {
+            User user = (User) session.get("user");
+            Long userId = user.getId();
+            HotelDAO hotelManager = new HotelDAOImpl();
+            List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(userId);
+            int size = hotels.size();
+            data = new String[size][];
+            for (int j = 0; j < hotels.size(); j++) {
+                String[] tableS = new String[2];
+                Hotel h = hotels.get(j);
+                tableS[0] = String.valueOf(h.getId());
+                tableS[1] = String.valueOf(h.getName());
+                data[j] = tableS;
+            }
             return SUCCESS;
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
@@ -118,4 +148,8 @@ public class HotelAction extends ActionSupport {
 
     }
 
+    @Override
+    public void setSession(Map<String, Object> stringObjectMap) {
+        this.session = stringObjectMap;
+    }
 }

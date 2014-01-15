@@ -122,17 +122,21 @@
 
         <!-- ."main-bar -->
         <div class="main-bar">
-            <h3>
-                <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
+            <h3 class="col-lg-4">
+            <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
 
-            <div class="menu-select-hotel"><h3>Select Hotel:&nbsp;</h3>
-                <select id="owner-select-hotel" data-action="selecthotel">
-                    <option>qwe</option>
-                    <option>
-                    </option>
-                    <option>sad</option>
-                    <option>234</option>
-                </select>
+            <div class="menu-select-hotel col-lg-5" style="">
+                <div class="form-horizontal" style="">
+                    <div class="form-group" style="margin:0;">
+                        <label style="color:white;padding:0" class="control-label col-lg-5">
+                            Select Hotel: </label>
+                        <div class="col-lg-5">
+                            <select id="owner-select-hotel" data-action="owner/select-hotel" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
         <!-- /.main-bar -->
@@ -349,6 +353,8 @@
 <script src="./assets/js/app/metisMenu.js"></script>
 <script src="./assets/js/main.js"></script>
 <script src="./assets/js/ajaxFunctions.js"></script>
+<script src="./assets/js/selectHotel.js"></script>
+
 <%--<script src="./assets/js/app/formGeneral.js"></script>--%>
 
 <%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>

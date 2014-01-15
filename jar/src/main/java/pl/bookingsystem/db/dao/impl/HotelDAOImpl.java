@@ -3,11 +3,9 @@ package pl.bookingsystem.db.dao.impl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
-import pl.bookingsystem.db.entity.User;
 import pl.bookingsystem.db.utils.HibernateUtil;
 
 import java.util.List;
@@ -15,27 +13,28 @@ import java.util.List;
 public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Room> getRooms(Long hotel_id) {
-
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-        Query query = session.createQuery("select h.rooms from Hotel h where h.id = :hotel_id");
-        query.setParameter("hotel_id", hotel_id);
-        List<Room> rooms = (List<Room>) query.list();
-        session.close();
-        return rooms;
+        return selectMany("select h.rooms from Hotel h where h.id ="+String.valueOf(hotel_id));
     }
 
     public List selectAllWithAddress() {
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-        Transaction tx = session.beginTransaction();
-        List<? extends Object> list = null;
-        Query query = session.createQuery("from Hotel as h left join fetch h.address");
-        list = query.list();
-        tx.commit();
-        session.close();
-        return list;
+        return selectMany("from Hotel as h left join fetch h.address");
     }
+
+    @Override
+    public List selectAllHotelsOfUser(String userId) {
+        return selectMany("select hotels from User as u left join u.hotels hotels where u.id=" + userId);
+    }
+
+    @Override
+    public List selectAllHotelsOfUser(Long userId) {
+        return selectAllHotelsOfUser(String.valueOf(userId));
+    }
+
+    @Override
+    public Hotel selectByID(String hotelId){
+        return selectByID(Hotel.class, Long.valueOf(hotelId));
+    }
+
     @Override
     public void addRoom(Room room, Hotel hotel) {
         Session session = HibernateUtil.start();

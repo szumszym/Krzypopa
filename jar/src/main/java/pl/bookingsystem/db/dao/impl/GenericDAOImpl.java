@@ -89,12 +89,11 @@ public class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T,
     }
 
     @Override
-    public List<T> selectMany(String hql) {
-        Session session = HibernateUtil.start(false);
+    public List selectMany(String hql) {
+        Session session = HibernateUtil.start();
         Query query = session.createQuery(hql);
-
-        List<T> t = (List<T>) query.list();
-        session.close();
+        List t = query.list();
+        HibernateUtil.stop();
         return t;
     }
 
