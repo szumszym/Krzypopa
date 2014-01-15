@@ -27,11 +27,15 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
     private String password;
     private Map<String, Object> session;
 
+    @Action(value="", results = {@Result(name = SUCCESS, location = "/modules/guest/index.jsp")})
+    public String returnToStartPage() {
+        return SUCCESS;
+    }
     @Action(value = "dashboard", results = {
-            @Result(name = "adminlogged", location = "/modules/admin/dashboard.jsp"),
-            @Result(name = "employeelogged", location = "/modules/employee/dashboard.jsp"),
-            @Result(name = "ownerlogged", location = "/modules/owner/dashboard.jsp"),
-            @Result(name = "clientlogged", location = "/modules/client/dashboard.jsp"),
+            @Result(name = "adminlogged", type="chain", location = "dashboard", params = {"namespace", "admin/"}),
+            @Result(name = "employeelogged", type="chain", location = "dashboard", params = {"namespace", "employee/"}),
+            @Result(name = "ownerlogged", type="chain", location = "dashboard", params = {"namespace", "owner/"}),
+            @Result(name = "clientlogged", type="chain", location = "dashboard", params = {"namespace", "client/"}),
 
             @Result(name = "error", location = "/modules/login/register_user.jsp")  //TODO: incorrect user or pass moze byc wyswietlany na tej samej stronie
     })
@@ -44,13 +48,16 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
             User.Type userType = user.getType();
             session.put("username", getUsername());
             session.put("user", user);
-            //TODO: session.put("isClient", false);
+            session.put("isClient", false);
 
             if (User.Type.ADMIN.equals(userType)) {
+                //TODO: get all hotels
                 return "adminlogged";
             } else if (User.Type.EMPLOYEE.equals(userType)) {
+                //TODO: get one hotel in which employee works
                 return "employeelogged";
             } else if (User.Type.OWNER.equals(userType)) {
+                //TODO: get all hotels of owner
                 return "ownerlogged";
             }
         } else {
@@ -58,7 +65,7 @@ public class LoginAction extends ActionSupport implements SessionAware, Applicat
             Client client = clientManager.checkRegisteredClient(username, password);
             if (client != null) {
                 session.put("client", client);
-                //TODO: session.put("isClient", true);
+                session.put("isClient", true);
                 return "clientlogged";
             }
 

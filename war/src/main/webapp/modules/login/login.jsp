@@ -29,7 +29,7 @@
 <body class="login">
 <div class="container">
     <div class="text-center">
-        <img src="./assets/img/logo.png" alt="Metis Logo">
+        <a href="/bookingsystem"><img src="./assets/img/logo.png" alt="Metis Logo"></a>
     </div>
     <div class="tab-content">
         <div id="login" class="tab-pane active">
@@ -64,6 +64,9 @@
             <li><a class="text-muted" href="#login" data-toggle="tab">Login</a></li>
             <li><a class="text-muted" href="#forgot" data-toggle="tab">Forgot Password</a></li>
             <li><a class="text-muted" href="#signup" data-toggle="tab">Signup</a></li>
+            <li><s:a action="" namespace="" cssClass="btn btn-primary">
+                Back
+            </s:a></li>
         </ul>
     </div>
 </div>

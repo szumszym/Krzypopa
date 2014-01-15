@@ -73,7 +73,7 @@
                     </a>
                 </div>
                 <div class="btn-group">
-                    <s:a action="logout" cssClass="btn btn-metis-1 btn-sm">
+                    <s:a action="logout" namespace="" cssClass="btn btn-metis-1 btn-sm">
                         <i class="fa fa-power-off"></i>
                     </s:a>
                 </div>

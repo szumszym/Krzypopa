@@ -110,7 +110,7 @@ function createTableWithDataFromDB(params) {
 }
 
 function generateAlertSuccess($resultContainer, message) {
-    $resultContainer.html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong>" + message + "</div>").show();
+    $resultContainer.html("<div class='alert alert-success fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Info!</strong> " + message + "</div>").show();
     setTimeout(function () {
         $resultContainer.hide()
     }, 2000);

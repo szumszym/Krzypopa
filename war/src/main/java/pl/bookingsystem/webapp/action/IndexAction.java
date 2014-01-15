@@ -7,6 +7,6 @@ import org.apache.struts2.convention.annotation.ResultPath;
 
 @Namespace("/")
 @ResultPath(value = "/")
-@Result(name = "success", location = "/modules/login/login.jsp")
+@Result(name = "success", location = "/modules/guest/index.jsp")
 public class IndexAction extends ActionSupport {
 }

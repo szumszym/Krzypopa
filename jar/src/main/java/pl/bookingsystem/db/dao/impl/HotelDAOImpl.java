@@ -30,7 +30,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
         Session session = sf.openSession();
         Transaction tx = session.beginTransaction();
         List<? extends Object> list = null;
-        Query query = session.createQuery("from Hotel as h left join fetch address");
+        Query query = session.createQuery("from Hotel as h left join fetch h.address");
         list = query.list();
         tx.commit();
         session.close();

@@ -73,7 +73,7 @@
                         </a>
                     </div>
                     <div class="btn-group">
-                        <s:a action="logout" cssClass="btn btn-metis-1 btn-sm">
+                        <s:a action="logout" namespace="" cssClass="btn btn-metis-1 btn-sm">
                             <i class="fa fa-power-off"></i>
                         </s:a>
                     </div>
@@ -143,6 +143,7 @@
                     <span class="link-title">Dashboard</span>
                 </a>
             </li>
+            <%--RESERVATIONS--%>
             <li class="">
                 <a href="#">
                     <i class="fa fa-tasks"></i>&nbsp;Reservations
@@ -159,6 +160,7 @@
                     </li>
                 </ul>
             </li>
+            <%--CLIENTS--%>
             <li class="">
                 <a href="javascript:;">
                     <i class="fa fa-users"></i>&nbsp;Clients
@@ -175,16 +177,38 @@
                     </li>
                 </ul>
             </li>
+            <%--ROOMS--%>
             <li>
                 <a href="#">
-                    <i class="fa fa-suitcase"></i>&nbsp; Rooms
+                    <i class="fa fa-bitbucket"></i>&nbsp; Rooms
                     <span class="fa arrow"></span></a>
                 <ul>
                     <li class="">
+                        <a href="#" data-url="./views/room/room-add.jsp" data-placement="#context">
+                            <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                    </li>
+                   <li class="">
                         <a href="#" data-url="./views/room/room-browse.jsp" data-placement="#context">
                             <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
                     </li>
                 </ul>
+            </li>
+            <%--ADDITIONS--%>
+            <li>
+                <a href="#">
+                    <i class="fa fa-foursquare"></i>&nbsp; Additions
+                    <span class="fa arrow"></span></a>
+                <ul>
+                    <li class="">
+                        <a href="#" data-url="./views/additions/additions-add.jsp" data-placement="#context">
+                            <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                    </li>
+                    <li class="">
+                        <a href="#" data-url="./views/additions/additions-browse.jsp" data-placement="#context">
+                            <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <!-- /#menu -->
     </div>

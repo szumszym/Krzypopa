@@ -19,9 +19,9 @@ import java.util.Map;
 import java.util.Set;
 
 
-@Namespace("")
+@Namespace("admin/")
 @ResultPath(value = "/")
-public class AdminDashboardAction extends ActionSupport implements SessionAware, ApplicationAware {
+public class DashboardAction extends ActionSupport implements SessionAware, ApplicationAware {
 
     private Map<String, Object> session;
 
@@ -33,12 +33,12 @@ public class AdminDashboardAction extends ActionSupport implements SessionAware,
             @Result(name = "success", location = "/modules/admin/dashboard.jsp")
     })
     public String execute() {
-        User user = (User) session.get("user");
+       /* User user = (User) session.get("user");
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.beginTransaction();
         Set<Hotel> hotels = user.getHotels();
         System.out.println(hotels.size());
-        session.clear();
+        session.clear();*/
         return SUCCESS;
     }
 

@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Namespace("/")
 @ResultPath(value = "/")
-public class AdminSettingsAction extends ActionSupport implements ApplicationAware, SessionAware {
+public class SettingsAction extends ActionSupport implements ApplicationAware, SessionAware {
 
 
     private Map<String, Object> session;
