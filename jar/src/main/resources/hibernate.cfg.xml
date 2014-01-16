@@ -21,7 +21,7 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
         <!-- Enable Hibernate's automatic session context management -->
-        <property name="current_session_context_class">thread</property>
+        <property name="hibernate.current_session_context_class">thread</property>
 
 
         <!-- Echo all executed SQL to stdout -->
