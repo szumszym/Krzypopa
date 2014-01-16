@@ -33,7 +33,6 @@ public class HibernateUtil {
         isSessionOpen = true;
         session = getSessionFactory().openSession();
         return session;
-
     }
 
     private static Session getCurrentSession() {
@@ -42,11 +41,7 @@ public class HibernateUtil {
     }
 
     public static Session getSession() {
-        if(isSessionOpen){
             return getCurrentSession();
-        } else{
-            return getNewSession();
-        }
     }
 
     public static void startTransaction() {
@@ -72,22 +67,24 @@ public class HibernateUtil {
     }
 
     public static void stop(boolean commit) {
-        if (commit) {
-            getTransaction().commit();
-        } else {
-            getTransaction().rollback();
+        if (session != null) {
+            if (transaction != null) {
+                if (commit) {
+                    getTransaction().commit();
+                } else {
+                    getTransaction().rollback();
+                }
+            }
+            getSession().close();
         }
-        getSession().close();
         transaction = null;
+        session = null;
         isSessionOpen = false;
     }
 
     public static void stopAll() {
         stop(false);
-        transaction = null;
-        session = null;
         sessionFactory = null;
-        isSessionOpen = false;
     }
 }
 
