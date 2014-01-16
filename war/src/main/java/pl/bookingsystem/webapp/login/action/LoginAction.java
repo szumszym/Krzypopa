@@ -21,14 +21,12 @@ import java.util.Map;
 @ResultPath(value = "/")
 public class LoginAction extends ActionSupport implements SessionAware {
 
-    private String username;
+    private String login;
     private String password;
+
     private Map<String, Object> session;
 
-    @Action(value="", results = {@Result(name = SUCCESS, location = "/modules/guest/index.jsp")})
-    public String returnToStartPage() {
-        return SUCCESS;
-    }
+
     @Action(value = "dashboard", results = {
             @Result(name = "adminlogged", type="chain", location = "dashboard", params = {"namespace", "admin/"}),
             @Result(name = "employeelogged", type="chain", location = "dashboard", params = {"namespace", "employee/"}),
@@ -37,33 +35,40 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
             @Result(name = "error", location = "/modules/login/register_user.jsp")  //TODO: incorrect user or pass moze byc wyswietlany na tej samej stronie
     })
-    public String checkCredentials() {
+    public String login() {
+        session.clear();
 
         UserDAO userManager = new UserDAOImpl();
-        User user = userManager.checkRegisteredUser(username, password);
+        User user = userManager.checkRegisteredUser(login, password);
+
         if (user != null) {
 
             User.Type userType = user.getType();
-            session.put("username", getUsername());
+            session.put("login", getLogin());
             session.put("user", user);
-            session.put("isClient", false);
 
             if (User.Type.ADMIN.equals(userType)) {
                 //TODO: get all hotels
+                session.put("isAdmin", true);
+                session.put("admin", user);
                 return "adminlogged";
             } else if (User.Type.EMPLOYEE.equals(userType)) {
                 //TODO: get one hotel in which employee works
+                session.put("isEmployee", true);
+                session.put("employee", user);
                 return "employeelogged";
             } else if (User.Type.OWNER.equals(userType)) {
                 //TODO: get all hotels of owner
+                session.put("isOwner", true);
+                session.put("owner", user);
                 return "ownerlogged";
             }
         } else {
             ClientDAO clientManager = new ClientDAOImpl();
-            Client client = clientManager.checkRegisteredClient(username, password);
+            Client client = clientManager.checkRegisteredClient(login, password);
             if (client != null) {
-                session.put("client", client);
                 session.put("isClient", true);
+                session.put("client", client);
                 return "clientlogged";
             }
 
@@ -71,44 +76,38 @@ public class LoginAction extends ActionSupport implements SessionAware {
         return ERROR;
     }
 
-
-    @Action(value = "logout", results = {
-            @Result(name = "success", location = "/modules/login/logout.jsp")
-    })
+    @Action(value = "logout", results = {@Result(name = "success", location = "/modules/login/logout.jsp")})
     public String logout() {
         HibernateUtil.stopAll();
-        setUsername("");
-        setPassword("");
         session.clear();
         return SUCCESS;
     }
 
-    @Action(value = "login", results = {
-            @Result(name = "success", location = "/modules/login/login.jsp")
-    })
+    @Action(value = "login", results = {@Result(name = "success", location = "/modules/login/login.jsp")})
     public String goToLogin() {
         return SUCCESS;
+    }
+
+    @Action(value = "", results = {@Result(name = SUCCESS, location = "/modules/guest/index.jsp")})
+    public String returnToStartPage() {
+        return SUCCESS;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+    public void setLogin(String login) {
+        this.login = login;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
