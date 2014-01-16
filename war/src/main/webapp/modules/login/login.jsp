@@ -22,9 +22,9 @@
         <div id="login" class="tab-pane active">
             <s:form action="dashboard" cssClass="form-signin">
                 <p class="text-muted text-center">
-                    Enter your username and password
+                    Enter your login and password
                 </p>
-                <s:textfield name="username" placeholder="username" cssClass="form-control"/>
+                <s:textfield name="login" placeholder="login" cssClass="form-control"/>
                 <s:password name="password" placeholder="password" cssClass="form-control"/>
                 <s:submit cssClass="btn btn-lg btn-primary btn-block" value="Sign in"/>
             </s:form>
@@ -39,7 +39,7 @@
         </div>
         <div id="signup" class="tab-pane">
             <s:form action="register" cssClass="form-signin">
-                <s:textfield name="username" placeholder="username" cssClass="form-control"/>
+                <s:textfield name="login" placeholder="login" cssClass="form-control"/>
                 <s:textfield name="email" placeholder="mail@domain.com" cssClass="form-control"/>
                 <s:password name="password" placeholder="password" cssClass="form-control"/>
                 <s:submit cssClass="btn btn-lg btn-success btn-block" value="Register"/>

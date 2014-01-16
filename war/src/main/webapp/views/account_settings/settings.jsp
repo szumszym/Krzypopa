@@ -7,7 +7,7 @@
 
 <%--TODO: submit odsyla na zla strone, przerobic na ajaxowy submit..--%>
 <s:form action="dashboard">
-    <s:textfield name="username" value="%{#session['username']}" label="Change Username"/>
+    <s:textfield name="login" value="%{#session['login']}" label="Change Username"/>
     <s:password name="oldPassword" value="" label="Current Password"/>
     <s:password name="newPassword" value="" label="New Password"/>
     <s:submit/>

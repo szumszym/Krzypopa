@@ -52,7 +52,7 @@
             <div class="topnav">
                 <div class="btn-toolbar">
                     <div class="btn-group">
-                        <div class="btn" style="color: white">Signed in as: <b><s:property value="username"/></b></div>
+                        <div class="btn" style="color: white">Signed in as: <b><s:property value="login"/></b></div>
                     </div>
                     <div class="btn-group">
                         <a data-placement="bottom" data-original-title="Show / Hide Sidebar" data-toggle="tooltip"
