@@ -184,7 +184,7 @@
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/room/room-add.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/room/room-add-admin.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
