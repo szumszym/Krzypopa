@@ -5,7 +5,6 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
-import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.SessionAware;
 import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.UserDAO;
@@ -13,6 +12,7 @@ import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.User;
+import pl.bookingsystem.db.utils.HibernateUtil;
 
 import java.util.Map;
 
@@ -76,11 +76,10 @@ public class LoginAction extends ActionSupport implements SessionAware {
             @Result(name = "success", location = "/modules/login/logout.jsp")
     })
     public String logout() {
+        HibernateUtil.stopAll();
         setUsername("");
         setPassword("");
-        session.put("username", "");
-        session.put("user", null);
-        session.put("client", null);
+        session.clear();
         return SUCCESS;
     }
 
