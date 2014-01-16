@@ -5,14 +5,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-import java.io.Serializable;
-
 public class HibernateUtil {
 
     private static SessionFactory sessionFactory;
     private static Session session;
     private static Transaction transaction;
-     private static boolean isSessionOpen;
+    private static boolean isSessionOpen;
     private static SessionFactory buildSessionFactory() {
         try {
 
@@ -81,11 +79,15 @@ public class HibernateUtil {
         }
         getSession().close();
         transaction = null;
-       // isSessionOpen = false;
+        isSessionOpen = false;
     }
 
-    public static Object getByID(Class clazz, Serializable id) {
-        return getSession().get(clazz, id);
+    public static void stopAll() {
+        stop(false);
+        transaction = null;
+        session = null;
+        sessionFactory = null;
+        isSessionOpen = false;
     }
 }
 
