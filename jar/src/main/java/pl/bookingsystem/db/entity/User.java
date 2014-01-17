@@ -2,6 +2,7 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,6 +56,12 @@ public class User implements Serializable {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+
+    @Column(name = "register_date")
+    private Date registerDate;
+
+    @Column(name = "update_date")
+    private Date updateDate;
 
 
     public User() {
@@ -162,5 +169,21 @@ public class User implements Serializable {
 
     public void setHotel(Hotel hotel) {
         this.hotels.add(hotel);
+    }
+
+    public Date getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(Date registerDate) {
+        this.registerDate = registerDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

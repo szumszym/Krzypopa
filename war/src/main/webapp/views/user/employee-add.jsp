@@ -3,7 +3,7 @@
     <div class="icons">
         <i class="fa fa-edit"></i>
     </div>
-    <h5>Add New User</h5>
+    <h5>Add New Employee</h5>
 
     <div class="toolbar">
         <ul class="nav">
@@ -417,26 +417,13 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-lg-4">Type</label>
-
-    <div class="col-lg-8">
-        <select name="type" class="form-control chzn-select">
-            <option>ADMIN</option>
-            <option>OWNER</option>
-            <option>EMPLOYEE</option>
-        </select>
-    </div>
-</div>
-
-
-<div class="form-group">
-    <label class="control-label col-lg-4">Add User</label>
+    <label class="control-label col-lg-4">Add Employee</label>
 
     <div class="col-lg-8">
         <div class="input-group">
 
             <input type="submit" name="submit"
-                   onclick="ajaxSubmit('user-add', 'server-messages'); return false;"
+                   onclick="ajaxSubmit('employee-add', 'server-messages'); return false;"
                    class="btn btn-primary" data-original-title="" title="" value="Add"/>
 
         </div>
