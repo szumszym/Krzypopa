@@ -7,13 +7,17 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.interceptor.SessionAware;
 import pl.bookingsystem.db.dao.ClientDAO;
+import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
+import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Client;
+import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.User;
 import pl.bookingsystem.db.utils.HibernateUtil;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -37,30 +41,54 @@ public class LoginAction extends ActionSupport implements SessionAware {
     })
     public String login() {
         session.clear();
+        session.put("isAdmin", false);
+        session.put("isEmployee", false);
+        session.put("isOwner", false);
 
         UserDAO userManager = new UserDAOImpl();
         User user = userManager.checkRegisteredUser(login, password);
 
+
         if (user != null) {
+            HotelDAO hotelManager = new HotelDAOImpl();
 
             User.Type userType = user.getType();
             session.put("login", getLogin());
             session.put("user", user);
 
             if (User.Type.ADMIN.equals(userType)) {
-                //TODO: get all hotels
+                List<Hotel> hotels = hotelManager.selectAllHotels();
                 session.put("isAdmin", true);
                 session.put("admin", user);
+                session.put("hotels", hotels);
                 return "adminlogged";
+
             } else if (User.Type.EMPLOYEE.equals(userType)) {
-                //TODO: get one hotel in which employee works
+                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
                 session.put("isEmployee", true);
                 session.put("employee", user);
+                session.put("hotels", hotels);
+
+                Hotel hotel = null;
+                if(!hotels.isEmpty()){
+                    hotel = hotels.get(0);
+                }
+                session.put("hotel", hotel);
+
                 return "employeelogged";
+
             } else if (User.Type.OWNER.equals(userType)) {
-                //TODO: get all hotels of owner
+                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
                 session.put("isOwner", true);
                 session.put("owner", user);
+                session.put("hotels", hotels);
+
+                Hotel hotel = null;
+                if(!hotels.isEmpty()){
+                    hotel = hotels.get(0);
+                }
+                session.put("hotel", hotel);
+
                 return "ownerlogged";
             }
         } else {
