@@ -5,32 +5,35 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.AdditionDAO;
+import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.AdditionDAOImpl;
+import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Addition;
+import pl.bookingsystem.db.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
 @Namespace("")
-public class AdditionAction extends ActionSupport {
+public class AdditionAction extends ActionSupport implements SessionAware{
+
+    private Map<String, Object> session;
 
     private String[][] data;
-
     public String[][] getData() {
 
         return data;
     }
-
+    private String dataFrom;
     public String getDataFrom() {
         return dataFrom;
     }
-
-    private String dataFrom;
-
     public void setDataFrom(String dataFrom) {
         this.dataFrom = dataFrom;
     }
@@ -99,4 +102,24 @@ public class AdditionAction extends ActionSupport {
 
     }
 
+    private User getUser(String ownerId) {
+
+        User user = null;
+        Boolean isAdmin = (Boolean) session.get("isAdmin");
+        Boolean isOwner = (Boolean) session.get("isOwner");
+
+        if (isAdmin) {
+            UserDAO userManager = new UserDAOImpl();
+            Long userId = Long.valueOf(ownerId);
+            user = userManager.selectByID(User.class, userId);
+        } else if (isOwner) {
+            user = (User) session.get("user");
+        }
+        return user;
+    }
+
+    @Override
+    public void setSession(Map<String, Object> stringObjectMap) {
+        this.session = stringObjectMap;
+    }
 }
