@@ -197,17 +197,20 @@ function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectPar
 
 }
 
-function bindSelectTable(selectId, tableId, multiselectOpt) {
+function bindSelectTable(tableId, selectId, multiselectOpt) {
     setTimeout(function () { //because of getting content of table by ajax
-        var multisectable = multiselectOpt || false;
+        var multiselectable = multiselectOpt || false;
 
         var $tableElem = $('#' + tableId);
-        var $selectElem = $("#" + selectId);
         var $tableRows = $tableElem.find('tbody tr');
 
+        var $selectElem = $("#" + selectId);
+        var isSelect = selectId !=undefined && $selectElem.length > 0;
+
         //from select to table
-        $selectElem.chosen().change(function () {
-            var selectIndexes = $(this).val();
+        if (isSelect) {
+            $selectElem.chosen().change(function () {
+                var selectIndexes = $(this).val();
 
             $tableRows.each(function () {
                 var $this = $(this);
@@ -218,13 +221,13 @@ function bindSelectTable(selectId, tableId, multiselectOpt) {
                     $this.removeClass('row-selected');
                 }
             })
-
         });
+        }
 
         //from table to select
         $tableRows.on('click rowclick', function (e) {
             var $this = $(this);
-            if (multisectable) {  //multi select
+            if (multiselectable) {  //multi select
                 if (!$this.hasClass('row-selected')) {
                     $this.addClass('row-selected');
                 } else {
@@ -234,23 +237,27 @@ function bindSelectTable(selectId, tableId, multiselectOpt) {
                 if (!$this.hasClass('row-selected')) {
                     $tableRows.removeClass('row-selected');
                     $this.addClass('row-selected');
+                    var index = $this.find('td:first').text();
+                    var hotel_name = $this.find('td:eq(1)').text();
+                    $('body').trigger("table:rowselected", [tableId, index, hotel_name]);
                 }
             }
 
-            var indexes = [];
-            $tableRows.each(function () {
-                var index = $(this).find('td:first').text();
-                if ($(this).hasClass('row-selected')) {
-                    indexes.push(index);
-                } else {
-                    var position = jQuery.inArray(index, indexes);
-                    if (~position) indexes.splice(position, 1);
-                }
+            if (isSelect) {
+                var indexes = [];
+                $tableRows.each(function () {
+                    var index = $(this).find('td:first').text();
+                    if ($(this).hasClass('row-selected')) {
+                        indexes.push(index);
+                    } else {
+                        var position = jQuery.inArray(index, indexes);
+                        if (~position) indexes.splice(position, 1);
+                    }
 
-            });
-
-            $selectElem.chosen().val(indexes);
-            $selectElem.trigger("chosen:updated");
+                });
+                $selectElem.chosen().val(indexes);
+                $selectElem.trigger("chosen:updated");
+            }
         });
 
     }, 1000);
@@ -377,5 +384,58 @@ jQuery.fn.formToJSON = function () {
 
 };
 
+
+function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContainerId, hotel_name) {
+    var $resultContainer = jQuery('#' + resultContainerId);
+    var $hotelnameContainer = jQuery('#'+ hotelnameContainerId);
+
+
+    jQuery.ajax({
+        url: action,
+        type: 'POST',
+        data: {dataFrom: "{'index':'" + selectedItemIndex + "'}"},
+        dataType: "json",
+        error: function (msg) {
+            console.log(msg);
+            generateAlertError($resultContainer, "Wystąpił błąd servera!");
+        },
+        success: function (msg) {
+            console.log(msg);
+            try {
+                if (msg.data[0][0] == "success") {
+                    ajaxDefaultIncudeOnStart();
+                    generateAlertSuccess($resultContainer, "Hotel wczytany.");
+                    $hotelnameContainer.text(hotel_name);
+                } else {
+                    generateAlertError($resultContainer, "Wystąpił błąd podczas wczytywania hotelu!");
+                }
+            } catch (error) {
+                generateAlertError($resultContainer, "JavaScript ERROR: " + error);
+            }
+        }
+    });
+}
+
+function ajaxSelect(selectId, action, resultContainerId) {
+    var selectedItemIndex = "";
+    var $select = jQuery('#' + selectId);
+    $select.on('change', function () {
+        var selectedIndex = $(this).val();
+        if (selectedIndex) selectedItemIndex = selectedIndex;
+        loadHotel(action, resultContainerId, selectedItemIndex);
+    });
+
+    return selectedItemIndex;
+}
+
+function ajaxSelectFromTable(tableId, action, resultContainerId, hotelnameContainerId) {
+    $('body').on('table:rowselected', function (e, table_id, index, hotel_name) {
+        if (index) {
+            if (tableId == table_id) {
+                loadHotel(action, resultContainerId, index, hotelnameContainerId, hotel_name);
+            }
+        }
+    });
+}
 
 
