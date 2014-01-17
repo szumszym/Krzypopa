@@ -6,7 +6,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
-import org.hibernate.LazyInitializationException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.dao.UserDAO;
@@ -48,15 +48,14 @@ public class HotelAction extends ActionSupport implements SessionAware {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
-    public String dataFromDB() {
+    public String getHotels() {
         try {
-            HotelDAO hotelManager = new HotelDAOImpl();
-            List<Hotel> hotels = hotelManager.selectAllWithAddress();
+            List<Hotel> hotels = (List<Hotel>) session.get("hotels");
             int size = hotels.size();
             data = new String[size][];
             for (int j = 0; j < hotels.size(); j++) {
 
-                String[] tableS = new String[6];
+                String[] tableS = new String[7];
                 Hotel h = hotels.get(j);
                 Address a = h.getAddress();
                 tableS[0] = String.valueOf(h.getId());
@@ -65,6 +64,7 @@ public class HotelAction extends ActionSupport implements SessionAware {
                 tableS[3] = String.valueOf(a.getStreet() + " " + a.getBuilding_no());
                 tableS[4] = String.valueOf(h.getPhone_number());
                 tableS[5] = String.valueOf(h.getEmail());
+                tableS[6] = String.valueOf(h.getDescription());
 
                 data[j] = tableS;
             }
@@ -77,23 +77,23 @@ public class HotelAction extends ActionSupport implements SessionAware {
 
     }
 
-    @Action(value = "hotel-getOwnerList", results = {
+    @Action(value = "hotel-getList-small", results = {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
-    public String getOwnerHotelList() {
+    public String getHotelList() {
         try {
-            User user = (User) session.get("user");
-            Long userId = user.getId();
-            HotelDAO hotelManager = new HotelDAOImpl();
-            List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(userId);
+            List<Hotel> hotels = (List<Hotel>) session.get("hotels");
             int size = hotels.size();
             data = new String[size][];
             for (int j = 0; j < hotels.size(); j++) {
+
                 String[] tableS = new String[2];
                 Hotel h = hotels.get(j);
+                Address a = h.getAddress();
                 tableS[0] = String.valueOf(h.getId());
-                tableS[1] = String.valueOf(h.getName());
+                tableS[1] = String.valueOf(h.getName()) + " - " + String.valueOf(a.getCity()) + " - " + String.valueOf(a.getStreet() + " " + a.getBuilding_no());
+
                 data[j] = tableS;
             }
             return SUCCESS;
@@ -110,42 +110,63 @@ public class HotelAction extends ActionSupport implements SessionAware {
     })
     public String hotelAdd() {
         try {
-            UserDAO userManager = new UserDAOImpl();
-
             JSONObject jsonObject = new JSONObject(dataFrom);
+
             String name = jsonObject.getString("name");
             String email = jsonObject.getString("email");
             String phone_number = jsonObject.getString("phone_number");
+            String description = jsonObject.getString("description");
+
+//ADDRESS
             String city = jsonObject.getString("city");
             String street = jsonObject.getString("street");
             Integer building_no = Integer.parseInt(jsonObject.getString("building_no"));
             String postcode = jsonObject.getString("postcode");
             String country = jsonObject.getString("country");
-            String description = jsonObject.getString("description");
-
-            // User user = userManager.getCurrentUser(jsonObject.getString("owner"));
-
             Address address = new Address(city, street, building_no, postcode, country);
+            Long ownerId = null;
+            try {
+                ownerId = Long.valueOf(jsonObject.getString("owner_id"));
+            } catch (JSONException e) {/*do nothing*/}
+//USER
+            User user = getUser(ownerId);
 
-            User user = userManager.selectByID(User.class, 12L);      //TODO: AAAAAAAAAAAA!
+//CREATE HOTEL AND SAVE
+            if (user != null) {
+                Hotel hotel = new Hotel(name, description, phone_number, email, address, user);
 
-            Hotel hotel = new Hotel(name, description, phone_number, email, address, user);
-
-            //user.setHotel(hotel);
-            //userManager.save(user);
-            //hotel.setOwner(user);
-            //userManager.delete(user);
-
-            HotelDAO hotelManager = new HotelDAOImpl();
-            hotelManager.save(hotel);
-            data = setMsg(SUCCESS);
-            return SUCCESS;
+                List<Hotel> hotels = (List<Hotel>) session.get("hotels");
+                hotels.add(hotel);
+                session.put("hotels", hotels);
+                HotelDAO hotelManager = new HotelDAOImpl();
+                hotelManager.save(hotel);
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
 
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;
         }
 
+    }
+
+    private User getUser(Long ownerId) {
+
+        User user = null;
+        Boolean isAdmin = (Boolean) session.get("isAdmin");
+        Boolean isOwner = (Boolean) session.get("isOwner");
+
+        if (isAdmin) {
+            UserDAO userManager = new UserDAOImpl();
+            user = userManager.selectByID(User.class, ownerId);
+        } else if (isOwner) {
+            user = (User) session.get("user");
+        }
+        return user;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package pl.bookingsystem.db.dao.impl;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
@@ -22,7 +20,12 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
     @Override
     public List selectAllHotelsOfUser(String userId) {
-        return selectMany("select hotels from User as u left join u.hotels hotels where u.id=" + userId);
+        return selectMany("select hotels from User as u left join u.hotels hotels left join fetch hotels.address address where u.id=" + userId);
+    }
+
+    @Override
+    public List selectAllHotels() {
+        return selectAllWithAddress();
     }
 
     @Override

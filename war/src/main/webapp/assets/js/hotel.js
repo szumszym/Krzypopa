@@ -78,3 +78,9 @@ formValidate('hotel-add', {
         required: true
     }
 });
+
+
+createSelectListWithDataFromDB('owner-getData', 'hotel-owner-select', {
+    label: 1,
+    value: 0
+});

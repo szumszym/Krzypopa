@@ -352,6 +352,19 @@
 <!-- /.row -->
 
 <div class="form-group">
+    <label class="control-label col-lg-4">Owner</label>
+
+    <div class="col-lg-8">
+        <select id="hotel-owner-select" name="owner_id" class="form-control">
+        </select>
+    </div>
+</div>
+
+
+<!-- /.row -->
+
+
+<div class="form-group">
     <label class="control-label col-lg-4">Add Hotel</label>
 
     <div class="col-lg-8">
