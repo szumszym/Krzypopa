@@ -172,6 +172,6 @@
 <script src="./assets/js/reservation-add.js"></script>
 <script>
     $(".chzn-select").chosen();
-    bindSelectTable('reservation-client-select', 'client-table-small', false);
-    bindSelectTable('reservation-room-select', 'room-table-small', true);
+    bindSelectTable('client-table-small', 'reservation-client-select', false);
+    bindSelectTable('room-table-small', 'reservation-room-select', true);
 </script>

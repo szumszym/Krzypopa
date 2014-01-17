@@ -176,8 +176,8 @@
 <script src="./assets/js/room.js"></script>
 <script>
     $(".chzn-select").chosen();
-    bindSelectTable('room-hotel-select', 'hotel-table-small', false);
-    bindSelectTable('room-addition-select', 'addition-table-small', true);
+    bindSelectTable('hotel-table-small', 'room-hotel-select', false);
+    bindSelectTable('addition-table-small', 'room-addition-select', true);
 </script>
 
 
