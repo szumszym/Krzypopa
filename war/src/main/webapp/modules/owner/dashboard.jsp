@@ -85,7 +85,13 @@
             <!-- .nav -->
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
+                    <a class="btn-select-hotel" href="#" data-url="./views/hotel/hotel-select-owner.jsp"
+                       data-placement="#context">
+                        Select hotel
+                    </a>
+                </li>
+                <li>
+                <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
                         <i class="fa fa-tasks"></i>&nbsp;Reservations
                     </a>
                 </li>
@@ -128,11 +134,11 @@
             <div class="menu-select-hotel col-lg-5" style="">
                 <div class="form-horizontal" style="">
                     <div class="form-group" style="margin:0;">
-                        <label style="color:white;padding:0" class="control-label col-lg-5">
-                            Select Hotel: </label>
-                        <div class="col-lg-5">
-                            <select id="owner-select-hotel" data-action="owner/select-hotel" class="form-control">
-                            </select>
+                        <label class="control-label col-lg-5" id="selected-hotel-name-label">
+                            Selected Hotel: </label>
+
+                        <div class="col-lg-5" style="padding:0">
+                            <div id="selected-hotel-name"></div>
                         </div>
                     </div>
                 </div>
@@ -258,11 +264,11 @@
         <%--USERS--%>
         <li>
             <a href="#">
-                <i class="fa fa-credit-card"></i>&nbsp; Users
+                <i class="fa fa-credit-card"></i>&nbsp; Employees
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/user/user-add.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/user/employee-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
@@ -294,7 +300,7 @@
 <div id="content">
     <div class="outer">
         <div class="inner">
-            <div id=context data-default="./views/reservation/reservation-browse.jsp"></div>
+            <div id=context data-default="./views/hotel/hotel-select-owner.jsp"></div>
         </div>
     </div>
 
@@ -353,7 +359,6 @@
 <script src="./assets/js/app/metisMenu.js"></script>
 <script src="./assets/js/main.js"></script>
 <script src="./assets/js/ajaxFunctions.js"></script>
-<script src="./assets/js/selectHotel.js"></script>
 
 <%--<script src="./assets/js/app/formGeneral.js"></script>--%>
 
