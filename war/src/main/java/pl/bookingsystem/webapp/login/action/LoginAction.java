@@ -27,6 +27,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
     private String login;
     private String password;
+    private String hotelname;
 
     private Map<String, Object> session;
 
@@ -66,6 +67,14 @@ public class LoginAction extends ActionSupport implements SessionAware {
                 session.put("isUser", true);
                 session.put("admin", user);
                 session.put("hotels", hotels);
+
+                Hotel hotel = null;
+                if(!hotels.isEmpty()){
+                    hotel = hotels.get(0);
+                    hotelname = hotel.getName();
+                }
+                session.put("hotel", hotel);
+
                 return "adminlogged";
 
             } else if (User.Type.EMPLOYEE.equals(userType)) {
@@ -93,6 +102,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
                 Hotel hotel = null;
                 if(!hotels.isEmpty()){
                     hotel = hotels.get(0);
+                    hotelname = hotel.getName();
                 }
                 session.put("hotel", hotel);
 
@@ -139,6 +149,9 @@ public class LoginAction extends ActionSupport implements SessionAware {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public String getHotelname() {
+        return hotelname;
     }
 
     @Override

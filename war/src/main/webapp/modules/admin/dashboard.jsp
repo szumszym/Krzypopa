@@ -85,7 +85,7 @@
             <!-- .nav -->
             <ul class="nav navbar-nav">
                 <li>
-                    <a class="btn-select-hotel" href="#" data-url="./views/hotel/hotel-select-owner.jsp"
+                    <a class="btn-select-hotel" href="#" data-url="./views/hotel/hotel-select.jsp"
                        data-placement="#context">
                         Select hotel
                     </a>
@@ -138,7 +138,7 @@
                             Selected Hotel: </label>
 
                         <div class="col-lg-5" style="padding:0">
-                            <div id="selected-hotel-name"></div>
+                            <div id="selected-hotel-name"><s:property value="hotelname"/></div>
                         </div>
                     </div>
                 </div>
