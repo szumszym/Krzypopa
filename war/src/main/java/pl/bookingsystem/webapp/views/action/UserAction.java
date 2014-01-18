@@ -15,7 +15,6 @@ import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.User;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -140,6 +139,7 @@ public class UserAction extends ActionSupport implements SessionAware{
             String postcode = jsonObject.getString("postcode");
             String country = jsonObject.getString("country");
 
+//ADDRESS
             Address address = new Address(city, street, building_no, postcode, country);
             String apartment_no = jsonObject.getString("apartment_no");
             if (!apartment_no.isEmpty()) {
@@ -148,27 +148,26 @@ public class UserAction extends ActionSupport implements SessionAware{
 
             User.Type type = User.Type.EMPLOYEE;
             User user = new User(first_name, last_name, pesel, email, phone_number, password, type, address);
+
+//NIP
             String nip = jsonObject.getString(("nip"));
             if (!nip.isEmpty()) {
                 user.setNip(Long.parseLong(nip));
             }
 
-//UPDATE HOTEL
-            HotelDAO hotelManager = new HotelDAOImpl();
-            Hotel hotel = (Hotel) session.get("hotel");
-            hotel.getUsers().add(user);
-            hotelManager.save(hotel);
-
 //SAVE EMPLOYEE
             UserDAO userManager = new UserDAOImpl();
             userManager.save(user);
 
+//UPDATE HOTEL
+            HotelDAO hotelManager = new HotelDAOImpl();
+            Hotel hotel = (Hotel) session.get("hotel");
+            hotelManager.addUser(user, hotel);
 
-//SESSION UPDATE
-            List<Hotel> hotels = (List<Hotel>) session.get("hotels");
-            hotels.add(hotel);
-            session.put("hotels", hotels);
+//UPDATE SESSION
             session.put("hotel", hotel);
+            List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
+            session.put("hotels", hotels);
 
 
             data = setMsg(SUCCESS);

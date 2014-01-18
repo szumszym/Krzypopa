@@ -1,5 +1,6 @@
 package pl.bookingsystem.db.dao;
 
+import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
 import pl.bookingsystem.db.entity.User;
@@ -25,6 +26,10 @@ public interface HotelDAO extends GenericDAO<Hotel, Long> {
     public List selectAllHotelsOfUser(Long userId);
 
     public Hotel selectByID(String hotelId);
+
+    void addUser(User user, Hotel hotel);
+
+    void addClient(Client client, Hotel hotel);
 
     void addRoom(Room room, Hotel hotel);
 }
