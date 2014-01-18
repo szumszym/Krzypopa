@@ -122,6 +122,13 @@ function generateAlertError($resultContainer, message) {
     }, 2000);
 }
 
+function generateAlertWarning($resultContainer, message) {
+    $resultContainer.html("<div class='alert alert-warning fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Warning!</strong> " + message + "</div>").show();
+    setTimeout(function () {
+        $resultContainer.hide();
+    }, 2000);
+}
+
 function deleteRow(that, action) {
     if (confirm("Are you sure?")) {
         var $this = $(that);
@@ -237,9 +244,12 @@ function bindSelectTable(tableId, selectId, multiselectOpt) {
                 if (!$this.hasClass('row-selected')) {
                     $tableRows.removeClass('row-selected');
                     $this.addClass('row-selected');
-                    var index = $this.find('td:first').text();
-                    var hotel_name = $this.find('td:eq(1)').text();
-                    $('body').trigger("table:rowselected", [tableId, index, hotel_name]);
+
+                    if (e.type == "click") { //for trigger rowselected only!
+                        var index = $this.find('td:first').text();
+                        var label = $this.find('td:eq(1)').text();
+                        $('body').trigger("table:rowselected", [tableId, index, label]);
+                    }
                 }
             }
 
@@ -260,6 +270,7 @@ function bindSelectTable(tableId, selectId, multiselectOpt) {
             }
         });
 
+
     }, 1000);
 }
 
@@ -278,6 +289,7 @@ function ajaxSubmit(formId, resultContainerId) {
             dataType: "json",
             error: function () {
                 generateAlertError($resultContainer, "Wystąpił bład podczas zapisu do bazy danych!");
+                isFinished = true;
             },
             success: function (msg) {
                 try{
@@ -384,36 +396,50 @@ jQuery.fn.formToJSON = function () {
 
 };
 
-
+var isFinished = true;
 function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContainerId, hotel_name) {
     var $resultContainer = jQuery('#' + resultContainerId);
     var $hotelnameContainer = jQuery('#'+ hotelnameContainerId);
 
-
-    jQuery.ajax({
-        url: action,
-        type: 'POST',
-        data: {dataFrom: "{'index':'" + selectedItemIndex + "'}"},
-        dataType: "json",
-        error: function (msg) {
-            console.log(msg);
-            generateAlertError($resultContainer, "Wystąpił błąd servera!");
-        },
-        success: function (msg) {
-            console.log(msg);
-            try {
-                if (msg.data[0][0] == "success") {
-                    ajaxDefaultIncudeOnStart();
-                    generateAlertSuccess($resultContainer, "Hotel wczytany.");
-                    $hotelnameContainer.text(hotel_name);
-                } else {
-                    generateAlertError($resultContainer, "Wystąpił błąd podczas wczytywania hotelu!");
+    if (isFinished) {
+        isFinished = false;
+        jQuery.ajax({
+            url: action,
+            type: 'POST',
+            data: {dataFrom: "{'index':'" + selectedItemIndex + "'}"},
+            dataType: "json",
+            error: function (msg) {
+                if (msg.data[0][0] == "error") {
+                    if (msg.data[0][1]!=undefined && msg.data[0][1] == "THE_SAME") {
+                        generateAlertError($resultContainer, "Hotel został już wybrany!");
+                    }
                 }
-            } catch (error) {
-                generateAlertError($resultContainer, "JavaScript ERROR: " + error);
+                console.log(msg);
+                generateAlertError($resultContainer, "Wystąpił błąd servera!");
+                isFinished = true;
+            },
+            success: function (msg) {
+                console.log(msg);
+                try {
+                    if (msg.data[0][0] == "success") {
+                        ajaxDefaultIncudeOnStart();
+                        generateAlertSuccess($resultContainer, "Hotel wczytany.");
+                        $hotelnameContainer.text(hotel_name);
+                    } else if (msg.data[0][0] == "error") {
+                        if (msg.data[0][1]!=undefined && msg.data[0][1] == "THE_SAME") {
+                            generateAlertWarning($resultContainer, "Hotel został już wybrany!");
+                        }
+                    } else {
+                        generateAlertError($resultContainer, "Wystąpił błąd podczas wczytywania hotelu!");
+                    }
+                } catch (error) {
+                    generateAlertError($resultContainer, "JavaScript ERROR: " + error);
+                }
+                isFinished = true;
             }
-        }
-    });
+        });
+    }
+
 }
 
 function ajaxSelect(selectId, action, resultContainerId) {
@@ -435,6 +461,19 @@ function ajaxSelectFromTable(tableId, action, resultContainerId, hotelnameContai
                 loadHotel(action, resultContainerId, index, hotelnameContainerId, hotel_name);
             }
         }
+    });
+}
+
+
+function countCapacity(formId) {
+    var $form = $('#' + formId);
+    $form.on('keyup', '[name="bed_count"], [name="bed_type"]', function () {
+        var bedCount = $form.find('[name="bed_count"]').val();
+        var bedType = $form.find('[name="bed_type"]').val();
+        if (bedCount == "") bedCount = 0;
+        if (bedType == "") bedType = 0;
+        var capacity = bedCount * bedType;
+        $form.find('[name="capacity"]').val(capacity);
     });
 }
 
