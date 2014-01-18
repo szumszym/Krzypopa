@@ -122,13 +122,9 @@ public class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T,
 
     @Override
     public T selectByID(Class clazz, ID id) {
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-        Transaction tx = session.beginTransaction();
-
+        Session session = HibernateUtil.start();
         T t = (T) session.get(clazz, id);
-        tx.commit();
-        session.close();
+        HibernateUtil.stop(true);
         return t;
     }
 
