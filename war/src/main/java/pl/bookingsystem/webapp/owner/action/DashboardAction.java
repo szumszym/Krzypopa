@@ -8,25 +8,31 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.ResultPath;
 import org.apache.struts2.interceptor.ApplicationAware;
 import org.apache.struts2.interceptor.SessionAware;
+import pl.bookingsystem.db.entity.Hotel;
 
 import java.util.Map;
 
 
 @Namespace("owner/")
 @ResultPath(value = "/")
-public class DashboardAction extends ActionSupport implements SessionAware, ApplicationAware {
+public class DashboardAction extends ActionSupport implements SessionAware {
 
     private Map<String, Object> session;
-    private Map<String, Object> application;
     private String username;
     private String password;
 
 
     @Action(value = "dashboard", results = {
-            @Result(name = "success", location = "/modules/owner/dashboard.jsp")
+            @Result(name = "success", location = "/modules/owner/dashboard.jsp"),
+            @Result(name = "newowner", location = "/modules/owner/dashboard-new.jsp")
     })
     public String execute() {
-        return SUCCESS;
+         Hotel hotel = (Hotel) session.get("hotel");
+        if(hotel!=null){
+            return SUCCESS;
+        } else {
+            return "newowner";
+        }
     }
 
     public String getUsername() {
@@ -48,10 +54,6 @@ public class DashboardAction extends ActionSupport implements SessionAware, Appl
     @Override
     public void setSession(Map<String, Object> session) {
         this.session = session;
-    }
-    @Override
-    public void setApplication(Map<String, Object> application) {
-        this.application = application;
     }
 }
 

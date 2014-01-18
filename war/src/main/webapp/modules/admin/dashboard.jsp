@@ -131,13 +131,13 @@
             <h3 class="col-lg-4">
             <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
 
-            <div class="menu-select-hotel col-lg-5" style="">
+            <div class="menu-select-hotel col-lg-6" style="">
                 <div class="form-horizontal" style="">
                     <div class="form-group" style="margin:0;">
                         <label class="control-label col-lg-5" id="selected-hotel-name-label">
                             Selected Hotel: </label>
 
-                        <div class="col-lg-5" style="padding:0">
+                        <div class="col-lg-7" style="padding:0">
                             <div id="selected-hotel-name"><s:property value="hotelname"/></div>
                         </div>
                     </div>
@@ -171,7 +171,7 @@
             </a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/reservation/reservation-add-admin.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/reservation/reservation-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
