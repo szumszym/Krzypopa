@@ -39,7 +39,7 @@ public class Hotel implements Serializable {
                     nullable = false, updatable = false)})
     private Set<Client> clients;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "hotel_user", joinColumns = {
             @JoinColumn(name = "hotel_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "user_id",

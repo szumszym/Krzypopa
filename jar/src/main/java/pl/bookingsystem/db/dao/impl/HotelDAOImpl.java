@@ -14,8 +14,14 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
         return selectMany("select h.rooms from Hotel h where h.id ="+String.valueOf(hotel_id));
     }
 
+    @Override
     public List selectAllWithAddress() {
         return selectMany("from Hotel as h left join fetch h.address");
+    }
+
+    @Override
+    public List selectAllWithUsers() {
+        return selectMany("from Hotel as h left join fetch h.users");
     }
 
     @Override
@@ -25,7 +31,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
     @Override
     public List selectAllHotels() {
-        return selectAllWithAddress();
+        return selectMany("from Hotel as h fetch all properties");
     }
 
     @Override

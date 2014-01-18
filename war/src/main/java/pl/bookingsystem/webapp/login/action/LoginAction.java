@@ -57,7 +57,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
             session.put("user", user);
 
             if (User.Type.ADMIN.equals(userType)) {
-                List<Hotel> hotels = hotelManager.selectAllHotels();
+                List<Hotel> hotels = hotelManager.selectAllWithAddress();
                 session.put("isAdmin", true);
                 session.put("admin", user);
                 session.put("hotels", hotels);
