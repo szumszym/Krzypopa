@@ -204,10 +204,10 @@ function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectPar
 
 }
 
-function bindSelectTable(tableId, selectId, multiselectOpt) {
+function bindSelectTable(tableId, selectId, multiselectOpt, labelColNumber) {
     setTimeout(function () { //because of getting content of table by ajax
         var multiselectable = multiselectOpt || false;
-
+        var labelColNum = labelColNumber || "2";
         var $tableElem = $('#' + tableId);
         var $tableRows = $tableElem.find('tbody tr');
 
@@ -244,12 +244,17 @@ function bindSelectTable(tableId, selectId, multiselectOpt) {
                 if (!$this.hasClass('row-selected')) {
                     $tableRows.removeClass('row-selected');
                     $this.addClass('row-selected');
+                }
+            }
 
-                    if (e.type == "click") { //for trigger rowselected only!
-                        var index = $this.find('td:first').text();
-                        var label = $this.find('td:eq(1)').text();
-                        $('body').trigger("table:rowselected", [tableId, index, label]);
-                    }
+            if (e.type == "click") { //for trigger rowselected only!
+                var index = $this.find('td:first').text();
+                var label = $this.find('td:eq(' + (labelColNum - 1) + ')').text();
+                var $body = $('body');
+                if ($this.hasClass('row-selected')) {
+                    $body.trigger("table:rowselected", [tableId, index, label]);
+                } else {
+                    $body.trigger("table:rowunselected", [tableId, index, label]);
                 }
             }
 
@@ -311,7 +316,13 @@ function ajaxSubmit(formId, resultContainerId) {
 }
 
 function formValidate(formId, rules) {
+    var capacity = 0;
+    jQuery.validator.addMethod("not_more_than", function (value, element, param) {
+        var what = param[0];
+        var capacity = $(element).data(what);
+        return capacity >= value;
 
+    }, jQuery.validator.format("Count of person must be <= capacity of rooms"));
 
     jQuery.validator.addMethod("accept", function (value, element, param) {
         return value.match(new RegExp("^" + param + "$"));
@@ -459,6 +470,23 @@ function ajaxSelectFromTable(tableId, action, resultContainerId, hotelnameContai
         if (index) {
             if (tableId == table_id) {
                 loadHotel(action, resultContainerId, index, hotelnameContainerId, hotel_name);
+            }
+        }
+    });
+}
+
+function checkRoomsCapacity(tableId, formId) {
+    var capacitySum = 0;
+    var $form = $('#'+formId);
+    $('body').on('table:rowselected table:rowunselected', function (e, table_id, index, capacity) {
+        if (index) {
+            if (tableId == table_id) {
+                if (e.type == 'table:rowselected') {
+                    capacitySum += parseInt(capacity);
+                } else if (e.type == 'table:rowunselected') {
+                    capacitySum -= parseInt(capacity);
+                }
+                $form.find('[name="person_count"]').data('capacity', capacitySum);
             }
         }
     });
