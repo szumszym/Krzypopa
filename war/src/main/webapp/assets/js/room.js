@@ -21,13 +21,13 @@ createTableWithDataFromDB({
             ],
             aoColumnDefs: [
                 {   sTitle: "Published",
-                    aTargets: [7],
+                    aTargets: [8],
                     mData: null,
                     "sWidth": "120px",
                     "sClass": "text-center",
                     mRender: function (data, type, full) {
 
-                        if(full[7]=="true"){
+                        if(full[8]=="true"){
                             return '<i class="fa fa-check fa-2"></i>';
                         } else {
                             return '<i class="fa fa-times fa-2"></i>';
@@ -35,9 +35,9 @@ createTableWithDataFromDB({
                     }
                 }
             ],
-            infoColumn: 9,
-            editColumn: 10,
-            deleteColumn: 11
+            infoColumn: 10,
+            editColumn: 11,
+            deleteColumn: 12
         }
     }
 });
