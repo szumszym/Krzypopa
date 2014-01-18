@@ -14,9 +14,11 @@ import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Hotel;
+import pl.bookingsystem.db.entity.Room;
 import pl.bookingsystem.db.entity.User;
 import pl.bookingsystem.db.utils.HibernateUtil;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,10 +35,10 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
 
     @Action(value = "dashboard", results = {
-            @Result(name = "adminlogged", type="chain", location = "dashboard", params = {"namespace", "admin/"}),
-            @Result(name = "employeelogged", type="chain", location = "dashboard", params = {"namespace", "employee/"}),
-            @Result(name = "ownerlogged", type="chain", location = "dashboard", params = {"namespace", "owner/"}),
-            @Result(name = "clientlogged", type="chain", location = "dashboard", params = {"namespace", "client/"}),
+            @Result(name = "adminlogged", type = "chain", location = "dashboard", params = {"namespace", "admin/"}),
+            @Result(name = "employeelogged", type = "chain", location = "dashboard", params = {"namespace", "employee/"}),
+            @Result(name = "ownerlogged", type = "chain", location = "dashboard", params = {"namespace", "owner/"}),
+            @Result(name = "clientlogged", type = "chain", location = "dashboard", params = {"namespace", "client/"}),
 
             @Result(name = "error", location = "/modules/login/register_user.jsp")  //TODO: incorrect user or pass moze byc wyswietlany na tej samej stronie
     })
@@ -106,13 +108,22 @@ public class LoginAction extends ActionSupport implements SessionAware {
     }
 
     private void saveHotelsToSession(List<Hotel> hotels) {
-        session.put("hotels", hotels);
-        Hotel hotel = null;
-        if(!hotels.isEmpty()){
-            hotel = hotels.get(0);
-            hotelname = hotel.getName();
+        if (hotels.size() > 0) {
+            session.put("hotels", hotels);
+            Hotel hotel = null;
+            if (!hotels.isEmpty()) {
+                hotel = hotels.get(0);
+                if (hotel != null) {
+                    hotelname = hotel.getName();
+                }
+            }
+            session.put("hotel", hotel);
+        } else {
+
+            session.put("hotels", new LinkedList<Room>());
+            session.put("hotel", null);
+            hotelname = "You don't have any hotels!";
         }
-        session.put("hotel", hotel);
     }
 
     @Action(value = "logout", results = {@Result(name = "success", location = "/modules/login/logout.jsp")})
