@@ -19,7 +19,7 @@
 
 <div id="div-2" class="accordion-body collapse in body">
 
-<form id="hotel-add" action="hotel-add" class="form-horizontal">
+<form id="hotel-add-newowner" action="hotel-add" class="form-horizontal">
 <div class="form-group">
     <label class="control-label col-lg-4">Name</label>
 
@@ -357,7 +357,7 @@
     <div class="col-lg-8">
         <div class="input-group">
             <input type="submit" name="submit"
-                   onclick="ajaxSubmit('hotel-add', 'server-messages'); return false;"
+                   onclick="ajaxSubmitFirstHotel('hotel-add-newowner', 'server-messages', 'modal-info-redirect'); return false;"
                    class="btn btn-primary" data-original-title="" title="" value="Add"/>
         </div>
     </div>
@@ -367,4 +367,4 @@
 
 </div>
 </div>
-<script src="../../assets/js/hotel-add.js"></script>
+<script src="./assets/js/hotel-add-newowner.js"></script>

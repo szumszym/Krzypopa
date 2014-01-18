@@ -29,4 +29,4 @@
 <script>
     $(".chzn-select").chosen();
 </script>
-<script src="./assets/js/hotel.js"></script>
+<script src="./assets/js/hotel-browse.js"></script>

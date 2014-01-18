@@ -380,4 +380,4 @@
 
 </div>
 </div>
-<script src="./assets/js/hotel.js"></script>
+<script src="./assets/js/hotel-add.js"></script>
