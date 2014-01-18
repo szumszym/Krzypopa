@@ -14,7 +14,6 @@ import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.User;
-import pl.bookingsystem.webapp.action.Utils;
 
 import java.util.Date;
 import java.util.List;
@@ -163,6 +162,14 @@ public class UserAction extends ActionSupport implements SessionAware{
 //SAVE EMPLOYEE
             UserDAO userManager = new UserDAOImpl();
             userManager.save(user);
+
+
+//SESSION UPDATE
+            List<Hotel> hotels = (List<Hotel>) session.get("hotels");
+            hotels.add(hotel);
+            session.put("hotels", hotels);
+            session.put("hotel", hotel);
+
 
             data = setMsg(SUCCESS);
             return SUCCESS;

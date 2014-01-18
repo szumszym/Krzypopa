@@ -3,7 +3,7 @@ package pl.bookingsystem.db.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -51,8 +51,8 @@ public class User implements Serializable {
     private Type type;
 
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
-    private Set<Hotel> hotels = new HashSet<Hotel>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+    private Set<Hotel> hotels = new LinkedHashSet<Hotel>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
