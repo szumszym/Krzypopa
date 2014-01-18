@@ -173,5 +173,6 @@
 <script>
     $(".chzn-select").chosen();
     bindSelectTable('client-table-small', 'reservation-client-select', false);
-    bindSelectTable('room-table-small', 'reservation-room-select', true);
+    bindSelectTable('room-table-small', 'reservation-room-select', true, "5");
+    checkRoomsCapacity('room-table-small', 'reservation-add');
 </script>

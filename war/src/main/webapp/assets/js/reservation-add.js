@@ -27,10 +27,12 @@ createTableWithDataFromDB({
                 { "sTitle": "Room No" },
                 { "sTitle": "Name" },
                 { "sTitle": "Bed" },
+                { "sTitle": "Capacity"},
                 { "sTitle": "Additions" },
-                { "sTitle": "Desc" }
+                { "sTitle": "Desc" },
+                { "sTitle": "Price" }
             ],
-            infoColumn: 7
+            infoColumn: 8
         }
     }
 });
@@ -67,7 +69,8 @@ formValidate('reservation-add', {
     person_count: {
         required: true,
         digits: true,
-        range: [1, 99]
+        range: [1, 99],
+        not_more_than: ['capacity']
     },
     client_id: {
         required: true
