@@ -16,7 +16,7 @@ public class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T,
     public T save(T entity) {
         Session session = HibernateUtil.start();
 
-        session.save(entity);
+        session.saveOrUpdate(entity);
 
         HibernateUtil.stop(true);
 
