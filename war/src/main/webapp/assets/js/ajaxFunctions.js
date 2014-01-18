@@ -121,12 +121,37 @@ function generateAlertError($resultContainer, message) {
         $resultContainer.hide();
     }, 2000);
 }
-
 function generateAlertWarning($resultContainer, message) {
     $resultContainer.html("<div class='alert alert-warning fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Warning!</strong> " + message + "</div>").show();
     setTimeout(function () {
         $resultContainer.hide();
     }, 2000);
+}
+
+function generateModal(modalId, titleHTML, messageHTML, action, isShown) {
+    $('body').append('<div id="' + modalId + '" class="modal fade" style="z-index: 9999;">' +
+        '<div class="modal-dialog">' +
+        '<div class="modal-content">' +
+        '<div class="modal-header">' +
+        '<h4 class="modal-title">' +
+        titleHTML +
+        '</h4>' +
+        '</div>' +
+        '<div class="modal-body">' +
+        '<p>' +
+        messageHTML +
+        '</p>' +
+        '</div>' +
+        '<div class="modal-footer">' +
+        '<a href="'+action+'" class="btn btn-primary">Ok</a>'+
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>');
+
+    if (isShown) {
+        $('#' + modalId).modal('show');
+    }
 }
 
 function deleteRow(that, action) {
@@ -193,7 +218,7 @@ function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectPar
                 }
                 $selectElem.chosen();
 
-                if(isHidden){
+                if (isHidden) {
                     $selectElem.closest('.form-group').hide();
                 }
 
@@ -217,23 +242,23 @@ function bindSelectTable(tableId, selectId, multiselectOpt, labelColNumber) {
         var $tableRows = $tableElem.find('tbody tr');
 
         var $selectElem = $("#" + selectId);
-        var isSelect = selectId !=undefined && $selectElem.length > 0;
+        var isSelect = selectId != undefined && $selectElem.length > 0;
 
         //from select to table
         if (isSelect) {
             $selectElem.chosen().change(function () {
                 var selectIndexes = $(this).val();
 
-            $tableRows.each(function () {
-                var $this = $(this);
-                var index = $this.find('td:first').text();
-                if (jQuery.inArray('' + index, selectIndexes) > -1) {
-                    $this.addClass('row-selected');
-                } else {
-                    $this.removeClass('row-selected');
-                }
-            })
-        });
+                $tableRows.each(function () {
+                    var $this = $(this);
+                    var index = $this.find('td:first').text();
+                    if (jQuery.inArray('' + index, selectIndexes) > -1) {
+                        $this.addClass('row-selected');
+                    } else {
+                        $this.removeClass('row-selected');
+                    }
+                })
+            });
         }
 
         //from table to select
@@ -302,14 +327,54 @@ function ajaxSubmit(formId, resultContainerId) {
                 isFinished = true;
             },
             success: function (msg) {
-                try{
+                try {
                     if (msg.data[0][0] == "success") {
                         generateAlertSuccess($resultContainer, "Operacja przbiegla pomyślnie");
                     } else {
                         generateAlertError($resultContainer, "Error occured during add action!");
                     }
-                } catch(error){
-                    generateAlertError($resultContainer, "JavaScript ERROR: "+error);
+                } catch (error) {
+                    generateAlertError($resultContainer, "JavaScript ERROR: " + error);
+                }
+            }
+        });
+    } else {
+        generateAlertError($resultContainer, "Błędnie wypełniony formularz!")
+    }
+
+    return false;
+}
+
+function ajaxSubmitFirstHotel(formId, resultContainerId) {
+    var $form = jQuery('#' + formId);
+    var $resultContainer = jQuery('#' + resultContainerId);
+    if ($form.valid()) {
+        var send = $form.formToJSON();
+        var formAction = $form.attr('action');
+        var dataFromForm = {dataFrom: send};
+        jQuery.ajax({
+            url: formAction,
+            type: 'POST',
+            data: dataFromForm,
+            dataType: "json",
+            error: function () {
+                generateAlertError($resultContainer, "Wystąpił bład podczas zapisu do bazy danych!");
+            },
+            success: function (msg) {
+                try {
+                    if (msg.data[0][0] == "success") {
+                        generateModal("modal-first-hotel", "Welcome!",
+                            " Congratulations!" +
+                            "<br>" +
+                            "You've just successfully added your first hotel! " +
+                            "<br>" +
+                            "Click [OK] to log in again."
+                            , '/bookingsystem/logout', true);
+                    } else {
+                        generateAlertError($resultContainer, "Error occured during add action!");
+                    }
+                } catch (error) {
+                    generateAlertError($resultContainer, "JavaScript ERROR: " + error);
                 }
             }
         });
@@ -415,7 +480,7 @@ jQuery.fn.formToJSON = function () {
 var isFinished = true;
 function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContainerId, hotel_name) {
     var $resultContainer = jQuery('#' + resultContainerId);
-    var $hotelnameContainer = jQuery('#'+ hotelnameContainerId);
+    var $hotelnameContainer = jQuery('#' + hotelnameContainerId);
 
     if (isFinished) {
         isFinished = false;
@@ -426,7 +491,7 @@ function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContai
             dataType: "json",
             error: function (msg) {
                 if (msg.data[0][0] == "error") {
-                    if (msg.data[0][1]!=undefined && msg.data[0][1] == "THE_SAME") {
+                    if (msg.data[0][1] != undefined && msg.data[0][1] == "THE_SAME") {
                         generateAlertError($resultContainer, "Hotel został już wybrany!");
                     }
                 }
@@ -442,7 +507,7 @@ function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContai
                         generateAlertSuccess($resultContainer, "Hotel wczytany.");
                         $hotelnameContainer.text(hotel_name);
                     } else if (msg.data[0][0] == "error") {
-                        if (msg.data[0][1]!=undefined && msg.data[0][1] == "THE_SAME") {
+                        if (msg.data[0][1] != undefined && msg.data[0][1] == "THE_SAME") {
                             generateAlertWarning($resultContainer, "Hotel został już wybrany!");
                         }
                     } else {
@@ -482,7 +547,7 @@ function ajaxSelectFromTable(tableId, action, resultContainerId, hotelnameContai
 
 function checkRoomsCapacity(tableId, formId) {
     var capacitySum = 0;
-    var $form = $('#'+formId);
+    var $form = $('#' + formId);
     $('body').on('table:rowselected table:rowunselected', function (e, table_id, index, capacity) {
         if (index) {
             if (tableId == table_id) {
@@ -511,15 +576,15 @@ function countCapacity(formId) {
 }
 
 
-function showFieldIfSelectedValEquals(value, formId, fieldFromId, fieldToId){
-    var $form = $('#'+formId);
+function showFieldIfSelectedValEquals(value, formId, fieldFromId, fieldToId) {
+    var $form = $('#' + formId);
     var $typeField = $form.find('#' + fieldFromId);
-    var $hotelField = $form.find('#'+ fieldToId);
+    var $hotelField = $form.find('#' + fieldToId);
     var $hotelFieldGroup = $hotelField.closest('.form-group');
-    $typeField.on('change', function(){
-       var $this = $(this);
+    $typeField.on('change', function () {
+        var $this = $(this);
         var selectedType = $this.val();
-        if(selectedType==value){
+        if (selectedType == value) {
             $hotelFieldGroup.show();
         } else {
             $hotelFieldGroup.hide();
