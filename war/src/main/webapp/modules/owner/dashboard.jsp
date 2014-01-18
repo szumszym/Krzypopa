@@ -300,7 +300,7 @@
 <div id="content">
     <div class="outer">
         <div class="inner">
-            <div id=context data-default="./views/hotel/hotel-select-owner.jsp"></div>
+            <div id=context data-default="./views/hotel/hotel-select.jsp"></div>
         </div>
     </div>
 
