@@ -1,6 +1,7 @@
 package pl.bookingsystem.db.dao;
 
 import pl.bookingsystem.db.entity.Client;
+import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Reservation;
 import pl.bookingsystem.db.entity.User;
 
@@ -14,4 +15,8 @@ public interface ReservationDAO extends GenericDAO<Reservation, Long> {
     List<Reservation> getClientReservations(Client client);
 
     List<Reservation> getUserReservations(User user);
+
+    List<Reservation> getHotelReservations(Hotel hotel);
+
+    List<Reservation> getAllReservations();
 }

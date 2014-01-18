@@ -58,14 +58,20 @@ public class ReservationAction extends ActionSupport implements SessionAware {
     })
     public String dataFromDB() {
         try {
+            Hotel hotel = (Hotel) session.get("hotel");
+            Boolean isAdmin = (Boolean) session.get("isAdmin");
 
             ReservationDAO reservationManager = new ReservationDAOImpl();
-            List reservations = null;// = reservationManager.selectAll(Reservation.class);
+            List reservations = null;
 
             User user = getUser(session);
             Client client = getClient(session);
             if (user != null) {
-                reservations = reservationManager.getUserReservations(user);
+                if(isAdmin){
+                    reservations = reservationManager.getAllReservations();
+                } else {
+                    reservations = reservationManager.getHotelReservations(hotel);
+                }
             } else if (client != null) {
                 reservations = reservationManager.getClientReservations(client);
             }
