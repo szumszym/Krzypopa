@@ -122,8 +122,19 @@
 
             <!-- ."main-bar -->
             <div class="main-bar">
-                <h3>
+                <h3 class="col-lg-4">
                     <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
+                <div class="menu-select-hotel col-lg-5" style="">
+                    <div class="form-horizontal" style="">
+                        <div class="form-group" style="margin:0;">
+                            <label class="control-label col-lg-5" id="selected-hotel-name-label">
+                                Your Hotel: </label>
+
+                            <div class="col-lg-5" style="padding:0">
+                                <div id="selected-hotel-name"><s:property value="hotelname"/></div>
+                            </div>
+                        </div>
+                    </div>
             </div>
             <!-- /.main-bar -->
         </header>
