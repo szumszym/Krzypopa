@@ -12,7 +12,7 @@ public class Client implements Serializable {
 
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY/*GenerationType.AUTO*/)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = "first_name", nullable = false)
@@ -157,8 +157,33 @@ public class Client implements Serializable {
         this.address = address;
     }
 
+    public Set<Hotel> getHotels() {
+        return hotels;
+    }
+
+    public void setHotels(Set<Hotel> hotels) {
+        this.hotels = hotels;
+    }
+
+    public Date getRegister_date() {
+        return register_date;
+    }
+
+    public void setRegister_date(Date register_date) {
+        this.register_date = register_date;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
     @Override
     public String toString() {
         return this.getFirst_name() + " " + this.getLast_name();
     }
+
 }
