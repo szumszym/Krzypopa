@@ -45,6 +45,10 @@ public class LoginAction extends ActionSupport implements SessionAware {
         session.put("isEmployee", false);
         session.put("isOwner", false);
 
+        session.put("isUser", false);
+        session.put("isClient", false);
+
+
         UserDAO userManager = new UserDAOImpl();
         User user = userManager.checkRegisteredUser(login, password);
 
@@ -59,6 +63,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
             if (User.Type.ADMIN.equals(userType)) {
                 List<Hotel> hotels = hotelManager.selectAllWithAddress();
                 session.put("isAdmin", true);
+                session.put("isUser", true);
                 session.put("admin", user);
                 session.put("hotels", hotels);
                 return "adminlogged";
@@ -66,6 +71,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
             } else if (User.Type.EMPLOYEE.equals(userType)) {
                 List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
                 session.put("isEmployee", true);
+                session.put("isUser", true);
                 session.put("employee", user);
                 session.put("hotels", hotels);
 
@@ -80,6 +86,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
             } else if (User.Type.OWNER.equals(userType)) {
                 List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
                 session.put("isOwner", true);
+                session.put("isUser", true);
                 session.put("owner", user);
                 session.put("hotels", hotels);
 
