@@ -92,20 +92,33 @@ public class UserAction extends ActionSupport implements SessionAware{
             String postcode = jsonObject.getString("postcode");
             String country = jsonObject.getString("country");
 
+//ADDRESS
             Address address = new Address(city, street, building_no, postcode, country);
             String apartment_no = jsonObject.getString("apartment_no");
             if (!apartment_no.isEmpty()) {
                 address.setApartment_no(Integer.valueOf(apartment_no));
             }
 
+//CREATE NEW USER
             User user = new User(first_name, last_name, pesel, email, phone_number, password, type, address);
+
+//NIP
             String nip = jsonObject.getString(("nip"));
             if (!nip.isEmpty()) {
                 user.setNip(Long.parseLong(nip));
             }
 
+//SAVE USER
             UserDAO userManager = new UserDAOImpl();
             userManager.save(user);
+
+//ADD HOTEL IF EMPLOYEE
+            if(User.Type.EMPLOYEE.equals(type)){
+                String hotelId = jsonObject.getString("hotel_id");
+                HotelDAO hotelManager = new HotelDAOImpl();
+                Hotel hotel = hotelManager.selectByID(hotelId);
+                hotelManager.addUser(user, hotel);
+            }
 
             data = setMsg(SUCCESS);
             return SUCCESS;

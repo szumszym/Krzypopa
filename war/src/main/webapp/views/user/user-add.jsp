@@ -420,14 +420,22 @@
     <label class="control-label col-lg-4">Type</label>
 
     <div class="col-lg-8">
-        <select name="type" class="form-control chzn-select">
-            <option>ADMIN</option>
-            <option>OWNER</option>
-            <option>EMPLOYEE</option>
+        <select id="user-add-select-type" name="type" class="form-control">
+            <option value="ADMIN">ADMIN</option>
+            <option value="OWNER">OWNER</option>
+            <option value="EMPLOYEE">EMPLOYEE</option>
         </select>
     </div>
 </div>
 
+<div class="form-group">
+    <label class="control-label col-lg-4">Hotel</label>
+
+    <div class="col-lg-8">
+        <select id="employee-hotel-select" name="hotel_id" class="form-control">
+        </select>
+    </div>
+</div>
 
 <div class="form-group">
     <label class="control-label col-lg-4">Add User</label>

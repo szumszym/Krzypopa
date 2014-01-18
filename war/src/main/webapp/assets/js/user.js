@@ -103,3 +103,12 @@ formValidate('user-add', {
         required: true
     }
 });
+
+createSelectListWithDataFromDB('hotel-getList-small', 'employee-hotel-select', {
+    label: 1,
+    value: 0
+}, true);
+
+showFieldIfSelectedValEquals('EMPLOYEE', 'user-add', 'user-add-select-type', 'employee-hotel-select');
+
+$('#user-add-select-type').chosen();

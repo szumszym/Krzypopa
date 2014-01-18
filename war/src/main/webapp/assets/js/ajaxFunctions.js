@@ -162,7 +162,7 @@ function deleteRow(that, action) {
     }
 }
 
-function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectParams) {
+function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectParams, isHidden) {
     var params = selectParams;
     $.ajax({
         type: 'POST',
@@ -192,6 +192,11 @@ function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectPar
                     $selectElem.attr('multiple', '')
                 }
                 $selectElem.chosen();
+
+                if(isHidden){
+                    $selectElem.closest('.form-group').hide();
+                }
+
             } else {
                 $selectElem.html("Server ERROR!");
                 console.log("Error: ", data);
@@ -505,4 +510,21 @@ function countCapacity(formId) {
     });
 }
 
+
+function showFieldIfSelectedValEquals(value, formId, fieldFromId, fieldToId){
+    var $form = $('#'+formId);
+    var $typeField = $form.find('#' + fieldFromId);
+    var $hotelField = $form.find('#'+ fieldToId);
+    var $hotelFieldGroup = $hotelField.closest('.form-group');
+    $typeField.on('change', function(){
+       var $this = $(this);
+        var selectedType = $this.val();
+        if(selectedType==value){
+            $hotelFieldGroup.show();
+        } else {
+            $hotelFieldGroup.hide();
+        }
+    });
+
+}
 
