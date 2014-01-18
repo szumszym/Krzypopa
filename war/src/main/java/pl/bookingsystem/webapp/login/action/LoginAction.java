@@ -62,49 +62,32 @@ public class LoginAction extends ActionSupport implements SessionAware {
             session.put("user", user);
 
             if (User.Type.ADMIN.equals(userType)) {
-                List<Hotel> hotels = hotelManager.selectAllWithAddress();
                 session.put("isAdmin", true);
                 session.put("isUser", true);
                 session.put("admin", user);
-                session.put("hotels", hotels);
 
-                Hotel hotel = null;
-                if(!hotels.isEmpty()){
-                    hotel = hotels.get(0);
-                    hotelname = hotel.getName();
-                }
-                session.put("hotel", hotel);
+                List<Hotel> hotels = hotelManager.selectAllWithAddress();
+                saveHotelsToSession(hotels);
 
                 return "adminlogged";
 
             } else if (User.Type.EMPLOYEE.equals(userType)) {
-                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
                 session.put("isEmployee", true);
                 session.put("isUser", true);
                 session.put("employee", user);
-                session.put("hotels", hotels);
 
-                Hotel hotel = null;
-                if(!hotels.isEmpty()){
-                    hotel = hotels.get(0);
-                }
-                session.put("hotel", hotel);
+                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
+                saveHotelsToSession(hotels);
 
                 return "employeelogged";
 
             } else if (User.Type.OWNER.equals(userType)) {
-                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
                 session.put("isOwner", true);
                 session.put("isUser", true);
                 session.put("owner", user);
-                session.put("hotels", hotels);
 
-                Hotel hotel = null;
-                if(!hotels.isEmpty()){
-                    hotel = hotels.get(0);
-                    hotelname = hotel.getName();
-                }
-                session.put("hotel", hotel);
+                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
+                saveHotelsToSession(hotels);
 
                 return "ownerlogged";
             }
@@ -114,11 +97,22 @@ public class LoginAction extends ActionSupport implements SessionAware {
             if (client != null) {
                 session.put("isClient", true);
                 session.put("client", client);
+
                 return "clientlogged";
             }
 
         }
         return ERROR;
+    }
+
+    private void saveHotelsToSession(List<Hotel> hotels) {
+        session.put("hotels", hotels);
+        Hotel hotel = null;
+        if(!hotels.isEmpty()){
+            hotel = hotels.get(0);
+            hotelname = hotel.getName();
+        }
+        session.put("hotel", hotel);
     }
 
     @Action(value = "logout", results = {@Result(name = "success", location = "/modules/login/logout.jsp")})
