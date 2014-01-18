@@ -19,7 +19,7 @@
 
 <div id="div-2" class="accordion-body collapse in body">
 
-<form id="user-add" action="user-add" class="form-horizontal">
+<form id="user-add" action="employee-add" class="form-horizontal">
 <div class="form-group">
     <label class="control-label col-lg-4">First Name</label>
 
@@ -423,7 +423,7 @@
         <div class="input-group">
 
             <input type="submit" name="submit"
-                   onclick="ajaxSubmit('employee-add', 'server-messages'); return false;"
+                   onclick="ajaxSubmit('user-add', 'server-messages'); return false;"
                    class="btn btn-primary" data-original-title="" title="" value="Add"/>
 
         </div>
