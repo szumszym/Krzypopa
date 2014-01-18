@@ -118,18 +118,18 @@ public class ClientAction extends ActionSupport {
     public String clientAdd() {
         try {
             JSONObject jsonObject = new JSONObject(dataFrom);
-            String first_name = jsonObject.getString("first_name");
-            String last_name = jsonObject.getString("last_name");
-            String email = jsonObject.getString("email");
-            Long pesel = Long.parseLong(jsonObject.getString("pesel"));
-            String phone_number = jsonObject.getString("phone_number");
-            String password = jsonObject.getString("password");
-            String city = jsonObject.getString("city");
-            String street = jsonObject.getString("street");
-            Integer building_no = Integer.parseInt(jsonObject.getString("building_no"));
-            String postcode = jsonObject.getString("postcode");
-            String country = jsonObject.getString("country");
-            String apartment_no = jsonObject.getString("apartment_no");
+            String first_name = jsonObject.getString("c_first_name");
+            String last_name = jsonObject.getString("c_last_name");
+            String email = jsonObject.getString("c_email");
+            Long pesel = Long.parseLong(jsonObject.getString("c_pesel"));
+            String phone_number = jsonObject.getString("c_phone_number");
+            String password = jsonObject.getString("c_password");
+            String city = jsonObject.getString("c_city");
+            String street = jsonObject.getString("c_street");
+            Integer building_no = Integer.parseInt(jsonObject.getString("c_building_no"));
+            String postcode = jsonObject.getString("c_postcode");
+            String country = jsonObject.getString("c_country");
+            String apartment_no = jsonObject.getString("c_apartment_no");
 
             Address address = new Address(city, street, building_no, postcode, country);
             if (!apartment_no.isEmpty()) {
@@ -138,7 +138,7 @@ public class ClientAction extends ActionSupport {
 
             Date register_date = new Date();
             Client client = new Client(first_name, last_name, pesel, email, phone_number, password, address, register_date);
-            String nip = jsonObject.getString(("nip"));
+            String nip = jsonObject.getString(("c_nip"));
             if (!nip.isEmpty()) {
                 client.setNip(Long.parseLong(nip));
             }
