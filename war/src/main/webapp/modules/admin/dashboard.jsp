@@ -85,7 +85,13 @@
             <!-- .nav -->
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
+                    <a class="btn-select-hotel" href="#" data-url="./views/hotel/hotel-select-owner.jsp"
+                       data-placement="#context">
+                        Select hotel
+                    </a>
+                </li>
+                <li>
+                <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
                         <i class="fa fa-tasks"></i>&nbsp;Reservations
                     </a>
                 </li>
@@ -122,8 +128,22 @@
 
         <!-- ."main-bar -->
         <div class="main-bar">
-            <h3>
-                <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
+            <h3 class="col-lg-4">
+            <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
+
+            <div class="menu-select-hotel col-lg-5" style="">
+                <div class="form-horizontal" style="">
+                    <div class="form-group" style="margin:0;">
+                        <label class="control-label col-lg-5" id="selected-hotel-name-label">
+                            Selected Hotel: </label>
+
+                        <div class="col-lg-5" style="padding:0">
+                            <div id="selected-hotel-name"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <!-- /.main-bar -->
     </header>
@@ -168,7 +188,7 @@
             </a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/client/client-add-admin.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/client/client-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new</a>
                 </li>
                 <li class="">
@@ -184,7 +204,7 @@
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/room/room-add-admin.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/room/room-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
@@ -200,7 +220,7 @@
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/additions/additions-add-admin.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/additions/additions-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
@@ -216,7 +236,7 @@
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/status/status-add-admin.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/status/status-add.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
@@ -280,7 +300,7 @@
 <div id="content">
     <div class="outer">
         <div class="inner">
-            <div id=context data-default="./views/reservation/reservation-browse.jsp"></div>
+            <div id=context data-default="./views/hotel/hotel-select.jsp"></div>
         </div>
     </div>
 
@@ -339,6 +359,7 @@
 <script src="./assets/js/app/metisMenu.js"></script>
 <script src="./assets/js/main.js"></script>
 <script src="./assets/js/ajaxFunctions.js"></script>
+
 <%--<script src="./assets/js/app/formGeneral.js"></script>--%>
 
 <%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
