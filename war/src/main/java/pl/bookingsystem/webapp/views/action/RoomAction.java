@@ -59,30 +59,37 @@ public class RoomAction extends ActionSupport implements SessionAware {
     })
     public String dataFromDB() {
         try {
-            Hotel hotel = (Hotel) session.get("hotel");
-            HotelDAO hotelManager = new HotelDAOImpl();
-            List<Room> rooms = hotelManager.getRooms(hotel.getId());
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
 
-            int size = rooms.size();
-            data = new String[size][];
-            for (int j = 0; j < rooms.size(); j++) {
-                String[] room = new String[9];
-                Room r = rooms.get(j);
-                room[0] = String.valueOf(r.getId());
-                room[1] = String.valueOf(r.getNo_room());
-                room[2] = String.valueOf(r.getName());
-                room[3] = String.valueOf(r.getBed());
-                room[4] = String.valueOf(r.getCapacity());
-                room[5] = String.valueOf(r.getAdditions(3));
-                String description = r.getDescription();
-                room[6] = String.valueOf(description != null ? description : "-");
-                room[7] = String.valueOf(r.getPrice());
-                room[8] = String.valueOf(r.getPublished());
+                Hotel hotel = (Hotel) session.get("hotel");
+                HotelDAO hotelManager = new HotelDAOImpl();
+                List<Room> rooms = hotelManager.getRooms(hotel.getId());
 
-                data[j] = room;
+                int size = rooms.size();
+                data = new String[size][];
+                for (int j = 0; j < rooms.size(); j++) {
+                    String[] room = new String[9];
+                    Room r = rooms.get(j);
+                    room[0] = String.valueOf(r.getId());
+                    room[1] = String.valueOf(r.getNo_room());
+                    room[2] = String.valueOf(r.getName());
+                    room[3] = String.valueOf(r.getBed());
+                    room[4] = String.valueOf(r.getCapacity());
+                    room[5] = String.valueOf(r.getAdditions(3));
+                    String description = r.getDescription();
+                    room[6] = String.valueOf(description != null ? description : "-");
+                    room[7] = String.valueOf(r.getPrice());
+                    room[8] = String.valueOf(r.getPublished());
+
+                    data[j] = room;
+                }
+
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
             }
-
-            return SUCCESS;
 
         } catch (Exception e) {
             data = new String[][]{new String[]{"ERROR!!!"}};
@@ -98,80 +105,86 @@ public class RoomAction extends ActionSupport implements SessionAware {
     })
     public String roomAdd() {
         try {
-            User user = (User) session.get("user");
-            User.Type type = user.getType();
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+                User user = (User) session.get("user");
+                User.Type type = user.getType();
 
 
-            JSONObject jsonObject = new JSONObject(dataFrom);
-            String room_name = jsonObject.getString("room_name");
-            Integer roomno = Integer.parseInt(jsonObject.getString("roomno"));
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                String room_name = jsonObject.getString("room_name");
+                Integer roomno = Integer.parseInt(jsonObject.getString("roomno"));
 
-            String bedCountString = jsonObject.getString("bed_count");
-            Integer bed_count = Integer.parseInt(bedCountString);
-            String bedTypeString = jsonObject.getString("bed_type");
-            Integer bed_type = Integer.parseInt(bedTypeString);
-            String bed = bedCountString+"x"+bedTypeString;
+                String bedCountString = jsonObject.getString("bed_count");
+                Integer bed_count = Integer.parseInt(bedCountString);
+                String bedTypeString = jsonObject.getString("bed_type");
+                Integer bed_type = Integer.parseInt(bedTypeString);
+                String bed = bedCountString + "x" + bedTypeString;
 
-            String description = jsonObject.getString("description");
-            Integer capacity = Integer.parseInt(jsonObject.getString("capacity"));
-            Double price = Double.parseDouble(jsonObject.getString("price"));
+                String description = jsonObject.getString("description");
+                Integer capacity = Integer.parseInt(jsonObject.getString("capacity"));
+                Double price = Double.parseDouble(jsonObject.getString("price"));
 
 //ADDITIONS
 
-            Set<Addition> additionSet = new HashSet<Addition>();
-            if(!jsonObject.isNull("addition")) {
-                JSONArray additionIds = (JSONArray) jsonObject.get("addition");
-                List<String> additionsIdsList = new ArrayList<String>();
-                List<Addition> additionList;
-                for (int i = 0; i < additionIds.length(); i++) {
-                    additionsIdsList.add(additionIds.getString(i));
-                    log.info("Name: " + additionsIdsList.get(i));
-                }
-                AdditionDAO additionManager = new AdditionDAOImpl();
-                additionList = additionManager.getAdditionsBy(additionsIdsList, "id");
-                for (String id : additionsIdsList) {
-                    additionList.add(additionManager.selectByID(Addition.class, Long.parseLong(id)));
-                }
+                Set<Addition> additionSet = new HashSet<Addition>();
+                if (!jsonObject.isNull("addition")) {
+                    JSONArray additionIds = (JSONArray) jsonObject.get("addition");
+                    List<String> additionsIdsList = new ArrayList<String>();
+                    List<Addition> additionList;
+                    for (int i = 0; i < additionIds.length(); i++) {
+                        additionsIdsList.add(additionIds.getString(i));
+                        log.info("Name: " + additionsIdsList.get(i));
+                    }
+                    AdditionDAO additionManager = new AdditionDAOImpl();
+                    additionList = additionManager.getAdditionsBy(additionsIdsList, "id");
+                    for (String id : additionsIdsList) {
+                        additionList.add(additionManager.selectByID(Addition.class, Long.parseLong(id)));
+                    }
 
-                if (!additionList.isEmpty()) {
-                    additionSet.addAll(additionList);
+                    if (!additionList.isEmpty()) {
+                        additionSet.addAll(additionList);
+                    }
                 }
-            }
 
 //HOTEL
-            Hotel hotel = null;
-            HotelDAO hotelManager = new HotelDAOImpl();
-            if (type.equals(User.Type.ADMIN)) {
-                Long hotel_id = Long.parseLong(jsonObject.getString("hotel"));
-                hotel = hotelManager.selectByID(Hotel.class, hotel_id);
-            } else if(User.Type.EMPLOYEE.equals(type) || User.Type.OWNER.equals(type)){
-                hotel = (Hotel) session.get("hotel");
+                Hotel hotel = null;
+                HotelDAO hotelManager = new HotelDAOImpl();
+                if (type.equals(User.Type.ADMIN)) {
+                    Long hotel_id = Long.parseLong(jsonObject.getString("hotel"));
+                    hotel = hotelManager.selectByID(Hotel.class, hotel_id);
+                } else if (User.Type.EMPLOYEE.equals(type) || User.Type.OWNER.equals(type)) {
+                    hotel = (Hotel) session.get("hotel");
 
-            }
+                }
 
 //CREATE NEW ROOM AND SAVE
-            RoomDAO roomManager = new RoomDAOImpl();
-            Room room = new Room(roomno, room_name, bed, capacity, hotel, additionSet, price);
-            room.setDescription(description);
+                RoomDAO roomManager = new RoomDAOImpl();
+                Room room = new Room(roomno, room_name, bed, capacity, hotel, additionSet, price);
+                room.setDescription(description);
 
 
 //PUBLISH
-            Boolean published = false;
-            if(User.Type.EMPLOYEE.equals(type)){
-                published = Boolean.parseBoolean(jsonObject.getString("published"));
-            }
-            room.setPublished(published);
+                Boolean published = false;
+                if (User.Type.EMPLOYEE.equals(type)) {
+                    published = Boolean.parseBoolean(jsonObject.getString("published"));
+                }
+                room.setPublished(published);
 
-            roomManager.save(room);
+                roomManager.save(room);
 
 //UPDATE SESSION
-            if (hotel != null) {
-                Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
-                session.put("hotel", hotel2);
-            }
+                if (hotel != null) {
+                    Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
+                    session.put("hotel", hotel2);
+                }
 
-            data = setMsg(SUCCESS);
-            return SUCCESS;
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
 
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
