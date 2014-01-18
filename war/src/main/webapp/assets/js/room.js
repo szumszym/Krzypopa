@@ -12,6 +12,7 @@ createTableWithDataFromDB({
                 { "sTitle": "Room No" },
                 { "sTitle": "Name" },
                 { "sTitle": "Bed" },
+                { "sTitle": "Capacity"},
                 { "sTitle": "Additions" },
                 { "sTitle": "Desc" },
                 { "sTitle": "Price" },
@@ -103,6 +104,16 @@ formValidate('room-add', {
     roomno: {
         required: true,
         digits: true
+    },
+    bed_count: {
+        required: true,
+        digits:true,
+        range: [0,9]
+    },
+    bed_type: {
+        required: true,
+        digits:true,
+        range: [1,3]
     },
     capacity: {
         required: true,

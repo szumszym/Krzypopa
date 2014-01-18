@@ -81,11 +81,25 @@
                     <!-- /.row -->
 
                     <div class="form-group">
+                        <label class="control-label col-lg-4">Count of beds</label>
+
+                        <div class="col-lg-4">
+                            <input type="text" name="bed_count" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-lg-4">Bed Type</label>
+
+                        <div class="col-lg-4">
+                            <input type="text" name="bed_type" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="control-label col-lg-4">Capacity</label>
 
-                        <div class="col-lg-8">
-                            <input type="text" name="capacity" id="roa-capacity"
-                                   class="form-control">
+                        <div class="col-lg-4">
+                            <input disabled type="text" name="capacity" id="roa-capacity" class="form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
@@ -129,6 +143,7 @@
 <script>
     $(".chzn-select").chosen();
     bindSelectTable('addition-table-small', 'room-addition-select', true);
+    countCapacity('room-add');
 </script>
 
 
