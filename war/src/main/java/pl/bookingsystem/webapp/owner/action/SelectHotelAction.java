@@ -41,23 +41,25 @@ public class SelectHotelAction extends ActionSupport implements SessionAware {
     }
 
     @Action(value = "select-hotel", results = {
-            @Result(name = SUCCESS, type = "json")
+            @Result(name = SUCCESS, type = "json"),
+            @Result(name = ERROR, type = "json")
     })
     public String execute() {
         try {
+            Hotel currentHotel = (Hotel) session.get("hotel");
             JSONObject jsonObject = new JSONObject(dataFrom);
             String index = jsonObject.getString("index");
-            HotelDAO hotelManager = new HotelDAOImpl();
-            Hotel hotel = hotelManager.selectByID(index);
-            session.put("hotel", hotel);
-            //TODO: dodac JSON action
-            //TODO: get hotel from DB by id
-            //TODO: save hotel to session
+            if (!index.equals(currentHotel.getId().toString())) {
+                HotelDAO hotelManager = new HotelDAOImpl();
+                Hotel hotel = hotelManager.selectByID(index);
+                session.put("hotel", hotel);
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg(ERROR, "THE_SAME");
+                return ERROR;
+            }
 
-            //TODO: gdy strona sie odswiezy - trzeba ustawic wykrywanie hotelu w akcjach typu getData-xxx
-            //TODO: !!!!!! albo ustawic akcje zeby przeladowala caly dashboard jeszcze raz - wtedy nie trzeba odswiezac htmla
-            data = setMsg(SUCCESS);
-            return SUCCESS;
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;
