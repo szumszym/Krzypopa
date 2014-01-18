@@ -28,23 +28,11 @@ public class AddToDB {
         Hotel hotel = new Hotel(name, "+48 0123456789", "kontakt@hotelblabla.pl", hotel_address, clients, users);
         hotelManager.save(hotel);
 
-        hotelManager.addRoom(createRoom(1, hotel), hotel);
-        hotelManager.addRoom(createRoom(2, hotel), hotel);
-        hotelManager.addRoom(createRoom(3, hotel), hotel);
+
         hotelManager.save(hotel);
 
-        System.out.println("Rooms:");
-        for (Room room : hotel.getRooms()) {
-            System.out.println(room.getName());
-        }
-
         RoomDAO roomManager = new RoomDAOImpl();
-        List<Room> hotelRooms = roomManager.selectMany("select hotel.rooms from Hotel hotel where hotel.id = 30");
-        System.out.println("Rooms:");
-        for (Room room : hotelRooms) {
-            System.out.println(room.getName() + " " + room.getHotel().getId());
-        }
-
+        List<Room> hotelRooms = roomManager.selectMany("select hotel.rooms from Hotel hotel where hotel.id = 1");
 
     }
 
