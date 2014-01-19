@@ -14,11 +14,9 @@ import pl.bookingsystem.db.dao.impl.*;
 import pl.bookingsystem.db.entity.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static pl.bookingsystem.webapp.action.Utils.daysBetween;
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
@@ -122,41 +120,71 @@ public class ReservationAction extends ActionSupport implements SessionAware {
 
             User currentUser = (User) session.get("user");
             Client currentClient = (Client) session.get("client");
-
-            System.out.println(dataFrom);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Hotel hotel = (Hotel) session.get("hotel");
 
             JSONObject jsonObject = new JSONObject(dataFrom);
             String name = jsonObject.getString("name");
-            Date date_from = simpleDateFormat.parse(jsonObject.getString("date_from"));
-            Date date_to = simpleDateFormat.parse(jsonObject.getString("date_to"));
             Integer person_count = Integer.parseInt(jsonObject.getString("person_count"));
 
+ //DATES
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date_from = simpleDateFormat.parse(jsonObject.getString("date_from"));
+            Date date_to = simpleDateFormat.parse(jsonObject.getString("date_to"));
 
+//ROOMS
             JSONArray jsonRoomIdsArray = (JSONArray) jsonObject.get("room_ids");
             List<String> room_ids = convertJSONArrayToArrayList(jsonRoomIdsArray);
             RoomDAO roomManager = new RoomDAOImpl();
             List<Room> rooms = roomManager.selectByIDS(Room.class, room_ids);
 
+ //CHECK IF TERM IS AVADAIBLE
+            ReservationDAO reservationManager = new ReservationDAOImpl();
+            for (Room room : rooms) {
+                List<Reservation> reservations = reservationManager.getAllReservationsFrom(hotel, room);
+                for (Reservation res : reservations) {
+                    res.getDate_from();
+                    res.getDate_to();
+                    //TODO: METODA!!!! - porownac czy nie zachodzi to na przedzial datefrom i dateto z formularza
+                    if (true/*zachodzi*/) {
+                        //TODO: setMsg zachodzi z inna rezerwacja
+                        //return CONFLICT ?
+                    }
+                }
+            }
 
+//CLIENT AND STATUS
+            Status status = null;
             Client client = null;
-            Long statusId = null;
             if (currentUser != null) {
-                statusId = Long.parseLong(jsonObject.getString("status_id"));
+                Long statusId = Long.parseLong(jsonObject.getString("status_id"));
+                StatusDAO statusManager = new StatusDAOImpl();
+                status = statusManager.selectByID(Status.class, statusId);
+
                 Long clientId = Long.parseLong(jsonObject.getString("client_id"));
                 ClientDAO clientManager = new ClientDAOImpl();
                 client = clientManager.selectByID(Client.class, clientId);
             } else if (currentClient != null) {
                 client = currentClient;
-                statusId = 1L;
+                HotelDAO hotelManager = new HotelDAOImpl();
+
+                List<Status> statuses = hotelManager.getStatuses(hotel.getId());
+                status = statuses.get(0);
             }
 
-            StatusDAO statusManager = new StatusDAOImpl();
-            Status status = statusManager.selectByID(Status.class, statusId);
+//PRICE
+            Double price = 0.0;
+            for (Room room : rooms) {
+                Set<Addition> additions = room.getAdditions();
+                for (Addition add : additions) {
+                    price += add.getPrice();
+                }
+                price += room.getPrice();
+            }
+            int days = daysBetween(date_from, date_to);
+            price *= days;
 
-            Double price = 0.0; //TODO wyliczyc cene: pokoje, dodatki itp..
+ //CREATE NEW RESERVATION
             Reservation reservation = new Reservation(name, date_from, date_to, person_count, client, status, rooms, price);
-            ReservationDAO reservationManager = new ReservationDAOImpl();
             reservationManager.save(reservation);
 
             data = setMsg(SUCCESS);

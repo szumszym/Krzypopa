@@ -3,10 +3,7 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "reservation")
@@ -49,7 +46,7 @@ public class Reservation implements Serializable {
     @JoinTable(name = "room_reservation",
             joinColumns = {@JoinColumn(name = "reservation_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "room_id")})
-    private Set<Room> rooms = new HashSet<Room>();
+    private Set<Room> rooms = new LinkedHashSet<Room>();
 
     @Column(name = "price")
     private Double price;
