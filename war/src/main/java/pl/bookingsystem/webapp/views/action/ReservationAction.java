@@ -9,14 +9,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pl.bookingsystem.db.dao.ClientDAO;
-import pl.bookingsystem.db.dao.ReservationDAO;
-import pl.bookingsystem.db.dao.RoomDAO;
-import pl.bookingsystem.db.dao.StatusDAO;
-import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
-import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
-import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
-import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
+import pl.bookingsystem.db.dao.*;
+import pl.bookingsystem.db.dao.impl.*;
 import pl.bookingsystem.db.entity.*;
 
 import java.text.SimpleDateFormat;
@@ -25,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static pl.bookingsystem.webapp.action.Utils.getClient;
-import static pl.bookingsystem.webapp.action.Utils.getUser;
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
@@ -64,8 +56,8 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             ReservationDAO reservationManager = new ReservationDAOImpl();
             List reservations = null;
 
-            User user = getUser(session);
-            Client client = getClient(session);
+            User user = (User) session.get("user");
+            Client client = (Client) session.get("client");
             if (user != null) {
                 if(isAdmin){
                     reservations = reservationManager.getAllReservations();
@@ -85,21 +77,26 @@ public class ReservationAction extends ActionSupport implements SessionAware {
                     Object[] res = (Object[]) reservations.get(j);
                     Reservation r = (Reservation) res[0];
                     String userEmail = (String) res[1];
-                    Long roomNo = (Long) res[2];
+                    Integer roomNo = (Integer) res[2];
                     Long hotelNo = (Long) res[3];
+
+                    HotelDAO hotelManager = new HotelDAOImpl();
+                    Hotel hotel2 = hotelManager.selectByID(hotelNo);
+                    String hotelName = hotel2.getName();
 
                     reservation[0] = String.valueOf(r.getId());
                     reservation[1] = String.valueOf(r.getName());
                     reservation[2] = String.valueOf(r.getDate_from());
                     reservation[3] = String.valueOf(r.getDate_to());
                     reservation[4] = String.valueOf(r.getPerson_count());
-                    reservation[5] = String.valueOf(r.getStatus());
-                    reservation[6] = String.valueOf(r.getEntry_date());
+                    Status status = r.getStatus();
+                    reservation[5] = String.valueOf(status.getColor()+"&"+status.getType());
+                    reservation[6] = String.valueOf(r.getEntry_date() != null ? r.getUpdate_date() : "-");
                     reservation[7] = String.valueOf(r.getUpdate_date() != null ? r.getUpdate_date() : "-");
                     reservation[8] = String.valueOf(r.getPrice());
                     reservation[9] = userEmail;
-                    reservation[10] = String.valueOf(roomNo);
-                    reservation[11] = String.valueOf(hotelNo);
+                    reservation[10] = hotelName;
+                    reservation[11] = String.valueOf(roomNo);
 
                         data[j] = reservation;
                 }
@@ -123,8 +120,8 @@ public class ReservationAction extends ActionSupport implements SessionAware {
     public String reservationAdd() {
         try {
 
-            User currentUser = getUser(session);
-            Client currentClient = getClient(session);
+            User currentUser = (User) session.get("user");
+            Client currentClient = (Client) session.get("client");
 
             System.out.println(dataFrom);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");

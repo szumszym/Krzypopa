@@ -77,6 +77,40 @@ public class HotelAction extends ActionSupport implements SessionAware {
 
     }
 
+    @Action(value = "hotel-getData-client", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String getHotelsForClient() {
+        try {
+            HotelDAO hotelManager = new HotelDAOImpl();
+            List<Hotel> hotels = hotelManager.selectAllWithAddress();
+            int size = hotels.size();
+            data = new String[size][];
+            for (int j = 0; j < hotels.size(); j++) {
+
+                String[] tableS = new String[7];
+                Hotel h = hotels.get(j);
+                Address a = h.getAddress();
+                tableS[0] = String.valueOf(h.getId());
+                tableS[1] = String.valueOf(h.getName());
+                tableS[2] = String.valueOf(a.getCity());
+                tableS[3] = String.valueOf(a.getStreet() + " " + a.getBuilding_no());
+                tableS[4] = String.valueOf(h.getPhone_number());
+                tableS[5] = String.valueOf(h.getEmail());
+                tableS[6] = String.valueOf(h.getDescription());
+
+                data[j] = tableS;
+            }
+
+            return SUCCESS;
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
     @Action(value = "hotel-getList-small", results = {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")

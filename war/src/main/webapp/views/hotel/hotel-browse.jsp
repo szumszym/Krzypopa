@@ -21,8 +21,6 @@
 
         <table id="hotel-table"
                class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-
-
         </table>
     </div>
 </div>

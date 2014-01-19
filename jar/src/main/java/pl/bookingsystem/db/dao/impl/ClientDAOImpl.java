@@ -9,6 +9,8 @@ import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.utils.HibernateUtil;
 
+import java.util.List;
+
 public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements ClientDAO {
 
     private static Logger logger = Logger.getLogger(ClientDAOImpl.class);
@@ -61,10 +63,8 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
         return client;
     }
 
-
-    public Client findClientByReservation() {
-        Client client = null;
-
-        return client;
+    @Override
+    public List getClientsFromHotel(Long hotelId){
+        return selectMany("select c from Client c, Hotel h where c in elements(h.clients) and h.id="+hotelId.toString());
     }
 }

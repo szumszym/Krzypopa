@@ -10,4 +10,5 @@ public interface UserDAO extends GenericDAO<User, Long> {
     public List selectAllOwners();
 
     public List getEmployeesFromHotel(Long hotelId);
+
 }

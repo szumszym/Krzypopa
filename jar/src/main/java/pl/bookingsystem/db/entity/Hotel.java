@@ -49,6 +49,12 @@ public class Hotel implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", cascade = CascadeType.ALL)
     private Set<Room> rooms = new LinkedHashSet<Room>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", cascade = CascadeType.ALL)
+    private Set<Addition> additions = new LinkedHashSet<Addition>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", cascade = CascadeType.ALL)
+    private Set<Status> statuses = new LinkedHashSet<Status>();
+
 
     public Hotel(String name, String description, String phone_number, String email, Address address) {
         this.name = name;
@@ -182,7 +188,19 @@ public class Hotel implements Serializable {
         this.rooms = rooms;
     }
 
-    public void setRoom(Room room) {
-        this.rooms.add(room);
+    public Set<Addition> getAdditions() {
+        return additions;
+    }
+
+    public void setAdditions(Set<Addition> additions) {
+        this.additions = additions;
+    }
+
+    public Set<Status> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(Set<Status> statuses) {
+        this.statuses = statuses;
     }
 }

@@ -12,11 +12,12 @@ createTableWithDataFromDB({
                 { "sTitle": "Name" },
                 { "sTitle": "Email" },
                 { "sTitle": "Phone" },
-                { "sTitle": "Type" }
+                { "sTitle": "Type" },
+                { "sTitle": "Hotel" }
             ],
-            infoColumn: 6,
-            editColumn: 7,
-            deleteColumn: 8
+            infoColumn: 7,
+            editColumn: 8,
+            deleteColumn: 9
         }
     }
 });

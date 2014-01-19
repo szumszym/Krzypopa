@@ -5,33 +5,37 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
+import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.dao.StatusDAO;
+import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
+import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Status;
+import pl.bookingsystem.db.entity.User;
 
 import java.util.List;
+import java.util.Map;
 
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 
 @ParentPackage("json-default")
 @Namespace("")
-public class StatusAction extends ActionSupport {
+public class StatusAction extends ActionSupport implements SessionAware{
+
+    private Map<String, Object> session;
 
     private String[][] data;
-
     public String[][] getData() {
 
         return data;
     }
-
+    private String dataFrom;
     public String getDataFrom() {
         return dataFrom;
     }
-
-    private String dataFrom;
-
     public void setDataFrom(String dataFrom) {
         this.dataFrom = dataFrom;
     }
@@ -43,24 +47,32 @@ public class StatusAction extends ActionSupport {
     })
     public String dataFromDBsmall() {
         try {
-            StatusDAO statusManager = new StatusDAOImpl();
-            List<Status> statuses = statusManager.selectAll(Status.class);
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
 
-            int size = statuses.size();
-            data = new String[size][];
-            for (int j = 0; j < statuses.size(); j++) {
+                Hotel hotel = (Hotel) session.get("hotel");
+                HotelDAO hotelManager = new HotelDAOImpl();
+                List<Status> statuses = hotelManager.getStatuses(hotel.getId());
 
-                String[] tableS = new String[5];
-                Status s = statuses.get(j);
-                tableS[0] = String.valueOf(s.getId());
-                tableS[1] = String.valueOf(s.getType());
-                tableS[2] = String.valueOf(s.getDescription());
-                tableS[3] = String.valueOf(s.getColor());
+                int size = statuses.size();
+                data = new String[size][];
+                for (int j = 0; j < statuses.size(); j++) {
 
-                data[j] = tableS;
+                    String[] tableS = new String[5];
+                    Status s = statuses.get(j);
+                    tableS[0] = String.valueOf(s.getId());
+                    tableS[1] = String.valueOf(s.getType());
+                    tableS[2] = String.valueOf(s.getDescription());
+                    tableS[3] = String.valueOf(s.getColor());
+
+                    data[j] = tableS;
+                }
+
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
             }
-
-            return SUCCESS;
 
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
@@ -75,22 +87,39 @@ public class StatusAction extends ActionSupport {
     })
     public String statusAdd() {
         try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
 
-            StatusDAO statusManager = new StatusDAOImpl();
-            JSONObject jsonObject = new JSONObject(dataFrom);
+                StatusDAO statusManager = new StatusDAOImpl();
+                JSONObject jsonObject = new JSONObject(dataFrom);
 
-            String type = jsonObject.getString("type");
-            String color = jsonObject.getString("color");
-            String description = jsonObject.getString("description");
-            if ((description.isEmpty())) {
-                description = "-";
+                String type = jsonObject.getString("type");
+                String color = jsonObject.getString("color");
+                String description = jsonObject.getString("description");
+                if ((description.isEmpty())) {
+                    description = "-";
+                }
+
+//HOTEL
+                Hotel hotel = (Hotel) session.get("hotel");
+
+//CREATE NEW STATUS
+                Status status = new Status(type, description, color, hotel);
+                statusManager.save(status);
+
+
+//UPDATE SESSION
+                if (hotel != null) {
+                    HotelDAO hotelManager = new HotelDAOImpl();
+                    Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
+                    session.put("hotel", hotel2);
+                }
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
             }
-
-            Status status = new Status(type, description, color);
-            statusManager.save(status);
-
-            data = setMsg(SUCCESS);
-            return SUCCESS;
 
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
@@ -99,4 +128,8 @@ public class StatusAction extends ActionSupport {
 
     }
 
+    @Override
+    public void setSession(Map<String, Object> stringObjectMap) {
+        this.session = stringObjectMap;
+    }
 }

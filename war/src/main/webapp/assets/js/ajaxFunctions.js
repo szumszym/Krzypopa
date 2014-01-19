@@ -24,11 +24,12 @@ function createTableWithDataFromDB(params) {
     var ajaxActions = params.actions;
     var tableContainerId = params.table.id;
     var tableParams = params.table.params;
-
+    var paramToJAVA = params.toJAVA;
     var dataTableParams = [];
     $.ajax({
         type: 'POST',
         url: ajaxActions.get,
+        data: {dataFrom: '{index:'+paramToJAVA+'}'},
         success: function (data) {
             var aaData = eval(data).data;
             if (aaData == undefined) {
@@ -593,3 +594,14 @@ function showFieldIfSelectedValEquals(value, formId, fieldFromId, fieldToId) {
 
 }
 
+function callFnOnSelectRow(tableId, fn, fnArgs, fn2, fn2Args) {
+    $('body').on('table:rowselected', function (e, table_id, index) {
+        if (index) {
+            if (tableId == table_id) {
+                fnArgs["toJAVA"]= index;
+                fn.apply(this, fnArgs);
+                fn2.apply(this, fn2Args)
+            }
+        }
+    });
+}

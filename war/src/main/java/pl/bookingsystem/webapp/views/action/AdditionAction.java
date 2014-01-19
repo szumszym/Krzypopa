@@ -8,10 +8,14 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.AdditionDAO;
+import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.AdditionDAOImpl;
+import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Addition;
+import pl.bookingsystem.db.entity.Hotel;
+import pl.bookingsystem.db.entity.Room;
 import pl.bookingsystem.db.entity.User;
 
 import java.util.List;
@@ -45,23 +49,32 @@ public class AdditionAction extends ActionSupport implements SessionAware{
     })
     public String dataFromDBsmall() {
         try {
-            AdditionDAO additionManager = new AdditionDAOImpl();
-            List<Addition> additions = additionManager.selectAll(Addition.class);
-            int size = additions.size();
-            data = new String[size][];
-            for (int j = 0; j < additions.size(); j++) {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
 
-                String[] tableS = new String[5];
-                Addition a = additions.get(j);
-                tableS[0] = String.valueOf(a.getId());
-                tableS[1] = String.valueOf(a.getName());
-                tableS[2] = String.valueOf(a.getDescription());
-                tableS[3] = String.valueOf(a.getPrice());
-                tableS[4] = String.valueOf(a.getPublished());
+                Hotel hotel = (Hotel) session.get("hotel");
+                HotelDAO hotelManager = new HotelDAOImpl();
+                List<Addition> additions = hotelManager.getAdditions(hotel.getId());
 
-                data[j] = tableS;
+                int size = additions.size();
+                data = new String[size][];
+                for (int j = 0; j < additions.size(); j++) {
+
+                    String[] tableS = new String[5];
+                    Addition a = additions.get(j);
+                    tableS[0] = String.valueOf(a.getId());
+                    tableS[1] = String.valueOf(a.getName());
+                    tableS[2] = String.valueOf(a.getDescription());
+                    tableS[3] = String.valueOf(a.getPrice());
+                    tableS[4] = String.valueOf(a.getPublished());
+
+                    data[j] = tableS;
+                }
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
             }
-            return SUCCESS;
 
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
@@ -76,46 +89,51 @@ public class AdditionAction extends ActionSupport implements SessionAware{
     })
     public String additionsAdd() {
         try {
-            AdditionDAO additionManager = new AdditionDAOImpl();
-            JSONObject jsonObject = new JSONObject(dataFrom);
-            String name = jsonObject.getString("name");
-            Double price = Double.parseDouble(jsonObject.getString("price"));
-            String description = jsonObject.getString("description");
-            if ((description.isEmpty())) {
-                description = "-";
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+
+                AdditionDAO additionManager = new AdditionDAOImpl();
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                String name = jsonObject.getString("name");
+                String description = jsonObject.getString("description");
+                if ((description.isEmpty())) {
+                    description = "-";
+                }
+
+//HOTEL
+                Hotel hotel = (Hotel) session.get("hotel");
+
+//CREATE NEW ADDITION
+                Addition addition = new Addition(name, description, hotel);
+
+//PRICE
+                Double price = Double.parseDouble(jsonObject.getString("price"));
+                addition.setPrice(price);
+
+//PUBLISHED
+                Boolean published = Boolean.parseBoolean(jsonObject.getString("published"));
+                addition.setPublished(published);
+                additionManager.save(addition);
+
+//UPDATE SESSION
+                if (hotel != null) {
+                    HotelDAO hotelManager = new HotelDAOImpl();
+                    Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
+                    session.put("hotel", hotel2);
+                }
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
             }
-
-            Boolean published = Boolean.parseBoolean(jsonObject.getString("published"));
-
-            Addition addition = new Addition(name, description);
-            addition.setPrice(price);
-            addition.setPublished(published);
-            additionManager.save(addition);
-
-            data = setMsg(SUCCESS);
-            return SUCCESS;
 
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;
         }
 
-    }
-
-    private User getUser(String ownerId) {
-
-        User user = null;
-        Boolean isAdmin = (Boolean) session.get("isAdmin");
-        Boolean isOwner = (Boolean) session.get("isOwner");
-
-        if (isAdmin) {
-            UserDAO userManager = new UserDAOImpl();
-            Long userId = Long.valueOf(ownerId);
-            user = userManager.selectByID(User.class, userId);
-        } else if (isOwner) {
-            user = (User) session.get("user");
-        }
-        return user;
     }
 
     @Override

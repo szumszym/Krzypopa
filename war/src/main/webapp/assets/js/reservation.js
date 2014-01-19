@@ -13,13 +13,27 @@ createTableWithDataFromDB({
                 { "sTitle": "From Date" },
                 { "sTitle": "To Date" },
                 { "sTitle": "Count of person" },
-                { "sTitle": "Status" },
+                null,
                 { "sTitle": "Entry Date" },
                 { "sTitle": "Update Date" },
                 { "sTitle": "Price"},
                 { "sTitle": "User Email" },
-                { "sTitle": "Room Ids" },
-                { "sTitle": "Hotel Id" }
+                { "sTitle": "Hotel" },
+                { "sTitle": "Room No" }
+            ],
+            aoColumnDefs: [
+                {   sTitle: "Status",
+                    aTargets: [5],
+                    mData: null,
+                    mRender: function (data, type, full) {
+                        var data2 = full[5];
+                        var sep = data2.indexOf("&");
+                        var color = data2.substring(0, sep);
+                        var type2 = data2.substring(sep+1, data2.length);
+                        return '<div class="reservation-status-color" style="background: ' + color + '"></div>' +
+                            '<div class="reservation-status-type"  style="color: ' + color + '">'+type2+'</div>';
+                    }
+                }
             ],
             infoColumn: 13,
             editColumn: 14,

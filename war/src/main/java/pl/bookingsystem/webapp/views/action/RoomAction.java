@@ -59,37 +59,36 @@ public class RoomAction extends ActionSupport implements SessionAware {
     })
     public String dataFromDB() {
         try {
-            Boolean isUser = (Boolean) session.get("isUser");
-            if (isUser) {
-
-                Hotel hotel = (Hotel) session.get("hotel");
-                HotelDAO hotelManager = new HotelDAOImpl();
-                List<Room> rooms = hotelManager.getRooms(hotel.getId());
-
-                int size = rooms.size();
-                data = new String[size][];
-                for (int j = 0; j < rooms.size(); j++) {
-                    String[] room = new String[9];
-                    Room r = rooms.get(j);
-                    room[0] = String.valueOf(r.getId());
-                    room[1] = String.valueOf(r.getNo_room());
-                    room[2] = String.valueOf(r.getName());
-                    room[3] = String.valueOf(r.getBed());
-                    room[4] = String.valueOf(r.getCapacity());
-                    room[5] = String.valueOf(r.getAdditions(3));
-                    String description = r.getDescription();
-                    room[6] = String.valueOf(description != null ? description : "-");
-                    room[7] = String.valueOf(r.getPrice());
-                    room[8] = String.valueOf(r.getPublished());
-
-                    data[j] = room;
-                }
-
-                return SUCCESS;
+            Hotel hotel = (Hotel) session.get("hotel");
+            HotelDAO hotelManager = new HotelDAOImpl();
+            Long hotelId;
+            if(hotel!=null){
+                  hotelId = hotel.getId();
             } else {
-                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
-                return ERROR;
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                hotelId = jsonObject.getLong("index");
             }
+            List<Room> rooms = hotelManager.getRooms(hotelId);
+            int size = rooms.size();
+            data = new String[size][];
+            for (int j = 0; j < rooms.size(); j++) {
+                String[] room = new String[9];
+                Room r = rooms.get(j);
+                room[0] = String.valueOf(r.getId());
+                room[1] = String.valueOf(r.getNo_room());
+                room[2] = String.valueOf(r.getName());
+                room[3] = String.valueOf(r.getBed());
+                room[4] = String.valueOf(r.getCapacity());
+                room[5] = String.valueOf(r.getAdditions(3));
+                String description = r.getDescription();
+                room[6] = String.valueOf(description != null ? description : "-");
+                room[7] = String.valueOf(r.getPrice());
+                room[8] = String.valueOf(r.getPublished());
+
+                data[j] = room;
+            }
+
+            return SUCCESS;
 
         } catch (Exception e) {
             data = new String[][]{new String[]{"ERROR!!!"}};
@@ -148,15 +147,8 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 }
 
 //HOTEL
-                Hotel hotel = null;
-                HotelDAO hotelManager = new HotelDAOImpl();
-                if (type.equals(User.Type.ADMIN)) {
-                    Long hotel_id = Long.parseLong(jsonObject.getString("hotel"));
-                    hotel = hotelManager.selectByID(Hotel.class, hotel_id);
-                } else if (User.Type.EMPLOYEE.equals(type) || User.Type.OWNER.equals(type)) {
-                    hotel = (Hotel) session.get("hotel");
+                Hotel hotel = (Hotel) session.get("hotel");
 
-                }
 
 //CREATE NEW ROOM AND SAVE
                 RoomDAO roomManager = new RoomDAOImpl();
@@ -166,7 +158,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
 //PUBLISH
                 Boolean published = false;
-                if (User.Type.EMPLOYEE.equals(type)) {
+                if (User.Type.OWNER.equals(type) || User.Type.OWNER.equals(type)) {
                     published = Boolean.parseBoolean(jsonObject.getString("published"));
                 }
                 room.setPublished(published);
@@ -175,6 +167,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
 //UPDATE SESSION
                 if (hotel != null) {
+                    HotelDAO hotelManager = new HotelDAOImpl();
                     Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
                     session.put("hotel", hotel2);
                 }

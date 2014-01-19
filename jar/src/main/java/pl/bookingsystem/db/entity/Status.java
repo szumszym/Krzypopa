@@ -27,6 +27,10 @@ public class Status implements Serializable {
     @Column (name = "color")
     private String color;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
+
     public Status() {
     }
 
@@ -41,6 +45,13 @@ public class Status implements Serializable {
         this.description = description;
         this.reservations = reservations;
         this.color = color;
+    }
+
+    public Status(String type, String description, String color, Hotel hotel) {
+        this.type = type;
+        this.description = description;
+        this.color = color;
+        this.hotel = hotel;
     }
 
     public Set<Reservation> getReservations() {
@@ -75,8 +86,17 @@ public class Status implements Serializable {
 
     public void setColor(String color) { this.color = color; }
 
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
     @Override
     public String toString() {
         return this.getType();
     }
+
 }

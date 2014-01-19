@@ -28,21 +28,23 @@ public class Addition implements Serializable {
     @Column(name = "published")
     private Boolean published;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "additions")
     private Set<Room> rooms = new HashSet<Room>();
 
-    public void addRoom(Room room) {
-        room.getAdditions().add(this);
-        this.rooms.add(room);
+    public Addition(String name, String description, Hotel hotel) {
+        this.name = name;
+        this.description = description;
+        this.hotel = hotel;
     }
 
     public Addition(String name, String description) {
         this.name = name;
         this.description = description;
-        //this.publish =true;
     }
-
 
     public Addition(String name, String description, Set<Room> room) {
         this.name = name;
@@ -77,14 +79,6 @@ public class Addition implements Serializable {
 
     public void setRooms(Set<Room> rooms) { this.rooms = rooms; }
 
-   /* public Boolean getPublish() {
-        return publish;
-    }
-
-    public void setPublish(Boolean publish) {
-        this.publish = publish;
-    }*/
-
     public Double getPrice() {
         return price;
     }
@@ -99,6 +93,14 @@ public class Addition implements Serializable {
 
     public void setPublished(Boolean published) {
         this.published = published;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }
 

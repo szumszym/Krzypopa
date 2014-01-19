@@ -220,7 +220,7 @@
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/additions/additions-add.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/additions/additions-add-admin.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">
@@ -236,7 +236,7 @@
                 <span class="fa arrow"></span></a>
             <ul>
                 <li class="">
-                    <a href="#" data-url="./views/status/status-add.jsp" data-placement="#context">
+                    <a href="#" data-url="./views/status/status-add-admin.jsp" data-placement="#context">
                         <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
                 </li>
                 <li class="">

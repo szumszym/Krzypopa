@@ -215,11 +215,21 @@ public class UserAction extends ActionSupport implements SessionAware{
             for (int j = 0; j < size; j++) {
                 String[] tableS = new String[5];
                 User u = users.get(j);
+
+                HotelDAO hotelManager = new HotelDAOImpl();
+                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(u.getId());
+                String hotelsString = "";
+                for(Hotel hotel: hotels){
+                    hotelsString+=hotel.getName()+",";
+                }
+                hotelsString = hotelsString.substring(0,hotelsString.length()-2);
+
                 tableS[0] = String.valueOf(u.getId());
                 tableS[1] = String.valueOf(String.valueOf(u.getLast_name() + " " + u.getFirst_name()));
                 tableS[2] = String.valueOf(u.getEmail());
                 tableS[3] = String.valueOf(u.getPhone_number());
                 tableS[4] = String.valueOf(u.getType());
+                tableS[5] = String.valueOf(hotelsString);
 
                 data[j] = tableS;
             }
