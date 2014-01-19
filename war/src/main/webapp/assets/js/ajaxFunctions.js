@@ -122,11 +122,12 @@ function generateAlertError($resultContainer, message) {
         $resultContainer.hide();
     }, 2000);
 }
-function generateAlertWarning($resultContainer, message) {
+function generateAlertWarning($resultContainer, message, time) {
+    var _time = time || 2000;
     $resultContainer.html("<div class='alert alert-warning fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Warning!</strong> " + message + "</div>").show();
     setTimeout(function () {
         $resultContainer.hide();
-    }, 2000);
+    }, time);
 }
 
 function generateModal(modalId, titleHTML, messageHTML, action, isShown) {
@@ -331,6 +332,8 @@ function ajaxSubmit(formId, resultContainerId) {
                 try {
                     if (msg.data[0][0] == "success") {
                         generateAlertSuccess($resultContainer, "Operacja przbiegla pomyślnie");
+                    } else if (msg.data[0][0] == "overlapped") {
+                        generateAlertWarning($resultContainer, msg.data[0][1], 4000);
                     } else {
                         generateAlertError($resultContainer, "Error occured during add action!");
                     }

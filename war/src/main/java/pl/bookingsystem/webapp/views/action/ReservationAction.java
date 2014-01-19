@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static pl.bookingsystem.webapp.action.Utils.daysBetween;
+import static pl.bookingsystem.webapp.action.Utils.isOverlapping;
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
@@ -84,8 +85,11 @@ public class ReservationAction extends ActionSupport implements SessionAware {
 
                     reservation[0] = String.valueOf(r.getId());
                     reservation[1] = String.valueOf(r.getName());
-                    reservation[2] = String.valueOf(r.getDate_from());
-                    reservation[3] = String.valueOf(r.getDate_to());
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String date1 = sdf.format(r.getDate_from());
+                    String date2 = sdf.format(r.getDate_to());
+                    reservation[2] = date1;
+                    reservation[3] = date2;
                     reservation[4] = String.valueOf(r.getPerson_count());
                     Status status = r.getStatus();
                     reservation[5] = String.valueOf(status.getColor()+"&"+status.getType());
@@ -127,10 +131,9 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             Integer person_count = Integer.parseInt(jsonObject.getString("person_count"));
 
  //DATES
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date_from = simpleDateFormat.parse(jsonObject.getString("date_from"));
-            Date date_to = simpleDateFormat.parse(jsonObject.getString("date_to"));
-
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date_from = sdf.parse(jsonObject.getString("date_from"));
+            Date date_to = sdf.parse(jsonObject.getString("date_to"));
 //ROOMS
             JSONArray jsonRoomIdsArray = (JSONArray) jsonObject.get("room_ids");
             List<String> room_ids = convertJSONArrayToArrayList(jsonRoomIdsArray);
@@ -142,12 +145,14 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             for (Room room : rooms) {
                 List<Reservation> reservations = reservationManager.getAllReservationsFrom(hotel, room);
                 for (Reservation res : reservations) {
-                    res.getDate_from();
-                    res.getDate_to();
-                    //TODO: METODA!!!! - porownac czy nie zachodzi to na przedzial datefrom i dateto z formularza
-                    if (true/*zachodzi*/) {
-                        //TODO: setMsg zachodzi z inna rezerwacja
-                        //return CONFLICT ?
+                    Date dateFrom2 = res.getDate_from();
+                    Date dateTo2 = res.getDate_to();
+                    if (isOverlapping(date_from, date_to, dateFrom2, dateTo2)) {
+
+                        String date1 = sdf.format(dateFrom2);
+                        String date2 = sdf.format(dateTo2);
+                        data = setMsg("overlapped", "'"+room.getName() + "' from hotel: '"+hotel.getName()+"' is already reserved between "+ date1 +" and "+date2);
+                        return ERROR;
                     }
                 }
             }
