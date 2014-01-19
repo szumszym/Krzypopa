@@ -39,4 +39,8 @@ public interface HotelDAO extends GenericDAO<Hotel, Long> {
     void addAddition(Addition addition, Hotel hotel);
 
     void addStatus(Status status, Hotel hotel);
+
+    public List getHotelFromCity(String city);
+
+    List getRoomFromCity(String city);
 }

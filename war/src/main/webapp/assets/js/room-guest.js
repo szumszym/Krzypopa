@@ -1,12 +1,12 @@
 createTableWithDataFromDB({
     actions: {
-        get: 'room-getData'
+        get: 'room-getAvadaible'
     },
     table: {
-        id: 'room-table-small',
+        id: 'room-table-guest',
         params: {
             aoColumns: [
-                { "sTitle": "Id" },
+                { "sTitle": "Hotel" },
                 { "sTitle": "Room No" },
                 { "sTitle": "Name" },
                 { "sTitle": "Bed" },
@@ -15,14 +15,14 @@ createTableWithDataFromDB({
                 { "sTitle": "Desc" },
                 { "sTitle": "Price" }
             ],
-            infoColumn: 8
+            infoColumn: 9
         }
     }
 });
 
-createSelectListWithDataFromDB('room-getData', 'reservation-room-select-guest', {
-    label: 2,
-    value: 0,
+createSelectListWithDataFromDB('room-getAvadaible', 'reservation-room-select', {
+    label: 3,
+    value: 8,
     multiSelect: true
 });
 

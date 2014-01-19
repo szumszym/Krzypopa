@@ -20,4 +20,9 @@ public class RoomDAOImpl extends GenericDAOImpl<Room, Long> implements RoomDAO {
         deleteByID("Room", id);
     }
 
+    @Override
+    public List getRoomsFromCity(String city){
+        return selectMany("select r, r.hotel.id, r.hotel.name from Room r where lower(r.hotel.address.city) like '%"+city+"%'");
+    }
+
 }

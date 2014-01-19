@@ -65,6 +65,16 @@ public class Reservation implements Serializable {
         this.price = price;
     }
 
+    public Reservation(String name, Date date_from, Date date_to, Integer person_count, Status status, List<Room> rooms, Double price) {
+        this.name = name;
+        this.date_from = date_from;
+        this.date_to = date_to;
+        this.person_count = person_count;
+        this.status = status;
+        this.rooms.addAll(rooms);
+        this.price = price;
+    }
+
     public Long getId() {
         return id;
     }

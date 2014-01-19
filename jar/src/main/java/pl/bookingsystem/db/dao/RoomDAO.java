@@ -7,4 +7,6 @@ import java.util.List;
 public interface RoomDAO extends GenericDAO<Room, Long> {
 
     void deleteByID(Long id);
+
+    public List getRoomsFromCity(String city);
 }

@@ -39,18 +39,17 @@
 </div>
 
 <div class="darken-bg">
-    <div class="container">
-        <ul class="nav nav-tabs" id="myTab">
-            <li class="active"><a href="#" data-url="./modules/guest/first.jsp" data-placement="#context" data-toggle="tab">Step One</a></li>
-            <li><a href="#" data-url="./modules/guest/second.jsp" data-placement="#context" data-toggle="tab">Step Two</a></li>
-            <li><a href="#" data-url="./modules/guest/third.jsp" data-placement="#context" data-toggle="tab">Step Three</a></li>
-        </ul>
-     </div>
-
-    <div class="container" id=context data-default="./modules/guest/first.jsp"></div>
-
-
-
+    <div id="login" class="tab-pane active">
+        <s:form action="avadaible-rooms" cssClass="form-search">
+            <p class="text-muted text-center">
+                Enter city and dates
+            </p>
+            <s:textfield name="city" placeholder="city" cssClass="form-control"/>
+            <s:textfield name="dateFrom" placeholder="1990-01-01" cssClass="form-control"/>
+            <s:textfield name="dateTo" placeholder="1990-01-01" cssClass="form-control"/>
+            <s:submit cssClass="btn btn-lg btn-primary btn-block" value="Search"/>
+        </s:form>
+    </div>
 </div>
 <div class="box-si">
 

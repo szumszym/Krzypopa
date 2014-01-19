@@ -133,5 +133,14 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
         HibernateUtil.stop(true);
     }
 
+    @Override
+    public List getHotelFromCity(String city){
+        return selectMany("select h from Hotel h where lower(h.address.city) like '%"+city+"%'");
+    }
+
+    @Override
+    public List getRoomFromCity(String city){
+        return selectMany("select h.rooms, h.name from Hotel h where lower(h.address.city) like '%"+city+"%'");
+    }
 
 }
