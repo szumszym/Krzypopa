@@ -3,10 +3,7 @@ package pl.bookingsystem.db.dao.impl;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import pl.bookingsystem.db.dao.ReservationDAO;
-import pl.bookingsystem.db.entity.Client;
-import pl.bookingsystem.db.entity.Hotel;
-import pl.bookingsystem.db.entity.Reservation;
-import pl.bookingsystem.db.entity.User;
+import pl.bookingsystem.db.entity.*;
 import pl.bookingsystem.db.utils.HibernateUtil;
 
 import java.util.List;
@@ -64,6 +61,21 @@ public class ReservationDAOImpl extends GenericDAOImpl<Reservation, Long> implem
 
         Session session = HibernateUtil.start();
         Query query = session.createQuery(sql);
+
+        List<Reservation> reservations = query.list();
+        HibernateUtil.stop();
+
+        return reservations;
+    }
+
+    @Override
+    public List<Reservation> getAllReservationsFrom(Hotel hotel, Room room) {
+        String sql = "select r FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel where hotel=:hotel and rooms=:room";
+
+        Session session = HibernateUtil.start();
+        Query query = session.createQuery(sql);
+        query.setParameter("hotel", hotel);
+        query.setParameter("room", room);
 
         List<Reservation> reservations = query.list();
         HibernateUtil.stop();
