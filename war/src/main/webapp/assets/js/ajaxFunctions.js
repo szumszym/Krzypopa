@@ -388,12 +388,29 @@ function ajaxSubmitFirstHotel(formId, resultContainerId) {
 
 function formValidate(formId, rules) {
     var capacity = 0;
+    jQuery.validator.addMethod("later_than_today", function (value, element, param) {
+        var fDate = new Date();
+        var sDate = new Date(value);
+        return fDate <= sDate;
+
+    }, jQuery.validator.format("'Date must be equals or later than today!"));
+
+
+    jQuery.validator.addMethod("later_than", function (value, element, param) {
+        var firstDate = param[0];
+        var fDate = new Date($(firstDate).val());
+        var sDate = new Date(value);
+        return fDate < sDate;
+
+    }, jQuery.validator.format("'Date To' must be later than 'Date From'!"));
+
     jQuery.validator.addMethod("not_more_than", function (value, element, param) {
         var what = param[0];
         var capacity = $(element).data(what);
         return capacity >= value;
 
     }, jQuery.validator.format("Count of person must be <= capacity of rooms"));
+
 
     jQuery.validator.addMethod("accept", function (value, element, param) {
         return value.match(new RegExp("^" + param + "$"));
@@ -592,16 +609,4 @@ function showFieldIfSelectedValEquals(value, formId, fieldFromId, fieldToId) {
         }
     });
 
-}
-
-function callFnOnSelectRow(tableId, fn, fnArgs, fn2, fn2Args) {
-    $('body').on('table:rowselected', function (e, table_id, index) {
-        if (index) {
-            if (tableId == table_id) {
-                fnArgs[0]["toJAVA"]= index;
-                fn.apply(this, fnArgs);
-                fn2.apply(this, fn2Args)
-            }
-        }
-    });
 }
