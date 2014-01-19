@@ -85,6 +85,12 @@
                 <!-- .nav -->
                 <ul class="nav navbar-nav">
                     <li>
+                        <a class="btn-select-hotel" href="#" data-url="./views/hotel/hotel-select.jsp"
+                           data-placement="#context">
+                            Select hotel
+                        </a>
+                    </li>
+                    <li>
                         <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
                             <i class="fa fa-tasks"></i>&nbsp;Reservations
                         </a>
@@ -117,8 +123,22 @@
 
             <!-- ."main-bar -->
             <div class="main-bar">
-                <h3>
+                <h3 class="col-lg-4">
                     <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
+
+                <div class="menu-select-hotel col-lg-6" style="">
+                    <div class="form-horizontal" style="">
+                        <div class="form-group" style="margin:0;">
+                            <label class="control-label col-lg-5" id="selected-hotel-name-label">
+                                Selected Hotel: </label>
+
+                            <div class="col-lg-7" style="padding:0">
+                                <div id="selected-hotel-name"><s:property value="hotelname"/></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <!-- /.main-bar -->
         </header>
@@ -154,7 +174,7 @@
     <div id="content">
         <div class="outer">
             <div class="inner">
-                <div id=context data-default="./views/reservation/reservation-browse.jsp"></div>
+                <div id=context data-default="./views/hotel/hotel-select.jsp"></div>
             </div>
         </div>
 
