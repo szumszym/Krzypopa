@@ -54,10 +54,10 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
         UserDAO userManager = new UserDAOImpl();
         User user = userManager.checkRegisteredUser(login, password);
+        HotelDAO hotelManager = new HotelDAOImpl();
 
 
         if (user != null) {
-            HotelDAO hotelManager = new HotelDAOImpl();
 
             User.Type userType = user.getType();
             session.put("login", getLogin());
@@ -99,6 +99,9 @@ public class LoginAction extends ActionSupport implements SessionAware {
             if (client != null) {
                 session.put("isClient", true);
                 session.put("client", client);
+
+                List<Hotel> hotels = hotelManager.selectAllWithAddress();
+                saveHotelsToSession(hotels);
 
                 return "clientlogged";
             }
