@@ -598,7 +598,7 @@ function callFnOnSelectRow(tableId, fn, fnArgs, fn2, fn2Args) {
     $('body').on('table:rowselected', function (e, table_id, index) {
         if (index) {
             if (tableId == table_id) {
-                fnArgs["toJAVA"]= index;
+                fnArgs[0]["toJAVA"]= index;
                 fn.apply(this, fnArgs);
                 fn2.apply(this, fn2Args)
             }
