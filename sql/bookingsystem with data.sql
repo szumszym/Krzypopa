@@ -260,10 +260,10 @@ CREATE TABLE IF NOT EXISTS `room` (
 
 INSERT INTO `room` (`id`, `room_no`, `name`, `description`, `bed`, `capacity`, `hotel_id`, `price`, `published`) VALUES
   (1, 1, 'Pokoj goscinny nr 1', NULL, '2x1', 2, 1, 60, 1),
-  (2, 1, 'Pokoj goscinny nr 2', NULL, '3x1', 3, 1, 100, 1),
-  (3, 1, 'Pokoj goscinny nr 3', NULL, '2x2', 4, 1, 90, 1),
+  (2, 2, 'Pokoj goscinny nr 2', NULL, '3x1', 3, 1, 100, 1),
+  (3, 3, 'Pokoj goscinny nr 3', NULL, '2x2', 4, 1, 90, 1),
   (4, 1, 'Pokoj nr 1', 'apartament z balkonem', '3x2', 6, 2, 160, 1),
-  (5, 1, 'Pokoj nr 2', NULL, '1x2', 6, 2, 100, 1);
+  (5, 2, 'Pokoj nr 2', NULL, '1x2', 6, 2, 100, 1);
 
 -- --------------------------------------------------------
 
