@@ -5,7 +5,6 @@ import pl.bookingsystem.db.entity.Room;
 import java.util.List;
 
 public interface RoomDAO extends GenericDAO<Room, Long> {
-    List<Room> getReservations();
 
     void deleteByID(Long id);
 }

@@ -14,16 +14,6 @@ import java.util.List;
  * Date: 19.12.13 @ 00:39
  */
 public class RoomDAOImpl extends GenericDAOImpl<Room, Long> implements RoomDAO {
-    @Override
-    public List<Room> getReservations() {
-
-        SessionFactory sf = HibernateUtil.getSessionFactory();
-        Session session = sf.openSession();
-        Query query = session.createQuery("from Room r where r.reservations = :hotel_id");
-        List<Room> rooms = (List<Room>) query.list();
-        session.close();
-        return rooms;
-    }
 
     @Override
     public void deleteByID(Long id) {
