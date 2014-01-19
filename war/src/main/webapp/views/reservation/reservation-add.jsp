@@ -88,7 +88,7 @@
                         <label class="control-label col-lg-4">Start Date</label>
 
                         <div class="col-lg-8">
-                            <input type="date" name="date_from" class="validate[required] form-control">
+                            <input id="date_from" type="date" name="date_from" class="validate[required] form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->

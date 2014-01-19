@@ -61,10 +61,13 @@ formValidate('reservation-add', {
     },
     date_from: {
         required: true,
-        date: true
+        date: true,
+        later_than_today: true
     },
     date_to: {
-        required: true
+        required: true,
+        date: true,
+        later_than: ['#date_from']
     },
     person_count: {
         required: true,

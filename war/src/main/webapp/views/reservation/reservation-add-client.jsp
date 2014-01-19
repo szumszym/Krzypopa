@@ -5,32 +5,6 @@
                 <div class="icons">
                     <i class="fa fa-table"></i>
                 </div>
-                <h5>Select Hotel</h5>
-
-                <div class="toolbar">
-                    <div class="btn-group">
-                        <a href="#sortableTable1" data-toggle="collapse" class="minimize-box">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-            </header>
-
-            <div id="sortableTable1" class="body collapse in">
-                <table id="hotel-table-small"
-                       class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="box">
-            <header>
-                <div class="icons">
-                    <i class="fa fa-table"></i>
-                </div>
                 <h5>Select Room</h5>
 
                 <div class="toolbar">
@@ -88,7 +62,7 @@
                         <label class="control-label col-lg-4">Start Date</label>
 
                         <div class="col-lg-8">
-                            <input type="date" name="date_from" class="validate[required] form-control">
+                            <input id="date_from" type="date" name="date_from" class="validate[required] form-control">
                         </div>
                     </div>
                     <!-- /.form-group -->
@@ -141,4 +115,6 @@
 <script src="./assets/js/reservation-add-client.js"></script>
 <script>
     $(".chzn-select").chosen();
-   </script>
+    bindSelectTable('room-table-small', 'reservation-room-select', true, "5");
+    checkRoomsCapacity('room-table-small', 'reservation-add');
+</script>
