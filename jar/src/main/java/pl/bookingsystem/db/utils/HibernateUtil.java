@@ -10,7 +10,6 @@ public class HibernateUtil {
     private static SessionFactory sessionFactory;
     private static Session session;
     private static Transaction transaction;
-    private static boolean isSessionOpen;
     private static SessionFactory buildSessionFactory() {
         try {
 
@@ -30,7 +29,6 @@ public class HibernateUtil {
     }
 
     public static Session getNewSession() {
-        isSessionOpen = true;
         session = getSessionFactory().openSession();
         return session;
     }
@@ -53,7 +51,7 @@ public class HibernateUtil {
     }
 
     public static Session start() {
-        return start(true);
+        return start(false);
     }
 
     public static Session start(boolean startTransaction) {
@@ -79,7 +77,6 @@ public class HibernateUtil {
         }
         transaction = null;
         session = null;
-        isSessionOpen = false;
     }
 
     public static void stopAll() {

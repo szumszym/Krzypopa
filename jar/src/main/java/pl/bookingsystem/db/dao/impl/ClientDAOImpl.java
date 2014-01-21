@@ -18,16 +18,14 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
 
     @Override
     public Client checkRegisteredClient(String clientname, String password) {
-        Client client = null;
-        Session session = null;
-        try {
-            String sql = "SELECT c FROM Client c WHERE c.email = :email AND c.password = :password";
-            session = HibernateUtil.getSessionFactory().openSession();
 
+        try {
+            Session session = HibernateUtil.start(true);
+            String sql = "SELECT c FROM Client c WHERE c.email = :email AND c.password = :password";
             Query query = session.createQuery(sql);
             query.setParameter("email", clientname).setParameter("password", password);
 
-            client = selectOne(query);
+            Client client = (Client) query.uniqueResult();
             if (client != null) return client;
 
         } catch (NonUniqueResultException ex) {
@@ -35,9 +33,7 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
         } catch (HibernateException ex) {
             System.out.println("FIND Client.java: " + ex.getMessage());
         } finally {
-            if (session != null) {
-                session.close();
-            }
+            HibernateUtil.stop(false);
         }
         return null;
     }
@@ -45,14 +41,15 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
 
     public Client findByClientName(String name, String surname) {
         Client client = null;
+        Session session = HibernateUtil.start(true);
         try {
             String sql = "SELECT p FROM Client p WHERE p.first_name = :first_name AND p.last_name = :last_name";
-            Session session = HibernateUtil.getSessionFactory().openSession();
 
             Query query = session.createQuery(sql);
             query.setParameter("first_name", name).setParameter("last_name", surname);
 
-            client = selectOne(query);
+            client = (Client) query.uniqueResult();
+            HibernateUtil.stop(false);
 
         } catch (NonUniqueResultException ex) {
             logger.error("FIND Client.java: " + ex.getMessage());

@@ -17,12 +17,12 @@ public class ReservationDAOImpl extends GenericDAOImpl<Reservation, Long> implem
     public List<Reservation> getClientReservations(Client client) {
         String sql = "select r, r.client.email, room.no_room, room.hotel.id  FROM Reservation as r join r.rooms as room where :client in (r.client)";
 
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
         Query query = session.createQuery(sql);
         query.setParameter("client", client);
 
         List<Reservation> reservations = query.list();
-        HibernateUtil.stop();
+        HibernateUtil.stop(false);
 
         return reservations;
     }
@@ -31,12 +31,12 @@ public class ReservationDAOImpl extends GenericDAOImpl<Reservation, Long> implem
     public List<Reservation> getUserReservations(User user) {
         String sql = "select r, r.client.email, rooms.no_room, hotel.id FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel where hotel.id in (select h.id from Hotel as h join h.users as u where u = :user)";
 
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
         Query query = session.createQuery(sql);
         query.setParameter("user", user);
 
         List<Reservation> reservations = query.list();
-        HibernateUtil.stop();
+        HibernateUtil.stop(false);
 
         return reservations;
     }
@@ -45,12 +45,12 @@ public class ReservationDAOImpl extends GenericDAOImpl<Reservation, Long> implem
     public List<Reservation> getHotelReservations(Hotel hotel) {
         String sql = "select r, r.client.email, rooms.no_room, hotel.id FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel where hotel= :hotel";
 
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
         Query query = session.createQuery(sql);
         query.setParameter("hotel", hotel);
 
         List<Reservation> reservations = query.list();
-        HibernateUtil.stop();
+        HibernateUtil.stop(false);
 
         return reservations;
     }
@@ -59,11 +59,11 @@ public class ReservationDAOImpl extends GenericDAOImpl<Reservation, Long> implem
     public List<Reservation> getAllReservations() {
         String sql = "select r, r.client.email, rooms.no_room, hotel.id FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel";
 
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
         Query query = session.createQuery(sql);
 
         List<Reservation> reservations = query.list();
-        HibernateUtil.stop();
+        HibernateUtil.stop(false);
 
         return reservations;
     }
@@ -72,13 +72,13 @@ public class ReservationDAOImpl extends GenericDAOImpl<Reservation, Long> implem
     public List<Reservation> getAllReservationsFrom(Hotel hotel, Room room) {
         String sql = "select r FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel where hotel=:hotel and rooms=:room";
 
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
         Query query = session.createQuery(sql);
         query.setParameter("hotel", hotel);
         query.setParameter("room", room);
 
         List<Reservation> reservations = query.list();
-        HibernateUtil.stop();
+        HibernateUtil.stop(false);
 
         return reservations;
     }

@@ -18,12 +18,12 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
         Session session = null;
         try {
             String sql = "SELECT p FROM User p WHERE p.email = :email AND p.password = :password";
-            session = HibernateUtil.start();
+            session = HibernateUtil.start(true);
 
             Query query = session.createQuery(sql);
             query.setParameter("email", username).setParameter("password", password);
 
-            user = selectOne(query);
+            user = (User) query.uniqueResult();
             if (user != null) return user;
 
         } catch (NonUniqueResultException ex) {
@@ -32,7 +32,7 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
             System.out.println("FIND User.java: " + ex.getMessage());
         } finally {
             if (session != null) {
-                HibernateUtil.stop();
+                HibernateUtil.stop(false);
             }
         }
         return null;

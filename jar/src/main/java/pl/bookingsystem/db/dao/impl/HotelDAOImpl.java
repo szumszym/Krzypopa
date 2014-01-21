@@ -61,7 +61,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
     @Override
     public void addUser(User user, Hotel hotel) {
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
 
         Hotel hotel2 = (Hotel) session.load(Hotel.class, hotel.getId());
         User user2 = (User) session.load(User.class, user.getId());
@@ -77,7 +77,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
     @Override
     public void addClient(Client client, Hotel hotel) {
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
 
         Hotel hotel2 = (Hotel) session.load(Hotel.class, hotel.getId());
         Client client2 = (Client) session.load(Client.class, client.getId());
@@ -93,7 +93,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
     @Override
     public void addRoom(Room room, Hotel hotel) {
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
 
         Hotel hotel2 = (Hotel) session.load(Hotel.class, hotel.getId());
         Room room2 = (Room) session.load(Room.class, room.getId());
@@ -107,7 +107,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
     @Override
     public void addAddition(Addition addition, Hotel hotel) {
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
 
         Hotel hotel2 = (Hotel) session.load(Hotel.class, hotel.getId());
         Addition addition2 = (Addition) session.load(Addition.class, addition.getId());
@@ -121,7 +121,7 @@ public class HotelDAOImpl extends GenericDAOImpl<Hotel, Long> implements HotelDA
 
     @Override
     public void addStatus(Status status, Hotel hotel) {
-        Session session = HibernateUtil.start();
+        Session session = HibernateUtil.start(true);
 
         Hotel hotel2 = (Hotel) session.load(Hotel.class, hotel.getId());
         Status status2 = (Status) session.load(Status.class, status.getId());

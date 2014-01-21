@@ -33,10 +33,11 @@ public class AdditionDAOImpl extends GenericDAOImpl<Addition, Long> implements A
         System.out.println(sql);
     try{
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.start(true);
 
         Query query = session.createQuery(sql);
         additionList = query.list();
+        HibernateUtil.stop(false);
 
     } catch (NonUniqueResultException ex) {
         logger.error("FIND Addiotion.java: " + ex.getMessage());
