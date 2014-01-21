@@ -2,85 +2,48 @@ package pl.bookingsystem.db.utils;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.function.StandardSQLFunction;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.type.StringType;
 
 public class HibernateUtil {
 
-    private static SessionFactory sessionFactory;
-    private static Session session;
-    private static Transaction transaction;
+    private static SessionFactory sessionFactory = buildSessionFactory();
+    private static ServiceRegistry serviceRegistry;
+
     private static SessionFactory buildSessionFactory() {
-        try {
 
-            // Create the SessionFactory from hibernate.cfg.xml
-            return new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        configuration.addSqlFunction("group_concat", new StandardSQLFunction("group_concat", new StringType()));
+        serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
-    public static SessionFactory getSessionFactory() {
-        if(sessionFactory==null){
-            sessionFactory = buildSessionFactory();
-        }
         return sessionFactory;
+
     }
 
-    public static Session getNewSession() {
-        session = getSessionFactory().openSession();
-        return session;
-    }
-
-    private static Session getCurrentSession() {
-        session = getSessionFactory().getCurrentSession();
-        return session;
-    }
-
-    public static Session getSession() {
-            return getCurrentSession();
-    }
-
-    public static void startTransaction() {
-        transaction = getSession().beginTransaction();
-    }
-
-    public static Transaction getTransaction() {
-        return transaction;
-    }
-
-    public static Session start() {
-        return start(false);
-    }
-
-    public static Session start(boolean startTransaction) {
-        Session session = getSession();
-        if (startTransaction) startTransaction();
-        return session;
-    }
-
-    public static void stop() {
-        stop(false);
-    }
-
-    public static void stop(boolean commit) {
-        if (session != null) {
-            if (transaction != null) {
-                if (commit) {
-                    getTransaction().commit();
-                } else {
-                    getTransaction().rollback();
-                }
-            }
-            getSession().close();
+    public static Session start(boolean startTransaction){
+        Session session = sessionFactory.getCurrentSession();
+        if(startTransaction){
+            session.beginTransaction();
         }
-        transaction = null;
-        session = null;
+        return session;
+    }
+
+    public static void stop(boolean commit){
+        if(commit){
+            sessionFactory.getCurrentSession().getTransaction().commit();
+        }   else {
+            sessionFactory.getCurrentSession().getTransaction().rollback();
+        }
     }
 
     public static void stopAll() {
         stop(false);
+        sessionFactory.getCurrentSession().close();
         sessionFactory = null;
     }
 }
