@@ -91,7 +91,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
             return SUCCESS;
 
         } catch (Exception e) {
-            data = new String[][]{new String[]{"ERROR!!!"}};
+            data = new String[][]{new String[]{"ERROR!!!", e.getMessage()}};
             return ERROR;
         }
 
