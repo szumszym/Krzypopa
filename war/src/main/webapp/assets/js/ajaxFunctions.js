@@ -32,7 +32,7 @@ function createTableWithDataFromDB(params) {
         data: {dataFrom: '{index:'+paramToJAVA+'}'},
         success: function (data) {
             var aaData = eval(data).data;
-            if (aaData == undefined) {
+            if (aaData!= undefined && aaData.length==0) {
                 $('#' + tableContainerId).html("No data!");
             }
             else if (aaData != undefined && aaData[0] != undefined && aaData[0][0] != "ERROR!!!") {
@@ -127,7 +127,7 @@ function generateAlertWarning($resultContainer, message, time) {
     $resultContainer.html("<div class='alert alert-warning fade in'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><strong>Warning!</strong> " + message + "</div>").show();
     setTimeout(function () {
         $resultContainer.hide();
-    }, time);
+    }, _time);
 }
 
 function generateModal(modalId, titleHTML, messageHTML, action, isShown) {
@@ -188,51 +188,55 @@ function deleteRow(that, action) {
         });
     }
 }
-
+var isFinishedSubmit = true;
 function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectParams, isHidden) {
     var params = selectParams;
-    $.ajax({
-        type: 'POST',
-        url: ajaxAction,
-        success: function (data) {
-            var aaData = eval(data).data;
+    if (isFinishedSubmit) {
+        isFinishedSubmit = false;
+        $.ajax({
+            type: 'POST',
+            url: ajaxAction,
+            success: function (data) {
+                var aaData = eval(data).data;
 
-            var $selectElem = $('#' + selectContainerId);
+                var $selectElem = $('#' + selectContainerId);
 
-            if (aaData != undefined && aaData[0][0] != "ERROR!!!") {
-                var HTMLtemplate = "";
+                if (aaData != undefined && aaData[0][0] != "ERROR!!!") {
+                    var HTMLtemplate = "";
 
-                for (var i = 0; i < aaData.length; i++) {
-                    var elemData = aaData[i];
-                    if (params.defaultSelected != undefined && i == params.defaultSelected) {
-                        HTMLtemplate += "<option selected='selected' value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
-                    } else {
-                        HTMLtemplate += "<option value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
+                    for (var i = 0; i < aaData.length; i++) {
+                        var elemData = aaData[i];
+                        if (params.defaultSelected != undefined && i == params.defaultSelected) {
+                            HTMLtemplate += "<option selected='selected' value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
+                        } else {
+                            HTMLtemplate += "<option value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
+                        }
+
+                    }
+                    if ($selectElem.children().length > 0) {
+                        $selectElem.children().remove();
+                    }
+                    $selectElem.append(HTMLtemplate);
+                    if (selectParams.multiSelect) {
+                        $selectElem.attr('multiple', '')
+                    }
+                    $selectElem.chosen();
+
+                    if (isHidden) {
+                        $selectElem.closest('.form-group').hide();
                     }
 
+                } else {
+                    $selectElem.html("Server ERROR!");
+                    console.log("Error: ", data);
                 }
-                if ($selectElem.children().length > 0) {
-                    $selectElem.children().remove();
-                }
-                $selectElem.append(HTMLtemplate);
-                if (selectParams.multiSelect) {
-                    $selectElem.attr('multiple', '')
-                }
-                $selectElem.chosen();
-
-                if (isHidden) {
-                    $selectElem.closest('.form-group').hide();
-                }
-
-            } else {
-                $selectElem.html("Server ERROR!");
+                isFinishedSubmit = true;
+            },
+            error: function (data) {
                 console.log("Error: ", data);
-            }
-        },
-        error: function (data) {
-            console.log("Error: ", data);
-        }});
-
+                isFinishedSubmit = true;
+            }});
+    }
 
 }
 
@@ -326,14 +330,14 @@ function ajaxSubmit(formId, resultContainerId) {
             dataType: "json",
             error: function () {
                 generateAlertError($resultContainer, "Wystąpił bład podczas zapisu do bazy danych!");
-                isFinished = true;
+                isFinishedSubmit = true;
             },
             success: function (msg) {
                 try {
                     if (msg.data[0][0] == "success") {
                         generateAlertSuccess($resultContainer, "Operacja przbiegla pomyślnie");
                     } else if (msg.data[0][0] == "overlapped") {
-                        generateAlertWarning($resultContainer, msg.data[0][1], 4000);
+                        generateAlertWarning($resultContainer, msg.data[0][1], 8000);
                     } else {
                         generateAlertError($resultContainer, "Error occured during add action!");
                     }
@@ -498,13 +502,13 @@ jQuery.fn.formToJSON = function () {
 
 };
 
-var isFinished = true;
+var isFinishedLoad = true;
 function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContainerId, hotel_name) {
     var $resultContainer = jQuery('#' + resultContainerId);
     var $hotelnameContainer = jQuery('#' + hotelnameContainerId);
 
-    if (isFinished) {
-        isFinished = false;
+    if (isFinishedLoad) {
+        isFinishedLoad = false;
         jQuery.ajax({
             url: action,
             type: 'POST',
@@ -518,7 +522,7 @@ function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContai
                 }
                 console.log(msg);
                 generateAlertError($resultContainer, "Wystąpił błąd servera!");
-                isFinished = true;
+                isFinishedLoad = true;
             },
             success: function (msg) {
                 console.log(msg);
@@ -537,7 +541,7 @@ function loadHotel(action, resultContainerId, selectedItemIndex, hotelnameContai
                 } catch (error) {
                     generateAlertError($resultContainer, "JavaScript ERROR: " + error);
                 }
-                isFinished = true;
+                isFinishedLoad = true;
             }
         });
     }
