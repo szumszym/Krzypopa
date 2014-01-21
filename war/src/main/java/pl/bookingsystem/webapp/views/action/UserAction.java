@@ -43,7 +43,7 @@ public class UserAction extends ActionSupport implements SessionAware{
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
-    public String getOwnerList() {
+    public String dataFromDBOwnerList() {
         try {
             UserDAO userManager = new UserDAOImpl();
             List<User> ownersList = userManager.selectAllOwners();
@@ -213,23 +213,16 @@ public class UserAction extends ActionSupport implements SessionAware{
             int size = users != null ? users.size() : 0;
             data = new String[size][];
             for (int j = 0; j < size; j++) {
-                String[] tableS = new String[5];
-                User u = users.get(j);
+                String[] tableS = new String[6];
 
-                HotelDAO hotelManager = new HotelDAOImpl();
-                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(u.getId());
-                String hotelsString = "";
-                for(Hotel hotel: hotels){
-                    hotelsString+=hotel.getName()+",";
-                }
-                hotelsString = hotelsString.substring(0,hotelsString.length()-2);
+                User u = users.get(j);
 
                 tableS[0] = String.valueOf(u.getId());
                 tableS[1] = String.valueOf(String.valueOf(u.getLast_name() + " " + u.getFirst_name()));
                 tableS[2] = String.valueOf(u.getEmail());
                 tableS[3] = String.valueOf(u.getPhone_number());
                 tableS[4] = String.valueOf(u.getType());
-                tableS[5] = String.valueOf(hotelsString);
+                tableS[5] = String.valueOf(buildHotelsString(u));
 
                 data[j] = tableS;
             }
@@ -241,6 +234,22 @@ public class UserAction extends ActionSupport implements SessionAware{
             return ERROR;
         }
 
+    }
+
+    private String buildHotelsString(User u) {
+        String hotelsString = "";
+        if(!u.getType().equals(User.Type.ADMIN)){
+            HotelDAO hotelManager = new HotelDAOImpl();
+            List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(u.getId());
+            for(Hotel hotel: hotels){
+                hotelsString+=hotel.getName()+", ";
+            }
+            hotelsString = hotelsString.substring(0,hotelsString.length()-1);
+
+        } else {
+            hotelsString = "-";
+        }
+        return hotelsString;
     }
 
     public User.Type getUsertype(String s) {

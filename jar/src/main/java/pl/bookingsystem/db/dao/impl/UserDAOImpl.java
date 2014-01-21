@@ -45,7 +45,7 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO {
 
     @Override
     public List getEmployeesFromHotel(Long hotelId){
-        return selectMany("select u from User u, Hotel h where u.type='EMPLOYEE' and u in elements(h.users) and h.id="+hotelId.toString());
+        return selectMany("select u from User u where u.type='EMPLOYEE' and "+hotelId.toString()+" in elements(u.hotels)");
     }
 
 
