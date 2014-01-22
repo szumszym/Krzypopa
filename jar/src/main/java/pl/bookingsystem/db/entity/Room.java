@@ -3,8 +3,8 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "room")
@@ -31,19 +31,19 @@ public class Room implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "room_addition", joinColumns = {
             @JoinColumn(name = "room_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "addition_id",
                     nullable = false, updatable = false)})
-    private Set<Addition> additions= new HashSet<Addition>();
+    private List<Addition> additions= new LinkedList<Addition>();
 
     @ManyToMany(mappedBy = "rooms")
-    private Set<Reservation> reservations = new HashSet<Reservation>();
+    private List<Reservation> reservations = new LinkedList<Reservation>();
 
     @Column(name = "price")
     private Double price;
@@ -69,7 +69,7 @@ public class Room implements Serializable {
     /**
      * Constructor without reservation
      */
-    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Set<Addition> additions, Double price) {
+    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, List<Addition> additions, Double price) {
         this.no_room = no_room;
         this.name = name;
         this.bed = bed;
@@ -82,7 +82,7 @@ public class Room implements Serializable {
     /**
      * Constructor with all fields
      */
-    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Set<Addition> additions, Set<Reservation> reservations, Double price) {
+    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, List<Addition> additions, List<Reservation> reservations, Double price) {
         this.no_room = no_room;
         this.name = name;
         this.bed = bed;
@@ -113,7 +113,7 @@ public class Room implements Serializable {
 
     public void setHotel(Hotel hotel) { this.hotel = hotel; }
 
-    public Set<Addition> getAdditions() { return additions; }
+    public List<Addition> getAdditions() { return additions; }
 
     public String getAdditions(int limit){
         String lista = "-";
@@ -138,11 +138,11 @@ public class Room implements Serializable {
         return lista;
     }
 
-    public void setAdditions(Set<Addition> additions) { this.additions = additions; }
+    public void setAdditions(List<Addition> additions) { this.additions = additions; }
 
-    public Set<Reservation> getReservations() { return reservations; }
+    public List<Reservation> getReservations() { return reservations; }
 
-    public void setReservations(Set<Reservation> reservations) { this.reservations = reservations; }
+    public void setReservations(List<Reservation> reservations) { this.reservations = reservations; }
 
     public Long getId() { return id; }
 

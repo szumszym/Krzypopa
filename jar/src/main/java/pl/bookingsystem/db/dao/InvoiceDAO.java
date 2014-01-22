@@ -6,5 +6,5 @@ import pl.bookingsystem.db.entity.Invoice;
  * Author: rastek
  * Date: 11.12.13 @ 21:08
  */
-public interface InvoiceDAO extends GenericDAO<Invoice, Long> {
+public interface InvoiceDAO extends BaseDAO<Invoice, Long> {
 }

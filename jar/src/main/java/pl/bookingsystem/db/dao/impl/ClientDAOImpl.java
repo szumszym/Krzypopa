@@ -1,67 +1,52 @@
 package pl.bookingsystem.db.dao.impl;
 
-import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.NonUniqueResultException;
-import org.hibernate.Query;
-import org.hibernate.Session;
+import com.googlecode.genericdao.search.Filter;
+import com.googlecode.genericdao.search.Search;
 import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.entity.Client;
-import pl.bookingsystem.db.utils.HibernateUtil;
 
 import java.util.List;
 
-public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements ClientDAO {
-
-    private static Logger logger = Logger.getLogger(ClientDAOImpl.class);
-
+public class ClientDAOImpl extends BaseDAOImpl<Client, Long> implements ClientDAO {
 
     @Override
-    public Client checkRegisteredClient(String clientname, String password) {
-
-        try {
-            Session session = HibernateUtil.start(true);
-            String sql = "SELECT c FROM Client c WHERE c.email = :email AND c.password = :password";
-            Query query = session.createQuery(sql);
-            query.setParameter("email", clientname).setParameter("password", password);
-
-            Client client = (Client) query.uniqueResult();
-            if (client != null) return client;
-
-        } catch (NonUniqueResultException ex) {
-            System.out.println("Query returned more than one results.");
-        } catch (HibernateException ex) {
-            System.out.println("FIND Client.java: " + ex.getMessage());
+    public Client checkRegisteredClient(String email, String password) {
+        Client client;
+        try{
+            start();
+            client = (Client) searchUnique(new Search(Client.class)/*.setResultMode(ISearch.RESULT_SINGLE)*/
+                    .addFilterEqual("email", email)
+                    .addFilterEqual("password", password));
         } finally {
-            HibernateUtil.stop(false);
-        }
-        return null;
-    }
-
-
-    public Client findByClientName(String name, String surname) {
-        Client client = null;
-        Session session = HibernateUtil.start(true);
-        try {
-            String sql = "SELECT p FROM Client p WHERE p.first_name = :first_name AND p.last_name = :last_name";
-
-            Query query = session.createQuery(sql);
-            query.setParameter("first_name", name).setParameter("last_name", surname);
-
-            client = (Client) query.uniqueResult();
-            HibernateUtil.stop(false);
-
-        } catch (NonUniqueResultException ex) {
-            logger.error("FIND Client.java: " + ex.getMessage());
-            System.out.println("Query returned more than one results.");
-        } catch (HibernateException ex) {
-            logger.error("FIND Client.java: " + ex.getMessage());
+            stop(false);
         }
         return client;
     }
 
     @Override
-    public List getClientsFromHotel(Long hotelId){
-        return selectMany("select c from Client c, Hotel h where c in elements(h.clients) and h.id="+hotelId.toString());
+    public List<Client> findByClientName(String name, String surname) {
+        List<Client> t;
+        try{
+            start();
+            t = search(new Search(Client.class)
+                    .addFilterEqual("first_name", name)
+                    .addFilterEqual("last_name", surname));
+        } finally {
+            stop(false);
+        }
+        return t;
     }
+
+    @Override
+    public List<Client> getClientsFromHotel(Long hotelId){
+        List<Client> t;
+        try{
+            start();
+            t = search(new Search(Client.class)
+                    .addFilterSome("hotels", Filter.equal("id", hotelId)));
+        } finally {
+            stop(false);
+        }
+        return t;
+      }
 }

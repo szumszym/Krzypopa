@@ -16,7 +16,6 @@ import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
 import pl.bookingsystem.db.entity.User;
-import pl.bookingsystem.db.utils.HibernateUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -52,9 +51,9 @@ public class LoginAction extends ActionSupport implements SessionAware {
         session.put("isClient", false);
 
 
-        UserDAO userManager = new UserDAOImpl();
-        User user = userManager.checkRegisteredUser(login, password);
-        HotelDAO hotelManager = new HotelDAOImpl();
+        UserDAO userDAO = new UserDAOImpl();
+        User user = userDAO.checkRegisteredUser(login, password);
+        HotelDAO hotelDAO = new HotelDAOImpl();
 
 
         if (user != null) {
@@ -68,7 +67,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
                 session.put("isUser", true);
                 session.put("admin", user);
 
-                List<Hotel> hotels = hotelManager.selectAllWithAddress();
+                List<Hotel> hotels = hotelDAO.selectAllWithAddress();
                 saveHotelsToSession(hotels);
 
                 return "adminlogged";
@@ -78,7 +77,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
                 session.put("isUser", true);
                 session.put("employee", user);
 
-                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
+                List<Hotel> hotels = hotelDAO.selectAllHotelsOfUser(user.getId());
                 saveHotelsToSession(hotels);
 
                 return "employeelogged";
@@ -88,19 +87,19 @@ public class LoginAction extends ActionSupport implements SessionAware {
                 session.put("isUser", true);
                 session.put("owner", user);
 
-                List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
+                List<Hotel> hotels = hotelDAO.selectAllHotelsOfUser(user.getId());
                 saveHotelsToSession(hotels);
 
                 return "ownerlogged";
             }
         } else {
-            ClientDAO clientManager = new ClientDAOImpl();
-            Client client = clientManager.checkRegisteredClient(login, password);
+            ClientDAO clientDAO = new ClientDAOImpl();
+            Client client = clientDAO.checkRegisteredClient(login, password);
             if (client != null) {
                 session.put("isClient", true);
                 session.put("client", client);
 
-                List<Hotel> hotels = hotelManager.selectAllWithAddress();
+                List<Hotel> hotels = hotelDAO.selectAllWithAddress();
                 saveHotelsToSession(hotels);
 
                 return "clientlogged";
@@ -131,7 +130,7 @@ public class LoginAction extends ActionSupport implements SessionAware {
 
     @Action(value = "logout", results = {@Result(name = "success", location = "/modules/login/logout.jsp")})
     public String logout() {
-        HibernateUtil.stopAll();
+       // stopAll();
         session.clear();
         return SUCCESS;
     }

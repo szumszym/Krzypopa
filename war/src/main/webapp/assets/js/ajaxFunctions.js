@@ -18,7 +18,12 @@ function ajaxDefaultIncudeOnStart() {
         jQuery("#" + contextId).load(defaultContext);
     }
 }
-
+function checkbox(id){
+    $(id).change(function(){
+        var $this = $(this);
+        $this.val($this.prop('checked'));
+    });
+}
 
 function createTableWithDataFromDB(params) {
     var ajaxActions = params.actions;
@@ -29,10 +34,10 @@ function createTableWithDataFromDB(params) {
     $.ajax({
         type: 'POST',
         url: ajaxActions.get,
-        data: {dataFrom: '{index:'+paramToJAVA+'}'},
+        data: {dataFrom: '{index:' + paramToJAVA + '}'},
         success: function (data) {
             var aaData = eval(data).data;
-            if (aaData!= undefined && aaData.length==0) {
+            if (aaData != undefined && aaData.length == 0) {
                 $('#' + tableContainerId).html("No data!");
             }
             else if (aaData != undefined && aaData[0] != undefined && aaData[0][0] != "ERROR!!!") {
@@ -145,7 +150,7 @@ function generateModal(modalId, titleHTML, messageHTML, action, isShown) {
         '</p>' +
         '</div>' +
         '<div class="modal-footer">' +
-        '<a href="'+action+'" class="btn btn-primary">Ok</a>'+
+        '<a href="' + action + '" class="btn btn-primary">Ok</a>' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -175,6 +180,11 @@ function deleteRow(that, action) {
                         $thisRow.trigger("rowclick");
                         $thisRow.removeClass('row-selected');
                         table.fnDeleteRow($thisRow[0]);
+                        generateAlertSuccess($resultContainer, "Akcja usunięcia przebiegła pomyślnie.")
+                    } else if (msg.data[0][0] == "HAS_RESERVATIONS") {
+                        generateAlertWarning($resultContainer, "Nie można usunąć pokoju, istnieją przypisane do niego rezerwacje!", 6000);
+                    } else if (msg.data[0][0] == "HAS_ROOMS") {
+                        generateAlertWarning($resultContainer, "Nie można usunąć dodatku - istnieją przypisane do niego pokoje!", 6000);
                     } else {
                         generateAlertError($resultContainer, "Error occured during deleting action!");
                     }
@@ -188,56 +198,50 @@ function deleteRow(that, action) {
         });
     }
 }
-var isFinishedSubmit = true;
+
 function createSelectListWithDataFromDB(ajaxAction, selectContainerId, selectParams, isHidden) {
     var params = selectParams;
-    if (isFinishedSubmit) {
-        isFinishedSubmit = false;
-        $.ajax({
-            type: 'POST',
-            url: ajaxAction,
-            success: function (data) {
-                var aaData = eval(data).data;
+    $.ajax({
+        type: 'POST',
+        url: ajaxAction,
+        success: function (data) {
+            var aaData = eval(data).data;
 
-                var $selectElem = $('#' + selectContainerId);
+            var $selectElem = $('#' + selectContainerId);
 
-                if (aaData != undefined && aaData[0][0] != "ERROR!!!") {
-                    var HTMLtemplate = "";
+            if (aaData != undefined && aaData[0][0] != "ERROR!!!") {
+                var HTMLtemplate = "";
 
-                    for (var i = 0; i < aaData.length; i++) {
-                        var elemData = aaData[i];
-                        if (params.defaultSelected != undefined && i == params.defaultSelected) {
-                            HTMLtemplate += "<option selected='selected' value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
-                        } else {
-                            HTMLtemplate += "<option value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
-                        }
-
-                    }
-                    if ($selectElem.children().length > 0) {
-                        $selectElem.children().remove();
-                    }
-                    $selectElem.append(HTMLtemplate);
-                    if (selectParams.multiSelect) {
-                        $selectElem.attr('multiple', '')
-                    }
-                    $selectElem.chosen();
-
-                    if (isHidden) {
-                        $selectElem.closest('.form-group').hide();
+                for (var i = 0; i < aaData.length; i++) {
+                    var elemData = aaData[i];
+                    if (params.defaultSelected != undefined && i == params.defaultSelected) {
+                        HTMLtemplate += "<option selected='selected' value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
+                    } else {
+                        HTMLtemplate += "<option value='" + elemData[params.value] + "'>" + elemData[params.label] + "</option>";
                     }
 
-                } else {
-                    $selectElem.html("Server ERROR!");
-                    console.log("Error: ", data);
                 }
-                isFinishedSubmit = true;
-            },
-            error: function (data) {
-                console.log("Error: ", data);
-                isFinishedSubmit = true;
-            }});
-    }
+                if ($selectElem.children().length > 0) {
+                    $selectElem.children().remove();
+                }
+                $selectElem.append(HTMLtemplate);
+                if (selectParams.multiSelect) {
+                    $selectElem.attr('multiple', '')
+                }
+                $selectElem.chosen();
 
+                if (isHidden) {
+                    $selectElem.closest('.form-group').hide();
+                }
+
+            } else {
+                $selectElem.html("Server ERROR!");
+                console.log("Error: ", data);
+            }
+        },
+        error: function (data) {
+            console.log("Error: ", data);
+        }});
 }
 
 function bindSelectTable(tableId, selectId, multiselectOpt, labelColNumber) {
@@ -330,7 +334,6 @@ function ajaxSubmit(formId, resultContainerId) {
             dataType: "json",
             error: function () {
                 generateAlertError($resultContainer, "Wystąpił bład podczas zapisu do bazy danych!");
-                isFinishedSubmit = true;
             },
             success: function (msg) {
                 try {
@@ -373,10 +376,10 @@ function ajaxSubmitFirstHotel(formId, resultContainerId) {
                     if (msg.data[0][0] == "success") {
                         generateModal("modal-first-hotel", "Welcome!",
                             " Congratulations!" +
-                            "<br>" +
-                            "You've just successfully added your first hotel! " +
-                            "<br>" +
-                            "Click [OK] to log in again."
+                                "<br>" +
+                                "You've just successfully added your first hotel! " +
+                                "<br>" +
+                                "Click [OK] to log in again."
                             , '/bookingsystem/logout', true);
                     } else {
                         generateAlertError($resultContainer, "Error occured during add action!");
@@ -400,8 +403,7 @@ function formValidate(formId, rules) {
         var sDate = new Date(value);
         return fDate <= sDate;
 
-    }, jQuery.validator.format("'Date must be equals or later than today!"));
-
+    }, jQuery.validator.format("Date must be equals or later than today!"));
 
     jQuery.validator.addMethod("later_than", function (value, element, param) {
         var firstDate = param[0];
@@ -417,7 +419,6 @@ function formValidate(formId, rules) {
         return capacity >= value;
 
     }, jQuery.validator.format("Count of person must be <= capacity of rooms"));
-
 
     jQuery.validator.addMethod("accept", function (value, element, param) {
         return value.match(new RegExp("^" + param + "$"));

@@ -1,6 +1,9 @@
 package pl.bookingsystem.db.dao;
 
-import pl.bookingsystem.db.entity.*;
+import pl.bookingsystem.db.entity.Addition;
+import pl.bookingsystem.db.entity.Hotel;
+import pl.bookingsystem.db.entity.Room;
+import pl.bookingsystem.db.entity.Status;
 
 import java.util.List;
 
@@ -8,31 +11,17 @@ import java.util.List;
  * Author: rastek
  * Date: 11.12.13 @ 21:08
  */
-public interface HotelDAO extends GenericDAO<Hotel, Long> {
+public interface HotelDAO extends BaseDAO<Hotel, Long> {
 
-    public List getRooms(Long hotel_id);
+    public List<Hotel> selectAllWithAddress();
 
-    public List getStatuses(Long hotel_id);
+    public List<Hotel> selectAllWithUsers();
 
-    public List getAdditions(Long hotel_id);
+    public List<Hotel> selectAllHotels();
 
-    public List selectAllWithAddress();
-
-    public List selectAllWithUsers();
-
-    public List selectAllHotelsOfUser(String userId);
-
-    public List selectAllHotels();
-
-    public List selectAllHotelsOfUser(Long userId);
-
-    public Hotel selectByID(String hotelId);
+    public List<Hotel> selectAllHotelsOfUser(Long userId);
 
     public Hotel selectByID(Long hotelId);
-
-    void addUser(User user, Hotel hotel);
-
-    void addClient(Client client, Hotel hotel);
 
     void addRoom(Room room, Hotel hotel);
 
@@ -40,7 +29,5 @@ public interface HotelDAO extends GenericDAO<Hotel, Long> {
 
     void addStatus(Status status, Hotel hotel);
 
-    public List getHotelFromCity(String city);
-
-    List getRoomFromCity(String city);
+    public List<Hotel> getHotelFromCity(String city);
 }

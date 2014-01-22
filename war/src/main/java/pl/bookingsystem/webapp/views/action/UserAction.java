@@ -22,18 +22,22 @@ import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
 @Namespace("")
-public class UserAction extends ActionSupport implements SessionAware{
+public class UserAction extends ActionSupport implements SessionAware {
     private Map<String, Object> session;
 
     private String[][] data;
+
     public String[][] getData() {
 
         return data;
     }
+
     private String dataFrom;
+
     public String getDataFrom() {
         return dataFrom;
     }
+
     public void setDataFrom(String dataFrom) {
         this.dataFrom = dataFrom;
     }
@@ -45,8 +49,8 @@ public class UserAction extends ActionSupport implements SessionAware{
     })
     public String dataFromDBOwnerList() {
         try {
-            UserDAO userManager = new UserDAOImpl();
-            List<User> ownersList = userManager.selectAllOwners();
+            UserDAO userDAO = new UserDAOImpl();
+            List<User> ownersList = userDAO.selectAllOwners();
 
             int size = ownersList.size();
             data = new String[size][];
@@ -54,7 +58,7 @@ public class UserAction extends ActionSupport implements SessionAware{
                 String[] tableS = new String[4];
                 User u = ownersList.get(j);
                 tableS[0] = String.valueOf(u.getId());
-                tableS[1] = String.valueOf(String.valueOf(u.getLast_name() + " " + u.getFirst_name() + " - " +u.getEmail()));
+                tableS[1] = String.valueOf(String.valueOf(u.getLast_name() + " " + u.getFirst_name() + " - " + u.getEmail()));
                 tableS[2] = String.valueOf(u.getEmail());
                 tableS[3] = String.valueOf(u.getPhone_number());
 
@@ -109,15 +113,15 @@ public class UserAction extends ActionSupport implements SessionAware{
             }
 
 //SAVE USER
-            UserDAO userManager = new UserDAOImpl();
-            userManager.save(user);
+            UserDAO userDAO = new UserDAOImpl();
+            userDAO.create(user);
 
 //ADD HOTEL IF EMPLOYEE
-            if(User.Type.EMPLOYEE.equals(type)){
-                String hotelId = jsonObject.getString("hotel_id");
-                HotelDAO hotelManager = new HotelDAOImpl();
-                Hotel hotel = hotelManager.selectByID(hotelId);
-                hotelManager.addUser(user, hotel);
+            if (User.Type.EMPLOYEE.equals(type)) {
+                Long hotelId = Long.valueOf(jsonObject.getString("hotel_id"));
+                HotelDAO hotelDAO = new HotelDAOImpl();
+                Hotel hotel = hotelDAO.selectByID(hotelId);
+                addUserToHotel(user, hotel);
             }
 
             data = setMsg(SUCCESS);
@@ -169,19 +173,15 @@ public class UserAction extends ActionSupport implements SessionAware{
             }
 
 //SAVE EMPLOYEE
-            UserDAO userManager = new UserDAOImpl();
-            userManager.save(user);
+            UserDAO userDAO = new UserDAOImpl();
+            userDAO.create(user);
 
 //UPDATE HOTEL
-            HotelDAO hotelManager = new HotelDAOImpl();
             Hotel hotel = (Hotel) session.get("hotel");
-            hotelManager.addUser(user, hotel);
+            addUserToHotel(user, hotel);
 
 //UPDATE SESSION
-            session.put("hotel", hotel);
-            List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(user.getId());
-            session.put("hotels", hotels);
-
+            updateSession(hotel);
 
             data = setMsg(SUCCESS);
             return SUCCESS;
@@ -193,6 +193,7 @@ public class UserAction extends ActionSupport implements SessionAware{
 
     }
 
+
     @Action(value = "user-getData", results = {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
@@ -202,12 +203,12 @@ public class UserAction extends ActionSupport implements SessionAware{
             Boolean isOwner = (Boolean) session.get("isOwner");
             Boolean isAdmin = (Boolean) session.get("isAdmin");
             List<User> users = null;
-            UserDAO userManager = new UserDAOImpl();
-            if(isAdmin){
-                users = userManager.selectAll(User.class);
-            } else if(isOwner){
+            UserDAO userDAO = new UserDAOImpl();
+            if (isAdmin) {
+                users = userDAO.selectAll(User.class);
+            } else if (isOwner) {
                 Hotel hotel = (Hotel) session.get("hotel");
-                users = userManager.getEmployeesFromHotel(hotel.getId());
+                users = userDAO.getEmployeesFromHotel(hotel);
             }
 
             int size = users != null ? users.size() : 0;
@@ -236,15 +237,38 @@ public class UserAction extends ActionSupport implements SessionAware{
 
     }
 
+
+    @Action(value = "user-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String userDelete() {
+        try {
+            JSONObject jsonObject = new JSONObject(dataFrom);
+            Long index = Long.parseLong(jsonObject.getString("index"));
+
+            UserDAO userDAO = new UserDAOImpl();
+            userDAO.deleteByID(index);
+            data = setMsg(SUCCESS);
+            return SUCCESS;
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+
     private String buildHotelsString(User u) {
         String hotelsString = "";
-        if(!u.getType().equals(User.Type.ADMIN)){
-            HotelDAO hotelManager = new HotelDAOImpl();
-            List<Hotel> hotels = hotelManager.selectAllHotelsOfUser(u.getId());
-            for(Hotel hotel: hotels){
-                hotelsString+=hotel.getName()+", ";
+        if (!u.getType().equals(User.Type.ADMIN)) {
+            HotelDAO hotelDAO = new HotelDAOImpl();
+            List<Hotel> hotels = hotelDAO.selectAllHotelsOfUser(u.getId());
+            for (Hotel hotel : hotels) {
+                hotelsString += hotel.getName() + ", ";
             }
-            hotelsString = hotelsString.substring(0,hotelsString.length()-1);
+            hotelsString = hotelsString.substring(0, hotelsString.length() - 1);
 
         } else {
             hotelsString = "-";
@@ -264,6 +288,33 @@ public class UserAction extends ActionSupport implements SessionAware{
 
         }
         return User.Type.EMPLOYEE;
+    }
+
+    private static void addUserToHotel(User user, Hotel hotel) {
+        HotelDAO hotelDAO = new HotelDAOImpl();
+        UserDAO userDAO = new UserDAOImpl();
+        User _user = userDAO.selectWith(user.getId(), "hotels");
+        Hotel _hotel = hotelDAO.selectWith(hotel.getId(), "users");
+
+        _hotel.getUsers().add(_user);
+        _user.getHotels().add(_hotel);
+
+        hotelDAO.update(_hotel);
+    }
+
+    private void updateSession(Hotel hotel) {
+        HotelDAO hotelDAO = new HotelDAOImpl();
+        Hotel sessionHotel = hotelDAO.selectByID(hotel.getId());
+        session.put("hotel", sessionHotel);
+        User currentUser = (User) session.get("user");
+        Boolean isAdmin = (Boolean) session.get("isAdmin");
+        List<Hotel> sessionHotels;
+        if(isAdmin){
+            sessionHotels = hotelDAO.selectAllHotels();
+        } else {
+            sessionHotels = hotelDAO.selectAllHotelsOfUser(currentUser.getId());
+        }
+        session.put("hotels", sessionHotels);
     }
 
     @Override

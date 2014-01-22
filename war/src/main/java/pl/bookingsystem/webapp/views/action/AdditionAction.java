@@ -9,14 +9,13 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.AdditionDAO;
 import pl.bookingsystem.db.dao.HotelDAO;
-import pl.bookingsystem.db.dao.UserDAO;
+import pl.bookingsystem.db.dao.RoomDAO;
 import pl.bookingsystem.db.dao.impl.AdditionDAOImpl;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
-import pl.bookingsystem.db.dao.impl.UserDAOImpl;
+import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
 import pl.bookingsystem.db.entity.Addition;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
-import pl.bookingsystem.db.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -53,8 +52,8 @@ public class AdditionAction extends ActionSupport implements SessionAware{
             if (isUser) {
 
                 Hotel hotel = (Hotel) session.get("hotel");
-                HotelDAO hotelManager = new HotelDAOImpl();
-                List<Addition> additions = hotelManager.getAdditions(hotel.getId());
+                AdditionDAO additionDAO = new AdditionDAOImpl();
+                List<Addition> additions = additionDAO.getAdditions(hotel);
 
                 int size = additions.size();
                 data = new String[size][];
@@ -92,7 +91,7 @@ public class AdditionAction extends ActionSupport implements SessionAware{
             Boolean isUser = (Boolean) session.get("isUser");
             if (isUser) {
 
-                AdditionDAO additionManager = new AdditionDAOImpl();
+                AdditionDAO additionDAO = new AdditionDAOImpl();
                 JSONObject jsonObject = new JSONObject(dataFrom);
                 String name = jsonObject.getString("name");
                 String description = jsonObject.getString("description");
@@ -113,12 +112,12 @@ public class AdditionAction extends ActionSupport implements SessionAware{
 //PUBLISHED
                 Boolean published = Boolean.parseBoolean(jsonObject.getString("published"));
                 addition.setPublished(published);
-                additionManager.save(addition);
+                additionDAO.create(addition);
 
 //UPDATE SESSION
                 if (hotel != null) {
-                    HotelDAO hotelManager = new HotelDAOImpl();
-                    Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
+                    HotelDAO hotelDAO = new HotelDAOImpl();
+                    Hotel hotel2 = hotelDAO.selectByID(Hotel.class, hotel.getId());
                     session.put("hotel", hotel2);
                 }
 
@@ -129,6 +128,37 @@ public class AdditionAction extends ActionSupport implements SessionAware{
                 return ERROR;
             }
 
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "additions-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String additionDelete() {
+        try {
+            JSONObject jsonObject = new JSONObject(dataFrom);
+            Long index = Long.parseLong(jsonObject.getString("index"));
+
+            AdditionDAO additionDAO = new AdditionDAOImpl();
+            Addition addition = additionDAO.selectByID(Addition.class, index);
+
+            RoomDAO roomDAO = new RoomDAOImpl();
+            List<Room> rooms = roomDAO.getAllRoomsWhichHas(addition);
+
+           int size = rooms != null ? rooms.size() : 0;
+            if(size>0){
+                data = setMsg("HAS_ROOMS");
+                return ERROR;
+            } else {
+                additionDAO.delete(addition);
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            }
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;

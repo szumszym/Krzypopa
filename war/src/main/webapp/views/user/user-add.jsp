@@ -457,3 +457,6 @@
 </div>
 
 <script src="./assets/js/user.js"></script>
+<script>
+    $(".chzn-select").chosen();
+</script>

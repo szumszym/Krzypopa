@@ -3,8 +3,8 @@ package pl.bookingsystem.db.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "Client")
@@ -44,10 +44,14 @@ public class Client implements Serializable {
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    private Set<Reservation> reservations;
+    private List<Reservation> reservations;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "clients")
-    private Set<Hotel> hotels = new HashSet<Hotel>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "hotel_client", joinColumns = {
+            @JoinColumn(name = "client_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "hotel_id",
+                    nullable = false, updatable = false)})
+    private List<Hotel> hotels = new LinkedList<Hotel>();
 
     public Client(String first_name, String last_name, Long pesel, String email, String phone_number, String password, Address address, Date register_date) {
         this.first_name = first_name;
@@ -72,7 +76,7 @@ public class Client implements Serializable {
         this.nip = nip;
     }
 
-    public Client(String first_name, String last_name, Long pesel, Long nip, String email, String phone_number, String password, Address address, Date register_date, Set<Reservation> reservations, Set<Hotel> hotels) {
+    public Client(String first_name, String last_name, Long pesel, Long nip, String email, String phone_number, String password, Address address, Date register_date, List<Reservation> reservations, List<Hotel> hotels) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.pesel = pesel;
@@ -157,11 +161,11 @@ public class Client implements Serializable {
         this.address = address;
     }
 
-    public Set<Hotel> getHotels() {
+    public List<Hotel> getHotels() {
         return hotels;
     }
 
-    public void setHotels(Set<Hotel> hotels) {
+    public void setHotels(List<Hotel> hotels) {
         this.hotels = hotels;
     }
 
@@ -173,11 +177,11 @@ public class Client implements Serializable {
         this.register_date = register_date;
     }
 
-    public Set<Reservation> getReservations() {
+    public List<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Set<Reservation> reservations) {
+    public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
 

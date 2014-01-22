@@ -1,6 +1,11 @@
 package pl.bookingsystem.webapp.action;
 
+import org.json.JSONArray;
+import pl.bookingsystem.db.entity.Room;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Author: rastek
@@ -22,5 +27,25 @@ public class Utils {
 
     public static boolean isOverlapping(Date start1, Date end1, Date start2, Date end2) {
         return !start1.after(end2) && !start2.after(end1);
+    }
+
+    public static List<Long> convertJSONArrayToArrayList(JSONArray jsonArray) {
+        List<Long> list = new ArrayList<Long>();
+        if (jsonArray != null) {
+            int len = jsonArray.length();
+            for (int i = 0; i < len; i++) {
+                list.add(Long.valueOf(String.valueOf(jsonArray.get(i))));
+            }
+        }
+        return list;
+    }
+
+    public static String generateRoomNumbersString(List<Room> rooms) {
+        String roomNumbers = "";
+        for (Room room : rooms) {
+            roomNumbers += room.getNo_room() + ", ";
+        }
+        roomNumbers = roomNumbers.substring(0, roomNumbers.length() - 2);
+        return roomNumbers;
     }
 }

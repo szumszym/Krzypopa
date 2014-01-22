@@ -3,8 +3,8 @@ package pl.bookingsystem.db.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -50,9 +50,12 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
-    private Set<Hotel> hotels = new LinkedHashSet<Hotel>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "hotel_user", joinColumns = {
+            @JoinColumn(name = "user_id", nullable = false, updatable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "hotel_id",
+                    nullable = false, updatable = false)})
+    private List<Hotel> hotels = new LinkedList<Hotel>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
@@ -159,11 +162,11 @@ public class User implements Serializable {
         this.address = address;
     }
 
-    public Set<Hotel> getHotels() {
+    public List<Hotel> getHotels() {
         return hotels;
     }
 
-    public void setHotels(Set<Hotel> hotels) {
+    public void setHotels(List<Hotel> hotels) {
         this.hotels = hotels;
     }
 

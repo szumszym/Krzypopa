@@ -11,7 +11,6 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.ReservationDAO;
@@ -21,9 +20,7 @@ import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Reservation;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
@@ -50,7 +47,7 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
         this.dataFrom = dataFrom;
     }
 
-    @Action(value = "client-add", results = {
+    @Action(value = "guest-add", results = {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
@@ -82,14 +79,14 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
                 client.setNip(Long.parseLong(nip));
             }
 
-            ClientDAO clientManager = new ClientDAOImpl();
-            clientManager.save(client);
+            ClientDAO clientDAO = new ClientDAOImpl();
+            clientDAO.create(client);
 
 
-            ReservationDAO reservationManager = new ReservationDAOImpl();
+            ReservationDAO reservationDAO = new ReservationDAOImpl();
             Reservation reservation = (Reservation) session.get("reservation");
             reservation.setClient(client);
-            reservationManager.save(reservation);
+            reservationDAO.create(reservation);
 
             data = setMsg(SUCCESS);
             return SUCCESS;
@@ -105,18 +102,6 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
     @Action(value = "login", results = {@Result(name = "success", location = "/modules/login/login.jsp")})
     public String goToLogin() {
         return SUCCESS;
-    }
-
-
-    private List<String> convertJSONArrayToArrayList(JSONArray jsonArray) {
-        List<String> list = new ArrayList<String>();
-        if (jsonArray != null) {
-            int len = jsonArray.length();
-            for (int i = 0; i < len; i++) {
-                list.add(jsonArray.get(i).toString());
-            }
-        }
-        return list;
     }
 
     @Override

@@ -1,14 +1,9 @@
 package pl.bookingsystem.db.dao.impl;
 
-import org.hibernate.HibernateException;
-import org.hibernate.NonUniqueResultException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-
+import com.googlecode.genericdao.search.Search;
 import pl.bookingsystem.db.dao.AdditionDAO;
 import pl.bookingsystem.db.entity.Addition;
-import org.apache.log4j.Logger;
-import pl.bookingsystem.db.utils.HibernateUtil;
+import pl.bookingsystem.db.entity.Hotel;
 
 import java.util.List;
 
@@ -16,36 +11,22 @@ import java.util.List;
  * Author: rastek
  * Date: 11.12.13 @ 21:11
  */
-public class AdditionDAOImpl extends GenericDAOImpl<Addition, Long> implements AdditionDAO {
-    private static Logger logger = Logger.getLogger(ClientDAOImpl.class);
+public class AdditionDAOImpl extends BaseDAOImpl<Addition, Long> implements AdditionDAO {
 
-    public List<Addition> getAdditionsBy(List<String> additions, String by) {
-
-        List<Addition> additionList = null;
-        String sql = "FROM Addition a where";
-        for (int i=0; i<additions.size(); i++) {
-            sql= String.format("%s a.%s = '%s'", sql, by, additions.get(i));
-
-            if (!(i==additions.size()-1)){
-                sql=sql+" and";
-            }
+    @Override
+    public List<Addition> getAdditions(Long hotelId) {
+        List<Addition> t;
+        try{
+            start();
+            t = search(new Search(Addition.class).addFilterIn("hotel.id", hotelId));
+        } finally {
+            stop(false);
         }
-        System.out.println(sql);
-    try{
-
-        Session session = HibernateUtil.start(true);
-
-        Query query = session.createQuery(sql);
-        additionList = query.list();
-        HibernateUtil.stop(false);
-
-    } catch (NonUniqueResultException ex) {
-        logger.error("FIND Addiotion.java: " + ex.getMessage());
-        System.out.println("Query returned more than one results.");
-    } catch (HibernateException ex) {
-        logger.error("FIND Addition.java: " + ex.getMessage());
+        return t;
     }
 
-    return additionList;  //To change body of implemented methods use File | Settings | File Templates.
+    @Override
+    public List<Addition> getAdditions(Hotel hotel) {
+        return getAdditions(hotel.getId());
     }
 }

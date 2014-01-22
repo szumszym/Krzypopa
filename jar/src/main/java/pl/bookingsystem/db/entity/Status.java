@@ -2,8 +2,8 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "status")
@@ -22,12 +22,12 @@ public class Status implements Serializable {
     private String description;
 
     @OneToMany(mappedBy = "status")
-    private Set<Reservation> reservations = new HashSet<Reservation>();
+    private List<Reservation> reservations = new LinkedList<Reservation>();
 
     @Column (name = "color")
     private String color;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
@@ -40,7 +40,7 @@ public class Status implements Serializable {
         this.color = color;
     }
 
-    public Status(String type, String description, String color, Set<Reservation> reservations) {
+    public Status(String type, String description, String color, List<Reservation> reservations) {
         this.type = type;
         this.description = description;
         this.reservations = reservations;
@@ -54,11 +54,11 @@ public class Status implements Serializable {
         this.hotel = hotel;
     }
 
-    public Set<Reservation> getReservations() {
+    public List<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Set<Reservation> reservations) {
+    public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
 

@@ -9,16 +9,22 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pl.bookingsystem.db.dao.*;
-import pl.bookingsystem.db.dao.impl.*;
+import pl.bookingsystem.db.dao.ClientDAO;
+import pl.bookingsystem.db.dao.ReservationDAO;
+import pl.bookingsystem.db.dao.RoomDAO;
+import pl.bookingsystem.db.dao.StatusDAO;
+import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
+import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
+import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
+import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
 import pl.bookingsystem.db.entity.*;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import static pl.bookingsystem.webapp.action.Utils.daysBetween;
-import static pl.bookingsystem.webapp.action.Utils.isOverlapping;
-import static pl.bookingsystem.webapp.action.Utils.setMsg;
+import static pl.bookingsystem.webapp.action.Utils.*;
 
 @ParentPackage("json-default")
 @Namespace("")
@@ -52,19 +58,19 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             Hotel hotel = (Hotel) session.get("hotel");
             Boolean isAdmin = (Boolean) session.get("isAdmin");
 
-            ReservationDAO reservationManager = new ReservationDAOImpl();
-            List reservations = null;
+            ReservationDAO reservationDAO = new ReservationDAOImpl();
+            List<Reservation> reservations = null;
 
             User user = (User) session.get("user");
             Client client = (Client) session.get("client");
             if (user != null) {
                 if(isAdmin){
-                    reservations = reservationManager.getAllReservations();
+                    reservations = reservationDAO.getAllReservations();
                 } else {
-                    reservations = reservationManager.getHotelReservations(hotel);
+                    reservations = reservationDAO.getHotelReservations(hotel);
                 }
             } else if (client != null) {
-                reservations = reservationManager.getClientReservations(client);
+                reservations = reservationDAO.getClientReservations(client);
             }
 
             int size = reservations != null ? reservations.size() : 0;
@@ -73,34 +79,36 @@ public class ReservationAction extends ActionSupport implements SessionAware {
 
                 for (int j = 0; j < size; j++) {
                     String[] reservation = new String[12];
-                    Object[] res = (Object[]) reservations.get(j);
-                    Reservation r = (Reservation) res[0];
-                    String userEmail = (String) res[1];
-                    Integer roomNo = (Integer) res[2];
-                    Long hotelNo = (Long) res[3];
+                    Reservation r = reservations.get(j);
+                    String userEmail = r.getClient().getEmail();
+                    List<Room> rooms = r.getRooms();
+                    String roomNumbers = generateRoomNumbersString(rooms);
+                    String hotelName;
+                    if (isAdmin) {
+                        hotelName = r.getRooms().get(0).getHotel().getName();
+                    } else {
+                        hotelName = hotel.getName(); //because reservation are from this hotel only
+                    }
 
-                    HotelDAO hotelManager = new HotelDAOImpl();
-                    Hotel hotel2 = hotelManager.selectByID(hotelNo);
-                    String hotelName = hotel2.getName();
-
-                    reservation[0] = String.valueOf(r.getId());
-                    reservation[1] = String.valueOf(r.getName());
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     String date1 = sdf.format(r.getDate_from());
                     String date2 = sdf.format(r.getDate_to());
+                    Status status = r.getStatus();
+
+                    reservation[0] = String.valueOf(r.getId());
+                    reservation[1] = r.getName();
                     reservation[2] = date1;
                     reservation[3] = date2;
                     reservation[4] = String.valueOf(r.getPerson_count());
-                    Status status = r.getStatus();
                     reservation[5] = String.valueOf(status.getColor()+"&"+status.getType());
                     reservation[6] = String.valueOf(r.getEntry_date() != null ? r.getUpdate_date() : "-");
                     reservation[7] = String.valueOf(r.getUpdate_date() != null ? r.getUpdate_date() : "-");
                     reservation[8] = String.valueOf(r.getPrice());
                     reservation[9] = userEmail;
                     reservation[10] = hotelName;
-                    reservation[11] = String.valueOf(roomNo);
+                    reservation[11] = roomNumbers;
 
-                        data[j] = reservation;
+                    data[j] = reservation;
                 }
             } else {
                 data = null;
@@ -136,14 +144,14 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             Date date_to = sdf.parse(jsonObject.getString("date_to"));
 //ROOMS
             JSONArray jsonRoomIdsArray = (JSONArray) jsonObject.get("room_ids");
-            List<String> room_ids = convertJSONArrayToArrayList(jsonRoomIdsArray);
-            RoomDAO roomManager = new RoomDAOImpl();
-            List<Room> rooms = roomManager.selectByIDS(Room.class, room_ids);
+            List<Long> room_ids = convertJSONArrayToArrayList(jsonRoomIdsArray);
+            RoomDAO roomDAO = new RoomDAOImpl();
+            List<Room> rooms = roomDAO.selectByIDs(Room.class, room_ids);
 
- //CHECK IF TERM IS AVADAIBLE
-            ReservationDAO reservationManager = new ReservationDAOImpl();
+            //CHECK IF TERM IS AVADAIBLE
+            ReservationDAO reservationDAO = new ReservationDAOImpl();
             for (Room room : rooms) {
-                List<Reservation> reservations = reservationManager.getAllReservationsFrom(hotel, room);
+                List<Reservation> reservations = reservationDAO.getAllReservationsFrom(room);
                 for (Reservation res : reservations) {
                     Date dateFrom2 = res.getDate_from();
                     Date dateTo2 = res.getDate_to();
@@ -162,24 +170,24 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             Client client = null;
             if (currentUser != null) {
                 Long statusId = Long.parseLong(jsonObject.getString("status_id"));
-                StatusDAO statusManager = new StatusDAOImpl();
-                status = statusManager.selectByID(Status.class, statusId);
+                StatusDAO statusDAO = new StatusDAOImpl();
+                status = statusDAO.selectByID(Status.class, statusId);
 
                 Long clientId = Long.parseLong(jsonObject.getString("client_id"));
-                ClientDAO clientManager = new ClientDAOImpl();
-                client = clientManager.selectByID(Client.class, clientId);
+                ClientDAO clientDAO = new ClientDAOImpl();
+                client = clientDAO.selectByID(Client.class, clientId);
             } else if (currentClient != null) {
                 client = currentClient;
-                HotelDAO hotelManager = new HotelDAOImpl();
+                StatusDAO statusDAO = new StatusDAOImpl();
 
-                List<Status> statuses = hotelManager.getStatuses(hotel.getId());
+                List<Status> statuses = statusDAO.getStatuses(hotel.getId());
                 status = statuses.get(0);
             }
 
 //PRICE
             Double price = 0.0;
             for (Room room : rooms) {
-                Set<Addition> additions = room.getAdditions();
+                List<Addition> additions = room.getAdditions();
                 for (Addition add : additions) {
                     price += add.getPrice();
                 }
@@ -190,7 +198,7 @@ public class ReservationAction extends ActionSupport implements SessionAware {
 
  //CREATE NEW RESERVATION
             Reservation reservation = new Reservation(name, date_from, date_to, person_count, client, status, rooms, price);
-            reservationManager.save(reservation);
+            reservationDAO.create(reservation);
 
             data = setMsg(SUCCESS);
             return SUCCESS;
@@ -202,15 +210,25 @@ public class ReservationAction extends ActionSupport implements SessionAware {
 
     }
 
-    private List<String> convertJSONArrayToArrayList(JSONArray jsonArray) {
-        List<String> list = new ArrayList<String>();
-        if (jsonArray != null) {
-            int len = jsonArray.length();
-            for (int i = 0; i < len; i++) {
-                list.add(jsonArray.get(i).toString());
-            }
+    @Action(value = "reservation-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String reservationDelete() {
+        try {
+            JSONObject jsonObject = new JSONObject(dataFrom);
+            Long index = Long.parseLong(jsonObject.getString("index"));
+
+            ReservationDAO reservationDAO = new ReservationDAOImpl();
+            reservationDAO.deleteByID(index);
+            data = setMsg(SUCCESS);
+            return SUCCESS;
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
         }
-        return list;
+
     }
 
 

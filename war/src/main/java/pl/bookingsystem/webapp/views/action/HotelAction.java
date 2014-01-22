@@ -83,8 +83,8 @@ public class HotelAction extends ActionSupport implements SessionAware {
     })
     public String getHotelsForClient() {
         try {
-            HotelDAO hotelManager = new HotelDAOImpl();
-            List<Hotel> hotels = hotelManager.selectAllWithAddress();
+            HotelDAO hotelDAO = new HotelDAOImpl();
+            List<Hotel> hotels = hotelDAO.selectAllWithAddress();
             int size = hotels.size();
             data = new String[size][];
             for (int j = 0; j < hotels.size(); j++) {
@@ -172,12 +172,47 @@ public class HotelAction extends ActionSupport implements SessionAware {
                 List<Hotel> hotels = (List<Hotel>) session.get("hotels");
                 hotels.add(hotel);
                 session.put("hotels", hotels);
-                HotelDAO hotelManager = new HotelDAOImpl();
-                hotelManager.save(hotel);
+                HotelDAO hotelDAO = new HotelDAOImpl();
+                hotelDAO.create(hotel);
                 data = setMsg(SUCCESS);
                 return SUCCESS;
             } else {
                 data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "hotel-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String hotelDelete() {
+        try {
+            JSONObject jsonObject = new JSONObject(dataFrom);
+            Long index = Long.parseLong(jsonObject.getString("index"));
+
+            HotelDAO hotelDAO = new HotelDAOImpl();
+            Hotel hotel = hotelDAO.selectByID(index);
+
+            Hotel currentHotel = (Hotel) session.get("hotel");
+
+            if (!hotel.equals(currentHotel)) {
+                hotelDAO.deleteByID(index);
+
+                List<Hotel> hotels = (List<Hotel>) session.get("hotels");
+                hotels.remove(hotel);
+                session.put("hotels", hotels);
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("CURRENT_HOTEL");
                 return ERROR;
             }
 
@@ -195,8 +230,8 @@ public class HotelAction extends ActionSupport implements SessionAware {
         Boolean isOwner = (Boolean) session.get("isOwner");
 
         if (isAdmin) {
-            UserDAO userManager = new UserDAOImpl();
-            user = userManager.selectByID(User.class, ownerId);
+            UserDAO userDAO = new UserDAOImpl();
+            user = userDAO.selectByID(User.class, ownerId);
         } else if (isOwner) {
             user = (User) session.get("user");
         }

@@ -3,7 +3,9 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "reservation")
@@ -38,15 +40,15 @@ public class Reservation implements Serializable {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = true)
     private Status status;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "room_reservation",
             joinColumns = {@JoinColumn(name = "reservation_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "room_id")})
-    private Set<Room> rooms = new LinkedHashSet<Room>();
+    private List<Room> rooms = new LinkedList<Room>();
 
     @Column(name = "price")
     private Double price;
@@ -147,11 +149,11 @@ public class Reservation implements Serializable {
         this.status = status;
     }
 
-    public Set<Room> getRooms() {
+    public List<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(Set<Room> rooms) {
+    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 

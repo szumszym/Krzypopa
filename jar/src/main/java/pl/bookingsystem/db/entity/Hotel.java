@@ -3,8 +3,8 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Entity
@@ -32,28 +32,20 @@ public class Hotel implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "hotel_client", joinColumns = {
-            @JoinColumn(name = "hotel_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "client_id",
-                    nullable = false, updatable = false)})
-    private Set<Client> clients;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "hotels")
+    private List<Client> clients = new LinkedList<Client>();
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "hotel_user", joinColumns = {
-            @JoinColumn(name = "hotel_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "user_id",
-                    nullable = false, updatable = false)})
-    private Set<User> users = new LinkedHashSet<User>();
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "hotels")
+    private List<User> users = new LinkedList<User>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", cascade = CascadeType.ALL)
-    private Set<Room> rooms = new LinkedHashSet<Room>();
+    private List<Room> rooms = new LinkedList<Room>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", cascade = CascadeType.ALL)
-    private Set<Addition> additions = new LinkedHashSet<Addition>();
+    private List<Addition> additions = new LinkedList<Addition>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel", cascade = CascadeType.ALL)
-    private Set<Status> statuses = new LinkedHashSet<Status>();
+    private List<Status> statuses = new LinkedList<Status>();
 
 
     public Hotel(String name, String description, String phone_number, String email, Address address) {
@@ -64,7 +56,7 @@ public class Hotel implements Serializable {
         this.address = address;
     }
 
-    public Hotel(String name, String description, String phone_number, String email, Address address, Set<User> users) {
+    public Hotel(String name, String description, String phone_number, String email, Address address, List<User> users) {
         this.name = name;
         this.description = description;
         this.phone_number = phone_number;
@@ -83,7 +75,7 @@ public class Hotel implements Serializable {
     }
 
 
-    public Hotel(String name, String phone_number, String email, Address address, Set<Client> clients, Set<User> users) {
+    public Hotel(String name, String phone_number, String email, Address address, List<Client> clients, List<User> users) {
         this.name = name;
         this.phone_number = phone_number;
         this.email = email;
@@ -92,7 +84,7 @@ public class Hotel implements Serializable {
         this.users = users;
     }
 
-    public Hotel(String name, String description, String phone_number, String email, Address address, Set<Client> clients, Set<User> users) {
+    public Hotel(String name, String description, String phone_number, String email, Address address, List<Client> clients, List<User> users) {
         this.name = name;
         this.description = description;
         this.phone_number = phone_number;
@@ -105,7 +97,7 @@ public class Hotel implements Serializable {
     public Hotel() {
     }
 
-    public Hotel(String name, String phone_number, String email, Address address, Set<Client> clients, Set<User> users, Set<Room> rooms) {
+    public Hotel(String name, String phone_number, String email, Address address, List<Client> clients, List<User> users, List<Room> rooms) {
         this.name = name;
         this.phone_number = phone_number;
         this.email = email;
@@ -164,43 +156,43 @@ public class Hotel implements Serializable {
         this.address = address;
     }
 
-    public Set<Client> getClients() {
+    public List<Client> getClients() {
         return clients;
     }
 
-    public void setClients(Set<Client> clients) {
+    public void setClients(List<Client> clients) {
         this.clients = clients;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
-    public Set<Room> getRooms() {
+    public List<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(Set<Room> rooms) {
+    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 
-    public Set<Addition> getAdditions() {
+    public List<Addition> getAdditions() {
         return additions;
     }
 
-    public void setAdditions(Set<Addition> additions) {
+    public void setAdditions(List<Addition> additions) {
         this.additions = additions;
     }
 
-    public Set<Status> getStatuses() {
+    public List<Status> getStatuses() {
         return statuses;
     }
 
-    public void setStatuses(Set<Status> statuses) {
+    public void setStatuses(List<Status> statuses) {
         this.statuses = statuses;
     }
 }

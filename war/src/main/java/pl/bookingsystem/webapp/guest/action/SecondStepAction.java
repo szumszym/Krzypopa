@@ -6,21 +6,31 @@ package pl.bookingsystem.webapp.guest.action;
  */
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pl.bookingsystem.db.dao.*;
-import pl.bookingsystem.db.dao.impl.*;
-import pl.bookingsystem.db.entity.*;
+import pl.bookingsystem.db.dao.ReservationDAO;
+import pl.bookingsystem.db.dao.RoomDAO;
+import pl.bookingsystem.db.dao.StatusDAO;
+import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
+import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
+import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
+import pl.bookingsystem.db.entity.Addition;
+import pl.bookingsystem.db.entity.Reservation;
+import pl.bookingsystem.db.entity.Room;
+import pl.bookingsystem.db.entity.Status;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import static pl.bookingsystem.webapp.action.Utils.daysBetween;
-import static pl.bookingsystem.webapp.action.Utils.isOverlapping;
-import static pl.bookingsystem.webapp.action.Utils.setMsg;
+import static pl.bookingsystem.webapp.action.Utils.*;
 
 @ParentPackage("json-default")
 @Namespace("")
@@ -56,15 +66,14 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
         Date date_to = sdf.parse(jsonObject.getString("date_to"));
 //ROOMS
         JSONArray jsonRoomIdsArray = (JSONArray) jsonObject.get("room_ids");
-        List<String> room_ids = convertJSONArrayToArrayList(jsonRoomIdsArray);
-        RoomDAO roomManager = new RoomDAOImpl();
-        List<Room> rooms = roomManager.selectByIDS(Room.class, room_ids);
+        List<Long> room_ids = convertJSONArrayToArrayList(jsonRoomIdsArray);
+        RoomDAO roomDAO = new RoomDAOImpl();
+        List<Room> rooms = roomDAO.selectByIDs(Room.class, room_ids);
 
         //CHECK IF TERM IS AVADAIBLE
-        ReservationDAO reservationManager = new ReservationDAOImpl();
+        ReservationDAO reservationDAO = new ReservationDAOImpl();
         for (Room room : rooms) {
-            Hotel hotel = room.getHotel();
-            List<Reservation> reservations = reservationManager.getAllReservationsFrom(hotel, room);
+            List<Reservation> reservations = reservationDAO.getAllReservationsFrom(room);
             for (Reservation res : reservations) {
                 Date dateFrom2 = res.getDate_from();
                 Date dateTo2 = res.getDate_to();
@@ -79,13 +88,13 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
         }
 
 //SATUS
-        StatusDAO statusManager = new StatusDAOImpl();
-        Status status = statusManager.selectByID(Status.class, 1L);
+        StatusDAO statusDAO = new StatusDAOImpl();
+        Status status = statusDAO.selectByID(Status.class, 1L);
 
 //PRICE
         Double price = 0.0;
         for (Room room : rooms) {
-            Set<Addition> additions = room.getAdditions();
+            List<Addition> additions = room.getAdditions();
             for (Addition add : additions) {
                 price += add.getPrice();
             }
@@ -121,17 +130,6 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
             return ERROR;
         }
 
-    }
-
-    private List<String> convertJSONArrayToArrayList(JSONArray jsonArray) {
-        List<String> list = new ArrayList<String>();
-        if (jsonArray != null) {
-            int len = jsonArray.length();
-            for (int i = 0; i < len; i++) {
-                list.add(jsonArray.get(i).toString());
-            }
-        }
-        return list;
     }
 
     @Override

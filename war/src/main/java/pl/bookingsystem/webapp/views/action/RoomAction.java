@@ -11,16 +11,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.AdditionDAO;
 import pl.bookingsystem.db.dao.HotelDAO;
+import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.dao.RoomDAO;
 import pl.bookingsystem.db.dao.impl.AdditionDAOImpl;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
+import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
-import pl.bookingsystem.db.entity.Addition;
-import pl.bookingsystem.db.entity.Hotel;
-import pl.bookingsystem.db.entity.Room;
-import pl.bookingsystem.db.entity.User;
+import pl.bookingsystem.db.entity.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
@@ -60,15 +62,15 @@ public class RoomAction extends ActionSupport implements SessionAware {
     public String dataFromDB() {
         try {
             Hotel hotel = (Hotel) session.get("hotel");
-            HotelDAO hotelManager = new HotelDAOImpl();
+            RoomDAO roomDAO = new RoomDAOImpl();
             Long hotelId;
             if(hotel!=null){
                   hotelId = hotel.getId();
             } else {
                 JSONObject jsonObject = new JSONObject(dataFrom);
-                hotelId = jsonObject.getLong("index");
+                hotelId = Long.valueOf(jsonObject.getString("index"));
             }
-            List<Room> rooms = hotelManager.getRooms(hotelId);
+            List<Room> rooms = roomDAO.getRooms(hotelId);
             int size = rooms.size();
             data = new String[size][];
             for (int j = 0; j < rooms.size(); j++) {
@@ -126,20 +128,20 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
 //ADDITIONS
 
-                Set<Addition> additionSet = new HashSet<Addition>();
+                List<Addition> additionSet = new LinkedList<Addition>();
                 if (!jsonObject.isNull("addition")) {
                     JSONArray additionIds = (JSONArray) jsonObject.get("addition");
-                    List<String> additionsIdsList = new ArrayList<String>();
+                    List<Long> additionsIdsList = new ArrayList<Long>();
                     List<Addition> additionList;
                     for (int i = 0; i < additionIds.length(); i++) {
-                        additionsIdsList.add(additionIds.getString(i));
+                        additionsIdsList.add(additionIds.getLong(i));
                         log.info("Name: " + additionsIdsList.get(i));
                     }
-                    AdditionDAO additionManager = new AdditionDAOImpl();
-                    additionList = additionManager.getAdditionsBy(additionsIdsList, "id");
-                    for (String id : additionsIdsList) {
-                        additionList.add(additionManager.selectByID(Addition.class, Long.parseLong(id)));
-                    }
+                    AdditionDAO additionDAO = new AdditionDAOImpl();
+                    additionList = additionDAO.selectByIDs(Addition.class, additionsIdsList);
+                   /* for (Long id : additionsIdsList) {
+                        additionList.add(additionDAO.selectByID(Addition.class, id));
+                    }*/
 
                     if (!additionList.isEmpty()) {
                         additionSet.addAll(additionList);
@@ -151,7 +153,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
 
 //CREATE NEW ROOM AND SAVE
-                RoomDAO roomManager = new RoomDAOImpl();
+                RoomDAO roomDAO = new RoomDAOImpl();
                 Room room = new Room(roomno, room_name, bed, capacity, hotel, additionSet, price);
                 room.setDescription(description);
 
@@ -163,12 +165,12 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 }
                 room.setPublished(published);
 
-                roomManager.save(room);
+                roomDAO.create(room);
 
 //UPDATE SESSION
                 if (hotel != null) {
-                    HotelDAO hotelManager = new HotelDAOImpl();
-                    Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
+                    HotelDAO hotelDAO = new HotelDAOImpl();
+                    Hotel hotel2 = hotelDAO.selectByID(hotel.getId());
                     session.put("hotel", hotel2);
                 }
 
@@ -195,16 +197,20 @@ public class RoomAction extends ActionSupport implements SessionAware {
             JSONObject jsonObject = new JSONObject(dataFrom);
             Long index = Long.parseLong(jsonObject.getString("index"));
 
-            RoomDAO roomManager = new RoomDAOImpl();
-            /*Room room = roomManager.selectByID(Room.class, index);
-            if (room == null) {
-                data = new String[][]{new String[]{"Room with index:" + index + " not found in DB!"}};
-                return ERROR;
-            }*/
-            roomManager.deleteByID(index);
-            data = setMsg(SUCCESS);
-            return SUCCESS;
+            RoomDAO roomDAO = new RoomDAOImpl();
+            Room room = roomDAO.selectByID(Room.class, index);
 
+            ReservationDAO reservationDAO = new ReservationDAOImpl();
+            List<Reservation> reservations = reservationDAO.getAllReservationsFrom(room);
+            int size = reservations != null ? reservations.size() : 0;
+            if(size>0){
+                data = setMsg("HAS_RESERVATIONS");
+                return ERROR;
+            } else {
+                roomDAO.deleteByID(index);
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            }
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;

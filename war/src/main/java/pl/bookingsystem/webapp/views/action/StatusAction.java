@@ -8,12 +8,14 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.HotelDAO;
+import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.dao.StatusDAO;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
+import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
 import pl.bookingsystem.db.entity.Hotel;
+import pl.bookingsystem.db.entity.Reservation;
 import pl.bookingsystem.db.entity.Status;
-import pl.bookingsystem.db.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -51,8 +53,8 @@ public class StatusAction extends ActionSupport implements SessionAware{
             if (isUser) {
 
                 Hotel hotel = (Hotel) session.get("hotel");
-                HotelDAO hotelManager = new HotelDAOImpl();
-                List<Status> statuses = hotelManager.getStatuses(hotel.getId());
+                StatusDAO statusDAO = new StatusDAOImpl();
+                List<Status> statuses = statusDAO.getStatuses(hotel.getId());
 
                 int size = statuses.size();
                 data = new String[size][];
@@ -90,7 +92,7 @@ public class StatusAction extends ActionSupport implements SessionAware{
             Boolean isUser = (Boolean) session.get("isUser");
             if (isUser) {
 
-                StatusDAO statusManager = new StatusDAOImpl();
+                StatusDAO statusDAO = new StatusDAOImpl();
                 JSONObject jsonObject = new JSONObject(dataFrom);
 
                 String type = jsonObject.getString("type");
@@ -105,13 +107,13 @@ public class StatusAction extends ActionSupport implements SessionAware{
 
 //CREATE NEW STATUS
                 Status status = new Status(type, description, color, hotel);
-                statusManager.save(status);
+                statusDAO.create(status);
 
 
 //UPDATE SESSION
                 if (hotel != null) {
-                    HotelDAO hotelManager = new HotelDAOImpl();
-                    Hotel hotel2 = hotelManager.selectByID(Hotel.class, hotel.getId());
+                    HotelDAO hotelDAO = new HotelDAOImpl();
+                    Hotel hotel2 = hotelDAO.selectByID(Hotel.class, hotel.getId());
                     session.put("hotel", hotel2);
                 }
                 data = setMsg(SUCCESS);
@@ -128,6 +130,37 @@ public class StatusAction extends ActionSupport implements SessionAware{
 
     }
 
+
+    @Action(value = "status-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String statusDelete() {
+        try {
+            JSONObject jsonObject = new JSONObject(dataFrom);
+            Long index = Long.parseLong(jsonObject.getString("index"));
+
+            StatusDAO statusDAO = new StatusDAOImpl();
+            Status status = statusDAO.selectByID(Status.class, index);
+
+            ReservationDAO reservationDAO = new ReservationDAOImpl();
+            List<Reservation> reservations = reservationDAO.getAllReservationsWhichHas(status);
+
+            int size = reservations != null ? reservations.size() : 0;
+            if(size>0){
+                data = setMsg("HAS_RESERVATIONS");
+                return ERROR;
+            } else {
+                statusDAO.delete(status);
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            }
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
     @Override
     public void setSession(Map<String, Object> stringObjectMap) {
         this.session = stringObjectMap;

@@ -17,7 +17,6 @@ import pl.bookingsystem.db.dao.RoomDAO;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
-import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Reservation;
 import pl.bookingsystem.db.entity.Room;
 
@@ -61,11 +60,11 @@ public class FirstStepAction extends ActionSupport implements SessionAware {
         Date date_to = sdf.parse(dateTo);
 
 
-        HotelDAO hotelManager = new HotelDAOImpl();
-        RoomDAO roomManager = new RoomDAOImpl();
-        List rooms = roomManager.getRoomsFromCity(city);
+        HotelDAO hotelDAO = new HotelDAOImpl();
+        RoomDAO roomDAO = new RoomDAOImpl();
+        List rooms = roomDAO.getRoomsFromCity(city);
 
-        ReservationDAO reservationManager = new ReservationDAOImpl();
+        ReservationDAO reservationDAO = new ReservationDAOImpl();
 
         List<String[]> arrayList = new ArrayList<String[]>();
         int size = rooms.size();
@@ -75,8 +74,7 @@ public class FirstStepAction extends ActionSupport implements SessionAware {
             Long hotelId = (Long) roomObj[1];
             boolean isAvadaible = true;
 
-            Hotel hotel = hotelManager.selectByID(hotelId);
-            List<Reservation> reservations = reservationManager.getAllReservationsFrom(hotel, room);
+            List<Reservation> reservations = reservationDAO.getAllReservationsFrom(room);
             for (Reservation res : reservations) {
                 Date dateFrom2 = res.getDate_from();
                 Date dateTo2 = res.getDate_to();

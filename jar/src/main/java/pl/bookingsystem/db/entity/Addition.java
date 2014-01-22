@@ -2,8 +2,8 @@ package pl.bookingsystem.db.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Entity
@@ -28,12 +28,12 @@ public class Addition implements Serializable {
     @Column(name = "published")
     private Boolean published;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "additions")
-    private Set<Room> rooms = new HashSet<Room>();
+    private List<Room> rooms = new LinkedList<Room>();
 
     public Addition(String name, String description, Hotel hotel) {
         this.name = name;
@@ -46,7 +46,7 @@ public class Addition implements Serializable {
         this.description = description;
     }
 
-    public Addition(String name, String description, Set<Room> room) {
+    public Addition(String name, String description, List<Room> room) {
         this.name = name;
         this.description = description;
         this.rooms = room;
@@ -75,9 +75,9 @@ public class Addition implements Serializable {
         this.description = description;
     }
 
-    public Set<Room> getRooms() { return rooms; }
+    public List<Room> getRooms() { return rooms; }
 
-    public void setRooms(Set<Room> rooms) { this.rooms = rooms; }
+    public void setRooms(List<Room> rooms) { this.rooms = rooms; }
 
     public Double getPrice() {
         return price;

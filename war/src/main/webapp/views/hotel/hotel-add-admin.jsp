@@ -381,3 +381,6 @@
 </div>
 </div>
 <script src="./assets/js/hotel-add.js"></script>
+<script>
+    $(".chzn-select").chosen();
+</script>

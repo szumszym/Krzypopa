@@ -47,6 +47,18 @@
             </div>
 
             <div class="form-group">
+                <label class="control-label col-lg-4"></label>
+
+                <div class="col-lg-8">
+                    <div class="checkbox">
+                        <label>
+                            <input name="published" class="uniform" type="checkbox" checked>Published
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="control-label col-lg-4">Add Status</label>
 
                 <div class="col-lg-8">

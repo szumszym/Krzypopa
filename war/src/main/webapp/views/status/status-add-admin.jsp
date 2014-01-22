@@ -77,4 +77,5 @@
 <script src="./assets/js/status.js"></script>
 <script>
     $(".chzn-select").chosen();
+    checkbox('[name="published"]');
 </script>

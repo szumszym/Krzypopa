@@ -78,3 +78,6 @@
     </div>
 </div>
 <script src="./assets/js/additions.js"></script>
+<script>
+    checkbox('[name="published"]');
+</script>

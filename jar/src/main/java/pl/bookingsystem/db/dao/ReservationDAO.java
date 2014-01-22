@@ -8,14 +8,14 @@ import java.util.List;
  * Author: rastek
  * Date: 11.12.13 @ 21:13
  */
-public interface ReservationDAO extends GenericDAO<Reservation, Long> {
+public interface ReservationDAO extends BaseDAO<Reservation, Long> {
     List<Reservation> getClientReservations(Client client);
-
-    List<Reservation> getUserReservations(User user);
 
     List<Reservation> getHotelReservations(Hotel hotel);
 
     List<Reservation> getAllReservations();
 
-    List<Reservation> getAllReservationsFrom(Hotel hotel, Room room);
+    List<Reservation> getAllReservationsFrom(Room room);
+
+    List<Reservation> getAllReservationsWhichHas(Status status);
 }

@@ -368,3 +368,6 @@
 </div>
 </div>
 <script src="./assets/js/hotel-add-newowner.js"></script>
+<script>
+    $(".chzn-select").chosen();
+</script>

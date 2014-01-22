@@ -48,10 +48,10 @@ public class SelectHotelAction extends ActionSupport implements SessionAware {
         try {
             Hotel currentHotel = (Hotel) session.get("hotel");
             JSONObject jsonObject = new JSONObject(dataFrom);
-            String index = jsonObject.getString("index");
-            if (!index.equals(currentHotel.getId().toString())) {
-                HotelDAO hotelManager = new HotelDAOImpl();
-                Hotel hotel = hotelManager.selectByID(index);
+            Long index = Long.valueOf(jsonObject.getString("index"));
+            if (!index.equals(currentHotel.getId())) {
+                HotelDAO hotelDAO = new HotelDAOImpl();
+                Hotel hotel = hotelDAO.selectByID(index);
                 session.put("hotel", hotel);
                 data = setMsg(SUCCESS);
                 return SUCCESS;

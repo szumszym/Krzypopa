@@ -1,10 +1,9 @@
 package pl.bookingsystem.db.dao.impl;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
+import com.googlecode.genericdao.search.Filter;
+import com.googlecode.genericdao.search.Search;
 import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.entity.*;
-import pl.bookingsystem.db.utils.HibernateUtil;
 
 import java.util.List;
 
@@ -12,74 +11,76 @@ import java.util.List;
  * Author: rastek
  * Date: 22.12.13 @ 14:02
  */
-public class ReservationDAOImpl extends GenericDAOImpl<Reservation, Long> implements ReservationDAO {
+public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implements ReservationDAO {
     @Override
     public List<Reservation> getClientReservations(Client client) {
-        String sql = "select r, r.client.email, room.no_room, room.hotel.id  FROM Reservation as r join r.rooms as room where :client in (r.client)";
-
-        Session session = HibernateUtil.start(true);
-        Query query = session.createQuery(sql);
-        query.setParameter("client", client);
-
-        List<Reservation> reservations = query.list();
-        HibernateUtil.stop(false);
-
-        return reservations;
-    }
-
-    @Override
-    public List<Reservation> getUserReservations(User user) {
-        String sql = "select r, r.client.email, rooms.no_room, hotel.id FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel where hotel.id in (select h.id from Hotel as h join h.users as u where u = :user)";
-
-        Session session = HibernateUtil.start(true);
-        Query query = session.createQuery(sql);
-        query.setParameter("user", user);
-
-        List<Reservation> reservations = query.list();
-        HibernateUtil.stop(false);
-
-        return reservations;
+        List<Reservation> t;
+        try{
+            start();
+            t = search(new Search(Reservation.class)
+                    .addFetches("rooms", "rooms.hotel", "client")
+                    .addFilterEqual("client", client));
+        } finally {
+            stop();
+        }
+        return t;
     }
 
     @Override
     public List<Reservation> getHotelReservations(Hotel hotel) {
-        String sql = "select r, r.client.email, rooms.no_room, hotel.id FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel where hotel= :hotel";
-
-        Session session = HibernateUtil.start(true);
-        Query query = session.createQuery(sql);
-        query.setParameter("hotel", hotel);
-
-        List<Reservation> reservations = query.list();
-        HibernateUtil.stop(false);
-
-        return reservations;
+        List<Reservation> t;
+        try{
+            start();
+            t =search(new Search(Reservation.class)
+                    .addFilterEqual("rooms.hotel", hotel)
+                    .addFetch("rooms")
+                    .addFetch("client")
+                    .setDistinct(true));
+        } finally {
+            stop();
+        }
+        return t;
     }
 
     @Override
     public List<Reservation> getAllReservations() {
-        String sql = "select r, r.client.email, rooms.no_room, hotel.id FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel";
-
-        Session session = HibernateUtil.start(true);
-        Query query = session.createQuery(sql);
-
-        List<Reservation> reservations = query.list();
-        HibernateUtil.stop(false);
-
-        return reservations;
+        List<Reservation> t;
+        try{
+            start();
+            t =search(new Search(Reservation.class)
+                    .addFetches("rooms", "rooms.hotel", "client")
+                    .setDistinct(true));
+        } finally {
+            stop();
+        }
+        return t;
     }
 
     @Override
-    public List<Reservation> getAllReservationsFrom(Hotel hotel, Room room) {
-        String sql = "select r FROM Reservation as r join r.rooms as rooms join rooms.hotel as hotel where hotel=:hotel and rooms=:room";
+    public List<Reservation> getAllReservationsFrom(Room room) {
+        List<Reservation> t;
+        try{
+            start();
+            t = search(new Search(Reservation.class)
+                    .addFilterSome("rooms", Filter.in(Filter.ROOT_ENTITY, room))
+                    .setDistinct(true));
+        } finally {
+            stop();
+        }
+        return t;
+    }
 
-        Session session = HibernateUtil.start(true);
-        Query query = session.createQuery(sql);
-        query.setParameter("hotel", hotel);
-        query.setParameter("room", room);
-
-        List<Reservation> reservations = query.list();
-        HibernateUtil.stop(false);
-
-        return reservations;
+    @Override
+    public List<Reservation> getAllReservationsWhichHas(Status status) {
+        List<Reservation> t;
+        try{
+            start();
+            t = search(new Search(Reservation.class)
+                    .addFilterSome("status", Filter.in(Filter.ROOT_ENTITY, status))
+                    .setDistinct(true));
+        } finally {
+            stop();
+        }
+        return t;
     }
 }

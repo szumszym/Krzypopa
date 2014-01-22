@@ -161,8 +161,7 @@ INSERT INTO `hotel` (`id`, `name`, `description`, `phone_number`, `email`, `addr
 
 CREATE TABLE IF NOT EXISTS `hotel_client` (
   `client_id` BIGINT(20) NOT NULL,
-  `hotel_id`  BIGINT(20) NOT NULL,
-  PRIMARY KEY (`client_id`, `hotel_id`)
+  `hotel_id`  BIGINT(20) NOT NULL
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8;
@@ -183,8 +182,7 @@ INSERT INTO `hotel_client` (`client_id`, `hotel_id`) VALUES
 
 CREATE TABLE IF NOT EXISTS `hotel_user` (
   `hotel_id` BIGINT(20) NOT NULL,
-  `user_id`  BIGINT(20) NOT NULL,
-  PRIMARY KEY (`hotel_id`, `user_id`)
+  `user_id`  BIGINT(20) NOT NULL
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8;
@@ -296,8 +294,7 @@ INSERT INTO `room_addition` (`room_id`, `addition_id`) VALUES
 
 CREATE TABLE IF NOT EXISTS `room_reservation` (
   `room_id`        BIGINT(20) NOT NULL,
-  `reservation_id` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`room_id`, `reservation_id`)
+  `reservation_id` BIGINT(20) NOT NULL
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8;

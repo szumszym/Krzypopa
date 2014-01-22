@@ -9,10 +9,13 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ClientDAO;
+import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
+import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Hotel;
+import pl.bookingsystem.db.entity.User;
 
 import java.util.Date;
 import java.util.List;
@@ -52,12 +55,12 @@ public class ClientAction extends ActionSupport implements SessionAware{
                 Boolean isEmployee = (Boolean) session.get("isEmployee");
 
                 List<Client> clients = null;
-                ClientDAO clientManager = new ClientDAOImpl();
+                ClientDAO clientDAO = new ClientDAOImpl();
                 if (isAdmin) {
-                    clients = clientManager.selectAll(Client.class);
+                    clients = clientDAO.selectAll(Client.class);
                 } else if (isOwner || isEmployee) {
                     Hotel hotel = (Hotel) session.get("hotel");
-                    clients = clientManager.getClientsFromHotel(hotel.getId());
+                    clients = clientDAO.getClientsFromHotel(hotel.getId());
                 }
 
                 int size = clients != null ? clients.size() : 0;
@@ -107,12 +110,12 @@ public class ClientAction extends ActionSupport implements SessionAware{
                 Boolean isEmployee = (Boolean) session.get("isEmployee");
 
                 List<Client> clients = null;
-                ClientDAO clientManager = new ClientDAOImpl();
+                ClientDAO clientDAO = new ClientDAOImpl();
                 if (isAdmin) {
-                    clients = clientManager.selectAll(Client.class);
+                    clients = clientDAO.selectAll(Client.class);
                 } else if (isOwner || isEmployee) {
                     Hotel hotel = (Hotel) session.get("hotel");
-                    clients = clientManager.getClientsFromHotel(hotel.getId());
+                    clients = clientDAO.getClientsFromHotel(hotel.getId());
                 }
                 int size = clients.size();
                 data = new String[size][];
@@ -176,8 +179,17 @@ public class ClientAction extends ActionSupport implements SessionAware{
                     client.setNip(Long.parseLong(nip));
                 }
 
-                ClientDAO clientManager = new ClientDAOImpl();
-                clientManager.save(client);
+//SAVE NEW CLIENT
+                ClientDAO clientDAO = new ClientDAOImpl();
+                clientDAO.create(client);
+
+//UPDATE HOTEL
+                Hotel hotel = (Hotel) session.get("hotel");
+                addClientToHotel(client, hotel);
+
+//UPDATE SESSION
+                updateSession(hotel);
+
                 data = setMsg(SUCCESS);
                 return SUCCESS;
             } else {
@@ -193,6 +205,53 @@ public class ClientAction extends ActionSupport implements SessionAware{
 
     }
 
+    @Action(value = "client-delete", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String clientDelete() {
+        try {
+            JSONObject jsonObject = new JSONObject(dataFrom);
+            Long index = Long.parseLong(jsonObject.getString("index"));
+
+            ClientDAO clientDAO = new ClientDAOImpl();
+            clientDAO.deleteByID(index);
+            data = setMsg(SUCCESS);
+            return SUCCESS;
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    private static void addClientToHotel(Client client, Hotel hotel) {
+        HotelDAO hotelDAO = new HotelDAOImpl();
+        ClientDAO clientDAO = new ClientDAOImpl();
+        Client _client = clientDAO.selectWith(client.getId(), "hotels");
+        Hotel _hotel = hotelDAO.selectWith(hotel.getId(), "clients");
+
+        _hotel.getClients().add(_client);
+        _client.getHotels().add(_hotel);
+
+        hotelDAO.update(_hotel);
+    }
+
+    private void updateSession(Hotel hotel) {
+        HotelDAO hotelDAO = new HotelDAOImpl();
+        Hotel sessionHotel = hotelDAO.selectByID(hotel.getId());
+        session.put("hotel", sessionHotel);
+        User currentUser = (User) session.get("user");
+        Boolean isAdmin = (Boolean) session.get("isAdmin");
+        List<Hotel> sessionHotels;
+        if(isAdmin){
+            sessionHotels = hotelDAO.selectAllHotels();
+        } else {
+            sessionHotels = hotelDAO.selectAllHotelsOfUser(currentUser.getId());
+        }
+        session.put("hotels", sessionHotels);
+    }
 
     @Override
     public void setSession(Map<String, Object> stringObjectMap) {
