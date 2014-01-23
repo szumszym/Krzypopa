@@ -356,9 +356,7 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="submit" name="submit"
-                   onclick="ajaxSubmitFirstHotel('hotel-add-newowner', 'server-messages', 'modal-info-redirect'); return false;"
-                   class="btn btn-primary" data-original-title="" title="" value="Add"/>
+            <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title="" value="Add"/>
         </div>
     </div>
 </div>
@@ -367,7 +365,7 @@
 
 </div>
 </div>
-<script src="./assets/js/hotel-add-newowner.js"></script>
+<script src="./assets/js/app/views/hotel/add-newowner.js"></script>
 <script>
     $(".chzn-select").chosen();
 </script>

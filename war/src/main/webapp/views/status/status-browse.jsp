@@ -25,4 +25,4 @@
     </div>
 </div>
 
-<script src="./assets/js/status.js"></script>
+<script src="./assets/js/app/views/status/browse.js"></script>

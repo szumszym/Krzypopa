@@ -32,209 +32,210 @@
 </head>
 <body>
 <div id="wrap">
-    <div id="top">
+<div id="top">
 
-        <!-- .navbar -->
-        <nav id="top-menu" class="navbar navbar-inverse navbar-static-top">
+    <!-- .navbar -->
+    <nav id="top-menu" class="navbar navbar-inverse navbar-static-top">
 
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <header class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="#" class="navbar-brand">
-                    <img src="./assets/img/logo.png" alt="">
-                </a>
-            </header>
-            <div class="topnav">
-                <div class="btn-toolbar">
-                    <div class="btn-group">
-                        <div class="btn" style="color: white">Signed in as: <b><s:property value="login"/></b></div>
-                    </div>
-                    <div class="btn-group">
-                        <a data-placement="bottom" data-original-title="Show / Hide Sidebar" data-toggle="tooltip"
-                           class="btn btn-success btn-sm" id="changeSidebarPos">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                    </div>
-                    <div class="btn-group">
-                        <a data-url="./views/account_settings/settings.jsp" data-placement="#context"
-                           data-original-title="Settings" class="btn btn-warning btn-sm" id="settings">
-                            <i class="fa fa-cog"></i>
-                        </a>
-                    </div>
-                    <div class="btn-group">
-                        <a data-toggle="modal" data-original-title="Help" data-placement="bottom"
-                           class="btn btn-default btn-sm" href="#helpModal">
-                            <i class="fa fa-question"></i>
-                        </a>
-                    </div>
-                    <div class="btn-group">
-                        <s:a action="logout" namespace="" cssClass="btn btn-metis-1 btn-sm">
-                            <i class="fa fa-power-off"></i>
-                        </s:a>
-                    </div>
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <header class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand">
+                <img src="./assets/img/logo.png" alt="">
+            </a>
+        </header>
+        <div class="topnav">
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <div class="btn" style="color: white">Signed in as: <b><s:property value="login"/></b></div>
+                </div>
+                <div class="btn-group">
+                    <a data-placement="bottom" data-original-title="Show / Hide Sidebar" data-toggle="tooltip"
+                       class="btn btn-success btn-sm" id="changeSidebarPos">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a data-url="./views/account_settings/settings.jsp" data-placement="#context"
+                       data-original-title="Settings" class="btn btn-warning btn-sm" id="settings">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <a data-toggle="modal" data-original-title="Help" data-placement="bottom"
+                       class="btn btn-default btn-sm" href="#helpModal">
+                        <i class="fa fa-question"></i>
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <s:a action="logout" namespace="" cssClass="btn btn-metis-1 btn-sm">
+                        <i class="fa fa-power-off"></i>
+                    </s:a>
                 </div>
             </div>
-            <!-- /.topnav -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse">
+        </div>
+        <!-- /.topnav -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
 
-                <!-- .nav -->
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
-                            <i class="fa fa-tasks"></i>&nbsp;Reservations
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-url="./views/client/client-browse.jsp" data-placement="#context">
-                            <i class="fa fa-users"></i>&nbsp;Clients
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.nav -->
-            </div>
-        </nav>
-        <!-- /.navbar -->
+            <!-- .nav -->
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
+                        <i class="fa fa-tasks"></i>&nbsp;Reservations
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-url="./views/client/client-browse.jsp" data-placement="#context">
+                        <i class="fa fa-users"></i>&nbsp;Clients
+                    </a>
+                </li>
+            </ul>
+            <!-- /.nav -->
+        </div>
+    </nav>
+    <!-- /.navbar -->
 
-        <!-- header.head -->
-        <header class="head">
-            <div class="search-bar">
-                <a data-original-title="Show/Hide Menu" data-placement="bottom" data-tooltip="tooltip"
-                   class="accordion-toggle btn btn-primary btn-sm visible-xs" data-toggle="collapse" href="#menu"
-                   id="menu-toggle">
-                    <i class="fa fa-expand"></i>
-                </a>
+    <!-- header.head -->
+    <header class="head">
+        <div class="search-bar">
+            <a data-original-title="Show/Hide Menu" data-placement="bottom" data-tooltip="tooltip"
+               class="accordion-toggle btn btn-primary btn-sm visible-xs" data-toggle="collapse" href="#menu"
+               id="menu-toggle">
+                <i class="fa fa-expand"></i>
+            </a>
 
-                <form class="main-search">
-                    <div class="input-group">
-                        <input type="text" class="input-small form-control" placeholder="Live Search ...">
+            <form class="main-search">
+                <div class="input-group">
+                    <input type="text" class="input-small form-control" placeholder="Live Search ...">
                 <span class="input-group-btn">
                                     <button class="btn btn-primary btn-sm text-muted" type="button"><i
                                             class="fa fa-search"></i></button>
                                 </span>
-                    </div>
-                </form>
-            </div>
-
-            <!-- ."main-bar -->
-            <div class="main-bar">
-                <h3 class="col-lg-4">
-                    <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
-                <div class="menu-select-hotel col-lg-6" style="">
-                    <div class="form-horizontal" style="">
-                        <div class="form-group" style="margin:0;">
-                            <label class="control-label col-lg-5" id="selected-hotel-name-label">
-                                Your Hotel: </label>
-
-                            <div class="col-lg-7" style="padding:0">
-                                <div id="selected-hotel-name"><s:property value="hotelname"/></div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            <!-- /.main-bar -->
-        </header>
-
-        <!-- end header.head -->
-    </div>
-    <!-- /#top -->
-    <div id="left">
-
-        <!-- #menu -->
-        <ul id="menu" class="collapse">
-            <li class="nav-header">Menu</li>
-            <%--<li class="nav-divider"></li>--%>
-            <li class="">
-                <a href="#">
-                    <i class="fa fa-dashboard"></i>
-                    <span class="link-title">Dashboard</span>
-                </a>
-            </li>
-            <%--RESERVATIONS--%>
-            <li class="">
-                <a href="#">
-                    <i class="fa fa-tasks"></i>&nbsp;Reservations
-                    <span class="fa arrow"></span>
-                </a>
-                <ul>
-                    <li class="">
-                        <a href="#" data-url="./views/reservation/reservation-add.jsp" data-placement="#context">
-                            <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
-                    </li>
-                    <li class="">
-                        <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
-                            <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
-                    </li>
-                </ul>
-            </li>
-            <%--CLIENTS--%>
-            <li class="">
-                <a href="javascript:;">
-                    <i class="fa fa-users"></i>&nbsp;Clients
-                    <span class="fa arrow"></span>
-                </a>
-                <ul>
-                    <li class="">
-                        <a href="#" data-url="./views/client/client-add.jsp" data-placement="#context">
-                            <i class="fa fa fa-plus"></i>&nbsp;Add new</a>
-                    </li>
-                    <li class="">
-                        <a href="#" data-url="./views/client/client-browse.jsp" data-placement="#context">
-                            <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
-                    </li>
-                </ul>
-            </li>
-            <%--ROOMS--%>
-            <li>
-                <a href="#">
-                    <i class="fa fa-bitbucket"></i>&nbsp; Rooms
-                    <span class="fa arrow"></span></a>
-                <ul>
-                    <li class="">
-                        <a href="#" data-url="./views/room/room-add.jsp" data-placement="#context">
-                            <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
-                    </li>
-                   <li class="">
-                        <a href="#" data-url="./views/room/room-browse.jsp" data-placement="#context">
-                            <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
-                    </li>
-                </ul>
-            </li>
-            <%--ADDITIONS--%>
-            <li>
-                <a href="#">
-                    <i class="fa fa-foursquare"></i>&nbsp; Additions
-                    <span class="fa arrow"></span></a>
-                <ul>
-                    <li class="">
-                        <a href="#" data-url="./views/additions/additions-add.jsp" data-placement="#context">
-                            <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
-                    </li>
-                    <li class="">
-                        <a href="#" data-url="./views/additions/additions-browse.jsp" data-placement="#context">
-                            <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <!-- /#menu -->
-    </div>
-    <!-- /#left -->
-    <div id="content">
-        <div class="outer">
-            <div class="inner">
-                <div id=context data-default="./views/reservation/reservation-browse.jsp"></div>
-            </div>
+                </div>
+            </form>
         </div>
 
-        <!-- end .inner -->
+        <!-- ."main-bar -->
+        <div class="main-bar">
+            <h3 class="col-lg-4">
+                <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
+
+            <div class="menu-select-hotel col-lg-6" style="">
+                <div class="form-horizontal" style="">
+                    <div class="form-group" style="margin:0;">
+                        <label class="control-label col-lg-5" id="selected-hotel-name-label">
+                            Your Hotel: </label>
+
+                        <div class="col-lg-7" style="padding:0">
+                            <div id="selected-hotel-name"><s:property value="hotelname"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.main-bar -->
+    </header>
+
+    <!-- end header.head -->
+</div>
+<!-- /#top -->
+<div id="left">
+
+    <!-- #menu -->
+    <ul id="menu" class="collapse">
+        <li class="nav-header">Menu</li>
+        <%--<li class="nav-divider"></li>--%>
+        <li class="">
+            <a href="#">
+                <i class="fa fa-dashboard"></i>
+                <span class="link-title">Dashboard</span>
+            </a>
+        </li>
+        <%--RESERVATIONS--%>
+        <li class="">
+            <a href="#">
+                <i class="fa fa-tasks"></i>&nbsp;Reservations
+                <span class="fa arrow"></span>
+            </a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/reservation/reservation-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
+        </li>
+        <%--CLIENTS--%>
+        <li class="">
+            <a href="javascript:;">
+                <i class="fa fa-users"></i>&nbsp;Clients
+                <span class="fa arrow"></span>
+            </a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/client/client-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new</a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/client/client-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
+        </li>
+        <%--ROOMS--%>
+        <li>
+            <a href="#">
+                <i class="fa fa-bitbucket"></i>&nbsp; Rooms
+                <span class="fa arrow"></span></a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/room/room-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/room/room-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
+        </li>
+        <%--ADDITIONS--%>
+        <li>
+            <a href="#">
+                <i class="fa fa-foursquare"></i>&nbsp; Additions
+                <span class="fa arrow"></span></a>
+            <ul>
+                <li class="">
+                    <a href="#" data-url="./views/additions/additions-add.jsp" data-placement="#context">
+                        <i class="fa fa fa-plus"></i>&nbsp;Add new </a>
+                </li>
+                <li class="">
+                    <a href="#" data-url="./views/additions/additions-browse.jsp" data-placement="#context">
+                        <i class="fa fa-th-list"></i>&nbsp;Browse Existing</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!-- /#menu -->
+</div>
+<!-- /#left -->
+<div id="content">
+    <div class="outer">
+        <div class="inner">
+            <div id=context data-default="./views/reservation/reservation-browse.jsp"></div>
+        </div>
     </div>
 
-    <!-- end .outer -->
+    <!-- end .inner -->
+</div>
+
+<!-- end .outer -->
 </div>
 
 <!-- end #content -->
@@ -269,30 +270,34 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal --><!-- /#helpModal -->
+
 <script src="./assets/lib/jquery.min.js"></script>
 <script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="./assets/lib/chosen/chosen.jquery.js"></script>
 <script src="./assets/lib/jquery-validation-1.11.1/dist/jquery.validate.js"></script>
-<%--<script type="text/javascript" src="./assets/js/style-switcher.js"></script>--%>
-<%--<script src="./assets/lib/fullcalendar-1.6.2/fullcalendar/fullcalendar.min.js"></script>--%>
-<%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
-<%--<script src="./assets/lib/sparkline/jquery.sparkline.min.js"></script>--%>
-<%--<script src="./assets/lib/flot/jquery.flot.js"></script>--%>
-<%--<script src="./assets/lib/flot/jquery.flot.selection.js"></script>--%>
-<%--<script src="./assets/lib/flot/jquery.flot.resize.js"></script>--%>
 <script src="./assets/lib/datatables/jquery.dataTables.js"></script>
 <script src="./assets/lib/datatables/DT_bootstrap.js"></script>
 
-<script src="./assets/js/app/metisMenu.js"></script>
-<script src="./assets/js/main.js"></script>
-<script src="./assets/js/ajaxFunctions.js"></script>
-<%--<script src="./assets/js/app/formGeneral.js"></script>--%>
+<script src="./assets/js/app/namespace.js"></script>
 
-<%--<script src="./assets/lib/tablesorter/js/jquery.tablesorter.min.js"></script>--%>
-<%--<script>
-    $(function () {
-        dashboard();
-    });
-</script>--%>
+<script src="./assets/js/app/utils/Utils.js"></script>
+
+<script src="./assets/js/app/components/generator/Alert.js"></script>
+<script src="./assets/js/app/components/generator/Modal.js"></script>
+
+<script src="./assets/js/app/components/form/Utils.js"></script>
+<script src="./assets/js/app/components/form/Submitter.js"></script>
+<script src="./assets/js/app/components/form/Validator.js"></script>
+
+<script src="./assets/js/app/components/Binder.js"></script>
+<script src="./assets/js/app/components/Includer.js"></script>
+<script src="./assets/js/app/components/Table.js"></script>
+<script src="./assets/js/app/components/Select.js"></script>
+
+<script src="./assets/js/app/models/Hotel.js"></script>
+<script src="./assets/js/app/models/Room.js"></script>
+
+<script src="./assets/js/app/main.js"></script>
+
 </body>
 </html>

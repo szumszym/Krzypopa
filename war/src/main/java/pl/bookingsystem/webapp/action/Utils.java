@@ -21,8 +21,8 @@ public class Utils {
         return new String[][]{new String[]{message, message2}};
     }
 
-    public static int daysBetween(Date d1, Date d2){
-        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    public static int daysBetween(Date d1, Date d2) {
+        return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 
     public static boolean isOverlapping(Date start1, Date end1, Date start2, Date end2) {
@@ -41,11 +41,15 @@ public class Utils {
     }
 
     public static String generateRoomNumbersString(List<Room> rooms) {
-        String roomNumbers = "";
-        for (Room room : rooms) {
-            roomNumbers += room.getNo_room() + ", ";
+        if (rooms.size() > 0) {
+            String roomNumbers = "";
+            for (Room room : rooms) {
+                roomNumbers += room.getNo_room() + ", ";
+            }
+            roomNumbers = roomNumbers.substring(0, roomNumbers.length() - 2);
+            return roomNumbers;
+        } else {
+            return "-";
         }
-        roomNumbers = roomNumbers.substring(0, roomNumbers.length() - 2);
-        return roomNumbers;
     }
 }

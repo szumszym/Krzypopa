@@ -24,7 +24,7 @@
         </table>
     </div>
 </div>
+<script src="./assets/js/app/views/hotel/browse.js"></script>
 <script>
     $(".chzn-select").chosen();
 </script>
-<script src="./assets/js/hotel-browse.js"></script>

@@ -226,7 +226,9 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+<div id="modal-info-redirect"></div>
 <!-- /.modal --><!-- /#helpModal -->
+
 <script src="./assets/lib/jquery.min.js"></script>
 <script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="./assets/lib/chosen/chosen.jquery.js"></script>
@@ -234,8 +236,25 @@
 <script src="./assets/lib/datatables/jquery.dataTables.js"></script>
 <script src="./assets/lib/datatables/DT_bootstrap.js"></script>
 
-<script src="./assets/js/app/metisMenu.js"></script>
-<script src="./assets/js/main.js"></script>
-<script src="./assets/js/ajaxFunctions.js"></script>
+<script src="./assets/js/app/namespace.js"></script>
+
+<script src="./assets/js/app/utils/Utils.js"></script>
+
+<script src="./assets/js/app/components/generator/Alert.js"></script>
+<script src="./assets/js/app/components/generator/Modal.js"></script>
+
+<script src="./assets/js/app/components/form/Utils.js"></script>
+<script src="./assets/js/app/components/form/Submitter.js"></script>
+<script src="./assets/js/app/components/form/Validator.js"></script>
+
+<script src="./assets/js/app/components/Binder.js"></script>
+<script src="./assets/js/app/components/Includer.js"></script>
+<script src="./assets/js/app/components/Table.js"></script>
+<script src="./assets/js/app/components/Select.js"></script>
+
+<script src="./assets/js/app/models/Hotel.js"></script>
+<script src="./assets/js/app/models/Room.js"></script>
+
+<script src="./assets/js/app/main.js"></script>
 </body>
 </html>

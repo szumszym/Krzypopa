@@ -26,4 +26,4 @@
     </div>
 </div>
 <!--row End -->
-<script src="./assets/js/room-browse.js"></script>
+<script src="./assets/js/app/views/room/browse.js"></script>

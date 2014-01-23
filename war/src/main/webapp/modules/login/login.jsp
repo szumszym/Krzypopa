@@ -60,16 +60,9 @@
 <!-- /container -->
 <script src="./assets/lib/jquery.min.js"></script>
 <script src="./assets/lib/bootstrap/js/bootstrap.js"></script>
-<script>
-    $('.list-inline li > a').click(function () {
-        var activeForm = $(this).attr('href') + ' > form';
-        //console.log(activeForm);
-        $(activeForm).addClass('magictime swap');
-        //set timer to 1 seconds, after that, unload the magic animation
-        setTimeout(function () {
-            $(activeForm).removeClass('magictime swap');
-        }, 1000);
-    });
-</script>
+
+<script src="./assets/js/app/namespace.js"></script>
+<script src="./assets/js/app/utils/Utils.js"></script>
+<script> App.Utils.initLoginForm() </script>
 </body>
 </html>

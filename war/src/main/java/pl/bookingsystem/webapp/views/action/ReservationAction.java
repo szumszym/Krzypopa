@@ -64,7 +64,7 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             User user = (User) session.get("user");
             Client client = (Client) session.get("client");
             if (user != null) {
-                if(isAdmin){
+                if (isAdmin) {
                     reservations = reservationDAO.getAllReservations();
                 } else {
                     reservations = reservationDAO.getHotelReservations(hotel);
@@ -85,7 +85,11 @@ public class ReservationAction extends ActionSupport implements SessionAware {
                     String roomNumbers = generateRoomNumbersString(rooms);
                     String hotelName;
                     if (isAdmin) {
-                        hotelName = r.getRooms().get(0).getHotel().getName();
+                        if (r.getRooms().size() > 0) {
+                            hotelName = r.getRooms().get(0).getHotel().getName();
+                        } else {
+                            hotelName = "-";
+                        }
                     } else {
                         hotelName = hotel.getName(); //because reservation are from this hotel only
                     }
@@ -100,7 +104,7 @@ public class ReservationAction extends ActionSupport implements SessionAware {
                     reservation[2] = date1;
                     reservation[3] = date2;
                     reservation[4] = String.valueOf(r.getPerson_count());
-                    reservation[5] = String.valueOf(status.getColor()+"&"+status.getType());
+                    reservation[5] = String.valueOf(status.getColor() + "&" + status.getType());
                     reservation[6] = String.valueOf(r.getEntry_date() != null ? r.getUpdate_date() : "-");
                     reservation[7] = String.valueOf(r.getUpdate_date() != null ? r.getUpdate_date() : "-");
                     reservation[8] = String.valueOf(r.getPrice());
@@ -138,7 +142,7 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             String name = jsonObject.getString("name");
             Integer person_count = Integer.parseInt(jsonObject.getString("person_count"));
 
- //DATES
+            //DATES
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date_from = sdf.parse(jsonObject.getString("date_from"));
             Date date_to = sdf.parse(jsonObject.getString("date_to"));
@@ -159,7 +163,7 @@ public class ReservationAction extends ActionSupport implements SessionAware {
 
                         String date1 = sdf.format(dateFrom2);
                         String date2 = sdf.format(dateTo2);
-                        data = setMsg("overlapped", "'"+room.getName() + "' from hotel: '"+hotel.getName()+"' is already reserved between "+ date1 +" and "+date2);
+                        data = setMsg("overlapped", "'" + room.getName() + "' from hotel: '" + hotel.getName() + "' is already reserved between " + date1 + " and " + date2);
                         return ERROR;
                     }
                 }
@@ -196,7 +200,7 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             int days = daysBetween(date_from, date_to);
             price *= days;
 
- //CREATE NEW RESERVATION
+            //CREATE NEW RESERVATION
             Reservation reservation = new Reservation(name, date_from, date_to, person_count, client, status, rooms, price);
             reservationDAO.create(reservation);
 

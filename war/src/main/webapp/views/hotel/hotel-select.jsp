@@ -24,8 +24,4 @@
         </table>
     </div>
 </div>
-<script src="./assets/js/selectHotel.js"></script>
-<script>
-    ajaxSelectFromTable('hotel-select-table', 'owner/select-hotel', 'server-messages', 'selected-hotel-name');
-    bindSelectTable('hotel-select-table');
-</script>
+<script src="./assets/js/app/views/hotel/select.js"></script>

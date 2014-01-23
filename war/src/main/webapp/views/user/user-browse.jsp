@@ -21,11 +21,10 @@
 
         <table id="user-table"
                class="table table-bordered table-condensed sortableTable responsive-table table-striped">
-
         </table>
     </div>
 </div>
+<script src="./assets/js/app/views/user/browse.js"></script>
 <script>
     $(".chzn-select").chosen();
 </script>
-<script src="./assets/js/user.js"></script>

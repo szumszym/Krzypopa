@@ -22,4 +22,4 @@
                class="table table-bordered table-condensed sortableTable responsive-table table-striped"></table>
     </div>
 </div>
-<script src="./assets/js/client.js"></script>
+<script src="./assets/js/app/views/client/browse.js"></script>

@@ -24,4 +24,4 @@
         </table>
     </div>
 </div>
-<script src="./assets/js/additions.js"></script>
+<script src="./assets/js/app/views/addition/browse.js"></script>

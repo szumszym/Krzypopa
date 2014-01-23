@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-lg-12">
         <div class="box">
@@ -74,7 +73,7 @@
                         <label class="control-label col-lg-4">Description</label>
 
                         <div class="col-lg-8">
-                            <textarea name="description"  placeholder="Description"
+                            <textarea name="description" placeholder="Description"
                                       class="form-control"></textarea>
                         </div>
                     </div>
@@ -114,8 +113,9 @@
 
                     <div class="form-group">
                         <label class="control-label col-lg-4">Select Additions</label>
+
                         <div class="col-lg-8">
-                            <select id="room-addition-select" name="addition"  class="form-control">
+                            <select id="room-addition-select" name="addition" class="form-control">
                             </select>
                         </div>
                     </div>
@@ -125,9 +125,8 @@
 
                         <div class="col-lg-8">
                             <div class="input-group">
-                                <input type="submit" name="submit"
-                                       onclick="ajaxSubmit('room-add', 'server-messages'); return false;"
-                                       class="btn btn-primary" data-original-title="" title="" value="Add"/>
+                                <input type="submit" name="submit" class="btn btn-primary" data-original-title=""
+                                       title="" value="Add"/>
                             </div>
                         </div>
                     </div>
@@ -139,11 +138,9 @@
     <!--row End -->
 </div>
 
-<script src="./assets/js/room.js"></script>
+<script src="./assets/js/app/views/room/add.js"></script>
 <script>
     $(".chzn-select").chosen();
-    bindSelectTable('addition-table-small', 'room-addition-select', true);
-    countCapacity('room-add');
 </script>
 
 

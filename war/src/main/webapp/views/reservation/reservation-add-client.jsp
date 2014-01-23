@@ -100,9 +100,8 @@
 
                         <div class="col-lg-8">
                             <div class="input-group">
-                                <input type="submit" name="submit"
-                                       onclick="ajaxSubmit('reservation-add', 'server-messages'); return false;"
-                                       class="btn btn-primary" data-original-title="" title="" value="Add"/>
+                                <input type="submit" name="submit" class="btn btn-primary" data-original-title=""
+                                       title="" value="Add"/>
                             </div>
                         </div>
                     </div>
@@ -112,9 +111,7 @@
     </div>
 </div>
 
-<script src="./assets/js/reservation-add-client.js"></script>
+<script src="./assets/js/app/views/reservation/add-client.js"></script>
 <script>
     $(".chzn-select").chosen();
-    bindSelectTable('room-table-small', 'reservation-room-select', true, "5");
-    checkRoomsCapacity('room-table-small', 'reservation-add');
 </script>

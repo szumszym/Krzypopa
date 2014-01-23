@@ -105,7 +105,8 @@
                             <label class="control-label col-lg-4">Start Date</label>
 
                             <div class="col-lg-8">
-                                <input id="date_from" type="date" name="date_from" class="validate[required] form-control">
+                                <input id="date_from" type="date" name="date_from"
+                                       class="validate[required] form-control">
                             </div>
                         </div>
                         <!-- /.form-group -->
@@ -140,7 +141,8 @@
                             <label class="control-label col-lg-4">Rooms</label>
 
                             <div class="col-lg-8">
-                                <select id="reservation-room-select-guest" data-placeholder="Choose rooms..." name="room_ids"
+                                <select id="reservation-room-select-guest" data-placeholder="Choose rooms..."
+                                        name="room_ids"
                                         class="form-control" tabindex="2">
                                 </select>
                             </div>
@@ -175,7 +177,7 @@
                             <div class="col-lg-8">
                                 <div class="input-group">
                                     <input type="submit" name="submit"
-                                           onclick="ajaxSubmit('reservation-add-guest', 'server-messages'); return false;"
+                                           onclick="SubmitterSubmit('reservation-add-guest', 'server-messages'); return false;"
                                            class="btn btn-primary" data-original-title="" title="" value="Add"/>
                                 </div>
                             </div>
@@ -195,6 +197,7 @@
     </div>
 </div>
 <!-- /.modal --><!-- /#helpModal -->
+
 <script src="./assets/lib/jquery.min.js"></script>
 <script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="./assets/lib/chosen/chosen.jquery.js"></script>
@@ -202,14 +205,30 @@
 <script src="./assets/lib/datatables/jquery.dataTables.js"></script>
 <script src="./assets/lib/datatables/DT_bootstrap.js"></script>
 
-<script src="./assets/js/app/metisMenu.js"></script>
-<script src="./assets/js/main.js"></script>
-<script src="./assets/js/ajaxFunctions.js"></script>
-<script src="./assets/js/room-guest.js"></script>
+<script src="./assets/js/app/namespace.js"></script>
+
+<script src="./assets/js/app/utils/Utils.js"></script>
+
+<script src="./assets/js/app/components/generator/Alert.js"></script>
+<script src="./assets/js/app/components/generator/Modal.js"></script>
+
+<script src="./assets/js/app/components/form/Utils.js"></script>
+<script src="./assets/js/app/components/form/Submitter.js"></script>
+<script src="./assets/js/app/components/form/Validator.js"></script>
+
+<script src="./assets/js/app/components/Binder.js"></script>
+<script src="./assets/js/app/components/Includer.js"></script>
+<script src="./assets/js/app/components/Table.js"></script>
+<script src="./assets/js/app/components/Select.js"></script>
+
+<script src="./assets/js/app/models/Hotel.js"></script>
+<script src="./assets/js/app/models/Room.js"></script>
+
+<script src="./assets/js/app/main.js"></script>
+
+<script src="./assets/js/app/views/room/add-guest.js"></script>
 <script>
     $(".chzn-select").chosen();
-    bindSelectTable('room-table-guest', 'reservation-room-select-guest', true, "3");
-    checkRoomsCapacity('room-table-quest', 'reservation-add-guest');
 </script>
 </body>
 </html>

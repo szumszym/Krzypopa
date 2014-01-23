@@ -455,9 +455,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="submit" name="submit"
-                   onclick="ajaxSubmit('client-add-guest', 'server-messages'); return false;"
-                   class="btn btn-primary" data-original-title="" title="" value="Register"/>
+            <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title=""
+                   value="Register"/>
         </div>
     </div>
 </div>
@@ -479,21 +478,35 @@
 </div>
 
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="./assets/lib/jquery.min.js"></script>
-
+<script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="./assets/lib/chosen/chosen.jquery.js"></script>
 <script src="./assets/lib/jquery-validation-1.11.1/dist/jquery.validate.js"></script>
 <script src="./assets/lib/datatables/jquery.dataTables.js"></script>
 <script src="./assets/lib/datatables/DT_bootstrap.js"></script>
 
-<script src="./assets/js/app/metisMenu.js"></script>
-<script src="./assets/js/main.js"></script>
-<script src="./assets/js/ajaxFunctions.js"></script>
+<script src="./assets/js/app/namespace.js"></script>
 
+<script src="./assets/js/app/utils/Utils.js"></script>
 
-<script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
-<script src="./assets/js/client-guest.js"></script>
+<script src="./assets/js/app/components/generator/Alert.js"></script>
+<script src="./assets/js/app/components/generator/Modal.js"></script>
+
+<script src="./assets/js/app/components/form/Utils.js"></script>
+<script src="./assets/js/app/components/form/Submitter.js"></script>
+<script src="./assets/js/app/components/form/Validator.js"></script>
+
+<script src="./assets/js/app/components/Binder.js"></script>
+<script src="./assets/js/app/components/Includer.js"></script>
+<script src="./assets/js/app/components/Table.js"></script>
+<script src="./assets/js/app/components/Select.js"></script>
+
+<script src="./assets/js/app/models/Hotel.js"></script>
+<script src="./assets/js/app/models/Room.js"></script>
+
+<script src="./assets/js/app/main.js"></script>
+
+<script src="./assets/js/app/views/client/add-guest.js"></script>
 <script>
     $(".chzn-select").chosen();
 </script>

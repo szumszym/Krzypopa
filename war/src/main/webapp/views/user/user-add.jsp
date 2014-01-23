@@ -106,7 +106,6 @@
         <div class="input-group">
             <input name="phone_number" class="form-control" type="text"
                    data-mask="+48 999 999 999">
-            <%--<span class="input-group-addon">+48 999 999 999</span>--%>
         </div>
     </div>
 </div>
@@ -115,7 +114,7 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" name="city" placeholder="eg: Warszawa" class=" form-control">
+        <input type="text" name="city" placeholder="eg: Kraków" class=" form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -124,7 +123,7 @@
     <label class="control-label col-lg-4">Street</label>
 
     <div class="col-lg-8">
-        <input type="text" name="street" placeholder="eg: Zakopianska"
+        <input type="text" name="street" placeholder="eg: Zakopiańska"
                class="form-control">
     </div>
 </div>
@@ -157,7 +156,6 @@
         <div class="input-group">
             <input type="text" name="postcode" class="form-control"
                    data-mask="99-999">
-            <%--<span class="input-group-addon">32-600</span>--%>
         </div>
     </div>
 </div>
@@ -420,7 +418,7 @@
     <label class="control-label col-lg-4">Type</label>
 
     <div class="col-lg-8">
-        <select id="user-add-select-type" name="type" class="form-control">
+        <select id="user-add-select-type" name="type" class="form-control chzn-select">
             <option value="ADMIN">ADMIN</option>
             <option value="OWNER">OWNER</option>
             <option value="EMPLOYEE">EMPLOYEE</option>
@@ -432,7 +430,7 @@
     <label class="control-label col-lg-4">Hotel</label>
 
     <div class="col-lg-8">
-        <select id="employee-hotel-select" name="hotel_id" class="form-control">
+        <select id="employee-hotel-select" name="hotel_id" class="form-control chzn-select">
         </select>
     </div>
 </div>
@@ -443,9 +441,7 @@
     <div class="col-lg-8">
         <div class="input-group">
 
-            <input type="submit" name="submit"
-                   onclick="ajaxSubmit('user-add', 'server-messages'); return false;"
-                   class="btn btn-primary" data-original-title="" title="" value="Add"/>
+            <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title="" value="Add"/>
 
         </div>
     </div>
@@ -456,7 +452,7 @@
 </div>
 </div>
 
-<script src="./assets/js/user.js"></script>
+<script src="./assets/js/app/views/user/add.js"></script>
 <script>
     $(".chzn-select").chosen();
 </script>

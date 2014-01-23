@@ -265,11 +265,12 @@ public class UserAction extends ActionSupport implements SessionAware {
         if (!u.getType().equals(User.Type.ADMIN)) {
             HotelDAO hotelDAO = new HotelDAOImpl();
             List<Hotel> hotels = hotelDAO.selectAllHotelsOfUser(u.getId());
-            for (Hotel hotel : hotels) {
-                hotelsString += hotel.getName() + ", ";
+            if (hotels.size() > 0) {
+                for (Hotel hotel : hotels) {
+                    hotelsString += hotel.getName() + ", ";
+                }
+                hotelsString = hotelsString.substring(0, hotelsString.length() - 2);
             }
-            hotelsString = hotelsString.substring(0, hotelsString.length() - 1);
-
         } else {
             hotelsString = "-";
         }
@@ -309,7 +310,7 @@ public class UserAction extends ActionSupport implements SessionAware {
         User currentUser = (User) session.get("user");
         Boolean isAdmin = (Boolean) session.get("isAdmin");
         List<Hotel> sessionHotels;
-        if(isAdmin){
+        if (isAdmin) {
             sessionHotels = hotelDAO.selectAllHotels();
         } else {
             sessionHotels = hotelDAO.selectAllHotelsOfUser(currentUser.getId());

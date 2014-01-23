@@ -53,9 +53,8 @@
 
                     <div class="col-lg-8">
                         <div class="input-group">
-                            <input type="submit" name="submit"
-                                   onclick="ajaxSubmit('additions-add', 'server-messages'); return false;"
-                                   class="btn btn-primary" data-original-title="" title="" value="Add"/>
+                            <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title=""
+                                   value="Add"/>
                         </div>
                     </div>
                 </div>
@@ -64,4 +63,4 @@
 
     </div>
 </div>
-<script src="./assets/js/additions.js"></script>
+<script src="./assets/js/app/views/addition/add.js"></script>
