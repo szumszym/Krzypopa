@@ -14,7 +14,6 @@ App.Components.Binder = (function ($) {
                 var multiselectable = multiselectOpt || false;
                 var labelColNum = labelColNumber || "2";
                 var $tableElem = $('#' + tableId);
-                var $tableRows = $tableElem.find('tbody tr');
 
                 var $selectElem = $("#" + selectId);
                 var isSelect = selectId != undefined && $selectElem.length > 0;
@@ -23,6 +22,7 @@ App.Components.Binder = (function ($) {
                 if (isSelect) {
                     $selectElem.chosen().change(function () {
                         var selectIndexes = $(this).val();
+                        var $tableRows = $tableElem.find('tbody tr');
 
                         $tableRows.each(function () {
                             var $this = $(this);
@@ -37,8 +37,10 @@ App.Components.Binder = (function ($) {
                 }
 
                 //from table to select
-                $tableRows.on('click ' + _default.events.deleted, function (e) {
+                $tableElem.on('click ' + _default.events.deleted, 'tbody tr', function (e) {
                     var $this = $(this);
+                    var $tableRows = $tableElem.find('tbody tr');
+
                     if (multiselectable) {  //multi select
                         if (!$this.hasClass('row-selected')) {
                             $this.addClass('row-selected');
