@@ -3,6 +3,7 @@ App.Views.Addition.Browse = (function (Table) {
         actions: {
             get: 'client-getData',
             edit: 'client-edit',
+            update: 'client-update',
             delete: 'client-delete'
         },
         table: {
@@ -36,6 +37,10 @@ App.Views.Addition.Browse = (function (Table) {
                     { "sTitle": "Phone" }
                 ]
             }
+        },
+        edit: {
+            title: "Client edit",
+            url: './views/client/edit.jsp'
         }
     });
 })(App.Components.Table);

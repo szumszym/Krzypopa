@@ -19,11 +19,11 @@ import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
 import pl.bookingsystem.db.entity.*;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static pl.bookingsystem.webapp.action.Utils.convertJSONArrayToArrayList;
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 /**
@@ -115,38 +115,18 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 JSONObject jsonObject = new JSONObject(dataFrom);
                 String room_name = jsonObject.getString("room_name");
                 Integer roomno = Integer.parseInt(jsonObject.getString("roomno"));
-
-                String bedCountString = jsonObject.getString("bed_count");
-                Integer bed_count = Integer.parseInt(bedCountString);
-                String bedTypeString = jsonObject.getString("bed_type");
-                Integer bed_type = Integer.parseInt(bedTypeString);
-                String bed = bedCountString + "x" + bedTypeString;
-
                 String description = jsonObject.getString("description");
                 Integer capacity = Integer.parseInt(jsonObject.getString("capacity"));
                 Double price = Double.parseDouble(jsonObject.getString("price"));
 
+//BED
+                String bedCountString = jsonObject.getString("bed_count");
+                String bedTypeString = jsonObject.getString("bed_type");
+                String bed = bedCountString + "x" + bedTypeString;
+
+
 //ADDITIONS
-
-                List<Addition> additionSet = new LinkedList<Addition>();
-                if (!jsonObject.isNull("addition")) {
-                    JSONArray additionIds = (JSONArray) jsonObject.get("addition");
-                    List<Long> additionsIdsList = new ArrayList<Long>();
-                    List<Addition> additionList;
-                    for (int i = 0; i < additionIds.length(); i++) {
-                        additionsIdsList.add(additionIds.getLong(i));
-                        log.info("Name: " + additionsIdsList.get(i));
-                    }
-                    AdditionDAO additionDAO = new AdditionDAOImpl();
-                    additionList = additionDAO.selectByIDs(Addition.class, additionsIdsList);
-                   /* for (Long id : additionsIdsList) {
-                        additionList.add(additionDAO.selectByID(Addition.class, id));
-                    }*/
-
-                    if (!additionList.isEmpty()) {
-                        additionSet.addAll(additionList);
-                    }
-                }
+                List<Addition> additionSet = getAdditionsFromJSON(jsonObject);
 
 //HOTEL
                 Hotel hotel = (Hotel) session.get("hotel");
@@ -166,6 +146,83 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 room.setPublished(published);
 
                 roomDAO.create(room);
+
+//UPDATE SESSION
+                if (hotel != null) {
+                    HotelDAO hotelDAO = new HotelDAOImpl();
+                    Hotel hotel2 = hotelDAO.selectByID(hotel.getId());
+                    session.put("hotel", hotel2);
+                }
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "room-update", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String roomUpdate() {
+        try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+                User user = (User) session.get("user");
+                User.Type type = user.getType();
+
+
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                Long index = jsonObject.getLong("index");
+
+                String room_name = jsonObject.getString("room_name");
+                Integer roomno = Integer.parseInt(jsonObject.getString("roomno"));
+                String description = jsonObject.getString("description");
+                Integer capacity = Integer.parseInt(jsonObject.getString("capacity"));
+                Double price = Double.parseDouble(jsonObject.getString("price"));
+
+//BED
+                String bedCountString = jsonObject.getString("bed_count");
+                String bedTypeString = jsonObject.getString("bed_type");
+                String bed = bedCountString + "x" + bedTypeString;
+
+
+//ADDITIONS
+                List<Addition> additionsList = getAdditionsFromJSON(jsonObject);
+
+//HOTEL
+                Hotel hotel = (Hotel) session.get("hotel");
+
+
+//SET NEW PROPERTIES
+
+                RoomDAO roomDAO = new RoomDAOImpl();
+                Room room = roomDAO.selectByID(Room.class, index);
+                room.setName(room_name);
+                room.setNo_room(roomno);
+                room.setDescription(description);
+                room.setCapacity(capacity);
+                room.setPrice(price);
+                room.setBed(bed);
+                room.setAdditions(additionsList);
+
+
+//PUBLISH
+                Boolean published = false;
+                if (User.Type.ADMIN.equals(type) || User.Type.OWNER.equals(type)) {
+                    published = Boolean.parseBoolean(jsonObject.getString("published"));
+                }
+                room.setPublished(published);
+
+                roomDAO.update(room);
 
 //UPDATE SESSION
                 if (hotel != null) {
@@ -259,6 +316,17 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
     }
 
+    private List<Addition> getAdditionsFromJSON(JSONObject jsonObject) {
+        if (!jsonObject.isNull("addition")) {
+            JSONArray additionIds = (JSONArray) jsonObject.get("addition");
+            List<Long> additionsIdsList = convertJSONArrayToArrayList(additionIds);
+
+            AdditionDAO additionDAO = new AdditionDAOImpl();
+            return additionDAO.selectByIDs(Addition.class, additionsIdsList);
+        }
+        return null;
+    }
+
     private String generateAdditionsStringArray(Room room) {
         String additions = "";
         List<Addition> additionList = room.getAdditions();
@@ -270,12 +338,6 @@ public class RoomAction extends ActionSupport implements SessionAware {
         }
         return additions;
     }
-
-    @Override
-    public void setSession(Map<String, Object> stringObjectMap) {
-        this.session = stringObjectMap;
-    }
-
     private class Bed {
         private String bed_count;
         private String bed_type;
@@ -295,4 +357,11 @@ public class RoomAction extends ActionSupport implements SessionAware {
             return bed_type;
         }
     }
+
+    @Override
+    public void setSession(Map<String, Object> stringObjectMap) {
+        this.session = stringObjectMap;
+    }
+
+
 }

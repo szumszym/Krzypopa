@@ -3,6 +3,7 @@ App.Views.Status.Browse = (function (Table) {
         actions: {
             get: 'status-getData',
             edit: 'status-edit',
+            update: 'status-update',
             delete: 'status-delete'
         },
         table: {
@@ -26,6 +27,10 @@ App.Views.Status.Browse = (function (Table) {
                 editColumn: 5,
                 deleteColumn: 6
             }
+        },
+        edit: {
+            title: "Status edit",
+            url: './views/status/edit.jsp'
         }
     });
 })(App.Components.Table);

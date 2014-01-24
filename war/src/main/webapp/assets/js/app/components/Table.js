@@ -1,4 +1,4 @@
-App.Components.Table = (function ($, Alert, Includer, Modal, FormUtils) {
+App.Components.Table = (function ($, Alert, Includer, Modal, Submitter) {
     var _default = {
         alert: {
             messages: {
@@ -82,10 +82,6 @@ App.Components.Table = (function ($, Alert, Includer, Modal, FormUtils) {
         });
     };
 
-    var _updateRow = function (formId, action) {
-        alert("Updating...\n" + formId + "\n" + action);
-    };
-
     return {
         create: function (params) {
             var ajaxActions = params.actions;
@@ -138,7 +134,7 @@ App.Components.Table = (function ($, Alert, Includer, Modal, FormUtils) {
                                     aTargets: [columnNoEdit - 1],
                                     mData: null,
                                     mRender: function (data, type, full) {
-                                        return '<a href="#" onclick="App.Components.Table.editRow(this, \'' + ajaxActions.edit + '\', \'' + editUrl + '\', \'' + editTitle + '\');"><i class="fa fa-edit"></i></a>';
+                                        return '<a href="#" onclick="App.Components.Table.editRow(this, \'' + ajaxActions.edit + '\', \'' + ajaxActions.update + '\', \'' + editUrl + '\', \'' + editTitle + '\');"><i class="fa fa-edit"></i></a>';
                                     }
                                 }
                             );
@@ -216,37 +212,39 @@ App.Components.Table = (function ($, Alert, Includer, Modal, FormUtils) {
                 });
             }
         },
-        editRow: function (that, action, editUrl, editTitle) {
+        editRow: function (that, actionEdit, actionUpdate, editUrl, editTitle) {
 
             var $this = $(that);
             var $thisRow = $this.parents('tr');
             var index = $thisRow.find('td:first').text();
             var table = $this.parents('table').dataTable();
-            var $resultContainer = jQuery('#server-messages');
+            var resultContainerId = 'server-messages';
+            var $resultContainer = jQuery('#' + resultContainerId);
+
+            var modalId = 'edit-modal';
 
             $.ajax({
                 type: 'POST',
-                url: action,
+                url: actionEdit,
                 data: {dataFrom: "{'index':'" + index + "'}"},
                 success: function (msg) {
-                    console.log(action, msg);
                     try {
                         if (msg.data[0][0] == "success") {
 
-                            Modal.generate('edit-modal', editTitle, "", "Update", '#', false, true);
+                            Modal.generate(modalId, editTitle, "", "Update", '#', false, true);
                             if (editUrl != "") {
-                                Includer.load(editUrl, 'edit-modal-body');
-                                Modal.show('edit-modal');
+                                Includer.load(editUrl, modalId + '-body');
+                                Modal.show(modalId);
 
-                                var $btn = Modal.getBtn('edit-modal');
+                                var $btn = Modal.getBtn(modalId);
                                 setTimeout(function () {
-                                    var formId = $('#edit-modal').find('form').attr('id');
+                                    var formId = $('#' + modalId).find('form').attr('id');
                                     _updateChosenSelect(formId);
-                                }, 500);
+                                }, 1000);
 
                                 $btn.on('click', function () {
-                                    var formId = $('#edit-modal').find('form').attr('id');
-                                    _updateRow(formId, 'room-update');
+                                    var formId = $('#' + modalId).find('form').attr('id');
+                                    Submitter.update(formId, actionUpdate, index, resultContainerId, modalId);
                                 });
                             }
                         } else {
@@ -275,4 +273,4 @@ App.Components.Table = (function ($, Alert, Includer, Modal, FormUtils) {
 
     }
 
-})(jQuery, App.Components.Generator.Alert, App.Components.Includer, App.Components.Generator.Modal, App.Components.Form.Utils);
+})(jQuery, App.Components.Generator.Alert, App.Components.Includer, App.Components.Generator.Modal, App.Components.Form.Submitter);

@@ -15,10 +15,7 @@ App.Views.Hotel.Select = (function (Table, Binder, Hotel) {
                     { "sTitle": "Street" },
                     { "sTitle": "Phone" },
                     { "sTitle": "Email" }
-                ],
-                editColumn: 7,
-                deleteColumn: 8
-
+                ]
             }
         }
     });

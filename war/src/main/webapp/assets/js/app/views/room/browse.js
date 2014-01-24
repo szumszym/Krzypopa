@@ -3,6 +3,7 @@ App.Views.Room.Browse = (function (Table) {
         actions: {
             get: 'room-getData',
             edit: 'room-edit',
+            update: 'room-update',
             delete: 'room-delete'
         },
         table: {

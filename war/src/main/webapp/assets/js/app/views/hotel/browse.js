@@ -3,6 +3,7 @@ App.Views.Hotel.Browse = (function (Table) {
         actions: {
             get: 'hotel-getData',
             edit: 'hotel-edit',
+            update: '-update',
             delete: 'hotel-delete'
         },
         table: {
@@ -20,6 +21,10 @@ App.Views.Hotel.Browse = (function (Table) {
                 deleteColumn: 8
 
             }
+        },
+        edit: {
+            title: "Hotel edit",
+            url: './views/hotel/edit.jsp'
         }
     });
 })(App.Components.Table);

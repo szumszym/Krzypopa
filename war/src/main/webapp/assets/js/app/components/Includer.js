@@ -10,6 +10,8 @@ App.Components.Includer = (function ($) {
         menuSelectors = menuSelectors.slice(0, -2);
         return menuSelectors;
     };
+    var _contextElemId = "";
+    var _currentPageUrl = "";
 
     return {
         includeFrom: function (menuIds) {
@@ -18,6 +20,8 @@ App.Components.Includer = (function ($) {
                 var url = $(this).data('url');
                 var placement = $(this).data('placement');
                 $(placement).load(url);
+                _currentPageUrl = url;
+                _contextElemId = placement;
             });
         },
         includeOnStart: function () {
@@ -26,7 +30,12 @@ App.Components.Includer = (function ($) {
                 var contextId = $contextElem.attr('id');
                 var defaultContext = $contextElem.data('default');
                 $("#" + contextId).load(defaultContext);
+                _currentPageUrl = defaultContext;
+                _contextElemId = '#' + contextId;
             }
+        },
+        refresh: function () {
+            $(_contextElemId).load(_currentPageUrl);
         },
         load: function (url, placementId) {
             $('#' + placementId).load(url);

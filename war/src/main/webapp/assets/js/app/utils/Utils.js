@@ -110,6 +110,11 @@ App.Utils = (function ($) {
         },
 
         activeCheckbox: function (id) {
+            if ($(id).val() == "true") {
+                $(id).prop('checked', true);
+            } else {
+                $(id).prop('checked', false);
+            }
             $(id).change(function () {
                 var $this = $(this);
                 $this.val($this.prop('checked'));

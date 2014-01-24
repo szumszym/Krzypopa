@@ -5,6 +5,7 @@ App.Models.Room = (function ($) {
             unselected: 'table:rowUnselected'
         },
         countPersonId: '[name="person_count"]',
+        capacityId: '[name="capacity"]',
         bedTypeId: '[name="bed_type"]',
         bedCountId: '[name="bed_count"]'
 
@@ -29,13 +30,13 @@ App.Models.Room = (function ($) {
         },
         countCapacity: function (formId) {
             var $form = $('#' + formId);
-            $form.on('keyup', _default.bedCountId + ', ' + _default.bedTypeId, function () {
+            $form.on('keyup', _default.bedCountId + ',' + _default.bedTypeId, function () {
                 var bedCount = $form.find(_default.bedCountId).val();
                 var bedType = $form.find(_default.bedTypeId).val();
                 if (bedCount == "") bedCount = 0;
                 if (bedType == "") bedType = 0;
                 var capacity = bedCount * bedType;
-                $form.find(_default.countPersonId).val(capacity);
+                $form.find(_default.capacityId).val(capacity);
             });
         }
 

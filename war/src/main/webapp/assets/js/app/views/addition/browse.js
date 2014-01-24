@@ -3,6 +3,7 @@ App.Views.Addition.Browse = (function (Table) {
         actions: {
             get: 'additions-getData',
             edit: 'additions-edit',
+            update: 'additions-update',
             delete: 'additions-delete'
         },
         table: {

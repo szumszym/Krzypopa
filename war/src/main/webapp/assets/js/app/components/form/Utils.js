@@ -17,11 +17,12 @@ App.Components.Form.Utils = (function ($) {
          * returns:
          *{foo: {bar: {bar: '', foo: ''}, barfoo: '' }, bar: {bar: {foo: ''}}}
          *
-         * @returns json
+         * returns json or stringifyJSON
          */
-        formToJSON: function (formId) {
+        formToJSON: function (formId, stringifyJSON) {
             var objectGraph = {};
             var that = {};
+            var doStringify = stringifyJSON != undefined ? stringifyJSON : true;
 
             that.add = function (objectGraph, name, value) {
                 if (name.length == 1) {
@@ -48,7 +49,12 @@ App.Components.Form.Utils = (function ($) {
                     that.add(objectGraph, $(this).attr('name').split('.'), $(this).val());
                 }
             });
-            return JSON.stringify(objectGraph);
+
+            if (doStringify) {
+                return JSON.stringify(objectGraph);
+            } else {
+                return objectGraph;
+            }
 
         },
         showFieldIfSelectedValEquals: function (value, formId, fieldFromId, fieldToId) {

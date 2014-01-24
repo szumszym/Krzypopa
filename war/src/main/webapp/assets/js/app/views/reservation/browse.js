@@ -3,6 +3,7 @@ App.Views.Reservation.Browse = (function (Table) {
         actions: {
             get: 'reservation-getData',
             edit: 'reservation-edit',
+            update: 'reservation-update',
             delete: 'reservation-delete'
         },
         table: {
@@ -39,6 +40,10 @@ App.Views.Reservation.Browse = (function (Table) {
                 editColumn: 13,
                 deleteColumn: 14
             }
+        },
+        edit: {
+            title: "Reservation edit",
+            url: './views/reservation/edit.jsp'
         }
     });
 })(App.Components.Table);

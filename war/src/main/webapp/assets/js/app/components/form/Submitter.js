@@ -1,17 +1,18 @@
-App.Components.Form.Submitter = (function (Alert, Modal, FormUtils) {
+App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
     var _default = {
         alert: {
             messages: {
                 error: {
                     save: 'Wystąpił bład podczas zapisu do bazy danych!',
-                    js: 'JavaScript ERROR: ',
-                    add: 'Error occured during add action!',
-                    invalidForm: 'Błędnie wypełniony formularz!'
+                    add: 'Wystąpił bład podczas dodawania do bazy danych!',
+                    update: 'Wystąpił bład podczas aktualizacji bazy danych!',
+                    invalidForm: 'Błędnie wypełniony formularz!',
+                    js: 'JavaScript ERROR: '
                 },
                 warning: {
 
                 },
-                success: 'Operacja przbiegla pomyślnie'
+                success: 'Operacja przbiegła pomyślnie'
             }
         },
         modal: {
@@ -69,6 +70,47 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils) {
             });
 
         },
+        update: function (formId, action, index, resultContainerId, modalId) {
+            var $form = jQuery('#' + formId);
+            var $resultContainer = jQuery('#' + resultContainerId);
+            if ($form.valid()) {
+                var send = FormUtils.formToJSON(formId, false);
+                if (index != undefined) {
+                    send['index'] = index;
+                }
+                send = JSON.stringify(send);
+
+                var dataFromForm = {dataFrom: send};
+                jQuery.ajax({
+                    url: action,
+                    type: 'POST',
+                    data: dataFromForm,
+                    dataType: 'json',
+                    error: function () {
+                        Alert.showError($resultContainer, _default.alert.messages.error.update);
+                    },
+                    success: function (msg) {
+                        try {
+                            if (msg.data[0][0] == 'success') {
+                                Alert.showSuccess($resultContainer, _default.alert.messages.success);
+                                App.Components.Includer.refresh();
+                                Modal.hide(modalId);
+                            } else if (msg.data[0][0] == 'overlapped') {
+                                Alert.showWarning($resultContainer, msg.data[0][1], 8000);
+                            } else {
+                                Alert.showError($resultContainer, _default.alert.messages.error.update);
+                            }
+                        } catch (error) {
+                            Alert.showError($resultContainer, _default.alert.messages.error.js + error);
+                        }
+                    }
+                });
+            } else {
+                Alert.showError($resultContainer, _default.alert.messages.error.invalidForm)
+            }
+
+
+        },
         submitFirstHotel: function (formId, resultContainerId) {
             var $form = jQuery('#' + formId);
             var $submitBtn = $form.find('[name="submit"]');
@@ -109,4 +151,4 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils) {
         }
     }
 
-})(App.Components.Generator.Alert, App.Components.Generator.Modal, App.Components.Form.Utils);
+})(App.Components.Generator.Alert, App.Components.Generator.Modal, App.Components.Form.Utils, App.Components.Includer);

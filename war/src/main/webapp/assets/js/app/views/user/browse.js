@@ -3,6 +3,7 @@ App.Views.User.Browse = (function (Table) {
         actions: {
             get: 'user-getData',
             edit: 'user-edit',
+            update: 'user-update',
             delete: 'user-delete'
         },
         table: {
@@ -19,6 +20,10 @@ App.Views.User.Browse = (function (Table) {
                 editColumn: 7,
                 deleteColumn: 8
             }
+        },
+        edit: {
+            title: "User edit",
+            url: './views/user/edit.jsp'
         }
     });
 })(App.Components.Table);

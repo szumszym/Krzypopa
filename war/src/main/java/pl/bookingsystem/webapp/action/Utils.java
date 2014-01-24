@@ -34,7 +34,7 @@ public class Utils {
         if (jsonArray != null) {
             int len = jsonArray.length();
             for (int i = 0; i < len; i++) {
-                list.add(Long.valueOf(String.valueOf(jsonArray.get(i))));
+                list.add(jsonArray.getLong(i));
             }
         }
         return list;

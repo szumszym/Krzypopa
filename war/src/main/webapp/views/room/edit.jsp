@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<form id="room-add" class="form-horizontal" action="room-add">
+<form id="room-edit" class="form-horizontal">
 
-    <div class="form-group">
+<div class="form-group">
         <label class="control-label col-lg-4">Name</label>
 
         <div class="col-lg-8">
@@ -93,6 +93,3 @@
     </div>
 </form>
 <script src="./assets/js/app/views/room/edit.js"></script>
-<script>
-    xxx();
-</script>
