@@ -27,6 +27,9 @@ App.Components.Includer = (function ($) {
                 var defaultContext = $contextElem.data('default');
                 $("#" + contextId).load(defaultContext);
             }
+        },
+        load: function (url, placementId) {
+            $('#' + placementId).load(url);
         }
     }
 

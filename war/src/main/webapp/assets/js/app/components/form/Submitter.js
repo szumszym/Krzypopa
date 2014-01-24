@@ -22,7 +22,8 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils) {
                     '<br>' +
                     'You\'ve just successfully added your first hotel! ' +
                     '<br>' +
-                    'Click [OK] to log in again.'
+                    'Click [OK] to log in again.',
+                btn: 'OK'
 
             }
         }
@@ -89,7 +90,7 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils) {
                             try {
                                 if (msg.data[0][0] == 'success') {
                                     Modal.generate(_default.modal.firstHotel.id, _default.modal.firstHotel.title,
-                                        _default.modal.firstHotel.body
+                                        _default.modal.firstHotel.body, _default.modal.firstHotel.btn
                                         , '/bookingsystem/logout', true);
                                 } else {
                                     Alert.showError($resultContainer, _default.alert.messages.error.add);

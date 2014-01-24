@@ -66,9 +66,8 @@
 
                     <div class="col-lg-8">
                         <div class="input-group">
-                            <input type="submit" name="submit"
-                                   onclick="SubmitterSubmit('additions-add', 'server-messages'); return false;"
-                                   class="btn btn-primary" data-original-title="" title="" value="Add"/>
+                            <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title=""
+                                   value="Add"/>
                         </div>
                     </div>
                 </div>

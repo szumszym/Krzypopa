@@ -64,8 +64,8 @@ public class RoomAction extends ActionSupport implements SessionAware {
             Hotel hotel = (Hotel) session.get("hotel");
             RoomDAO roomDAO = new RoomDAOImpl();
             Long hotelId;
-            if(hotel!=null){
-                  hotelId = hotel.getId();
+            if (hotel != null) {
+                hotelId = hotel.getId();
             } else {
                 JSONObject jsonObject = new JSONObject(dataFrom);
                 hotelId = Long.valueOf(jsonObject.getString("index"));
@@ -203,7 +203,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
             ReservationDAO reservationDAO = new ReservationDAOImpl();
             List<Reservation> reservations = reservationDAO.getAllReservationsFrom(room);
             int size = reservations != null ? reservations.size() : 0;
-            if(size>0){
+            if (size > 0) {
                 data = setMsg("HAS_RESERVATIONS");
                 return ERROR;
             } else {
@@ -218,8 +218,81 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
     }
 
+
+    @Action(value = "room-edit", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String roomEdit() {
+        try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                Long index = Long.parseLong(jsonObject.getString("index"));
+
+                RoomDAO roomDAO = new RoomDAOImpl();
+                Room room = roomDAO.selectByID(Room.class, index);
+
+                session.put("editRoom", room);
+
+                Bed bed = new Bed(room);
+                String bed_count = bed.getBed_count();
+                String bed_type = bed.getBed_type();
+                session.put("editRoom_bedCount", bed_count);
+                session.put("editRoom_bedType", bed_type);
+
+                String additions = generateAdditionsStringArray(room);
+                session.put("editRoom_additions", additions);
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    private String generateAdditionsStringArray(Room room) {
+        String additions = "";
+        List<Addition> additionList = room.getAdditions();
+        if (additionList.size() > 0) {
+            for (Addition addition : additionList) {
+                additions += addition.getId() + ", ";
+            }
+            additions = additions.substring(0, additions.length() - 2);
+        }
+        return additions;
+    }
+
     @Override
     public void setSession(Map<String, Object> stringObjectMap) {
         this.session = stringObjectMap;
+    }
+
+    private class Bed {
+        private String bed_count;
+        private String bed_type;
+
+        public Bed(Room room) {
+            String bed = room.getBed();
+            int pos = bed.indexOf('x');
+            bed_count = bed.substring(0, pos);
+            bed_type = bed.substring(pos + 1, bed.length());
+        }
+
+        public String getBed_count() {
+            return bed_count;
+        }
+
+        public String getBed_type() {
+            return bed_type;
+        }
     }
 }

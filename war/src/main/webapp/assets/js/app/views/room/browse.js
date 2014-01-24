@@ -39,6 +39,10 @@ App.Views.Room.Browse = (function (Table) {
                 editColumn: 10,
                 deleteColumn: 11
             }
+        },
+        edit: {
+            title: "Room edit",
+            url: './views/room/edit.jsp'
         }
     });
 })(App.Components.Table);

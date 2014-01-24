@@ -1,13 +1,98 @@
-App.Components.Table = (function ($, Alert) {
+App.Components.Table = (function ($, Alert, Includer, Modal, FormUtils) {
     var _default = {
-
+        alert: {
+            messages: {
+                error: {
+                    save: 'Wystąpił bład podczas zapisu do bazy danych!',
+                    delete: 'Wystąpił bład podczas usuwania w bazie danych!',
+                    edit: 'Wystąpił bład podczas edycji w bazie danych!',
+                    js: 'JavaScript ERROR: ',
+                    invalidForm: 'Błędnie wypełniony formularz!'
+                },
+                warning: {
+                    hasReservations: 'Nie można usunąć pokoju, istnieją przypisane do niego rezerwacje!',
+                    hasRooms: 'Nie można usunąć dodatku - istnieją przypisane do niego pokoje!'
+                },
+                success: {
+                    save: 'Operacja zapisu do bazy danych przbiegla pomyślnie',
+                    edit: 'Operacja edycji przbiegla pomyślnie',
+                    delete: 'Operacja usunięcia przbiegla pomyślnie'
+                }
+            }
+        },
+        events: {
+            selected: 'table:rowSelected',
+            unselected: 'table:rowUnselected',
+            deleted: 'table:rowDeleted',
+            edited: 'table:rowEdited'
+        }
     };
+
+    var _updateCells = function ($cells, data) {
+        var i = 1;//exclude first cell with id
+        $cells.each(function () {
+            var $this = $(this);
+            $this.text(data[i]);
+            i++;
+        });
+    };
+
+    var _updateChosenSelect = function (formId) {
+        //  setTimeout(function(){
+        var $selectElements = $('#' + formId).find('select');
+        $selectElements.each(function () {
+            var $this = $(this);
+            var array = [];
+            var indexes = "" + $this.data('indexes');
+
+            $this.chosen();
+
+            while (indexes.length > 0) {
+                var sep = indexes.indexOf(',');
+                if (sep == -1) {
+                    array.push(parseInt(indexes.substring(0, indexes.length)));
+                    break;
+                }
+                array.push(parseInt(indexes.substring(0, sep)));
+                indexes = indexes.substring(sep + 1, indexes.length);
+            }
+
+            $this.val(array).trigger('chosen:updated');
+            $this.siblings('.chosen-container').css('width', '100%');
+        });
+        //  }, 500);
+    };
+
+    var _updateEditForm = function ($form, data) {
+        var i = 1; //exclude first cell with id
+        $form.find('.form-group').each(function () {
+            var $this = $(this);
+            $this.find('input, textarea, select').each(function () {
+                var $this = $(this);
+                if ($this.is('input')) {
+                    $this.val(data[i]);
+                } else if ($this.is('textarea')) {
+                    $(this).text(data[i]);
+                } else if ($this.is('select')) {
+                    $this.val(data[i]);
+                    $this.trigger("chosen:updated");
+                }
+            });
+            i++;
+        });
+    };
+
+    var _updateRow = function (formId, action) {
+        alert("Updating...\n" + formId + "\n" + action);
+    };
+
     return {
         create: function (params) {
             var ajaxActions = params.actions;
             var tableContainerId = params.table.id;
             var tableParams = params.table.params;
             var paramToJAVA = params.toJAVA;
+            var editParams = params.edit || {};
             var dataTableParams = [];
             $.ajax({
                 type: 'POST',
@@ -30,11 +115,11 @@ App.Components.Table = (function ($, Alert) {
                         dataTableParams.aoColumnDefs = dataTableParams.aoColumnDefs || [];
 
                         if (dataTableParams.infoColumn != undefined) {
-                            var columnNo = dataTableParams.infoColumn;
+                            var columnNoInfo = dataTableParams.infoColumn;
 
                             dataTableParams.aoColumnDefs.push(
                                 {
-                                    aTargets: [columnNo - 1],
+                                    aTargets: [columnNoInfo - 1],
                                     mData: null,
                                     mRender: function (data, type, full) { //TODO: replace alert with other method (modal)?
                                         return '<a href="#" onclick="alert(\'' + full[0] + ' ' + full[1] + '\');"><i class="fa fa-info"></i></a>';
@@ -45,14 +130,15 @@ App.Components.Table = (function ($, Alert) {
                         }
 
                         if (dataTableParams.editColumn != undefined && ajaxActions.edit != undefined) {
-                            var columnNo = dataTableParams.editColumn;
-
+                            var columnNoEdit = dataTableParams.editColumn;
+                            var editUrl = editParams.url || "";//"./404.html";
+                            var editTitle = editParams.title || "Edit";
                             dataTableParams.aoColumnDefs.push(
                                 {
-                                    aTargets: [columnNo - 1],
+                                    aTargets: [columnNoEdit - 1],
                                     mData: null,
                                     mRender: function (data, type, full) {
-                                        return '<a href="#" onclick="editRow(this, \'' + ajaxActions.edit + '\');"><i class="fa fa-edit"></i></a>';
+                                        return '<a href="#" onclick="App.Components.Table.editRow(this, \'' + ajaxActions.edit + '\', \'' + editUrl + '\', \'' + editTitle + '\');"><i class="fa fa-edit"></i></a>';
                                     }
                                 }
                             );
@@ -60,11 +146,11 @@ App.Components.Table = (function ($, Alert) {
                         }
 
                         if (dataTableParams.deleteColumn != undefined && ajaxActions.delete != undefined) {
-                            var columnNo = dataTableParams.deleteColumn;
+                            var columnNoDelete = dataTableParams.deleteColumn;
 
                             dataTableParams.aoColumnDefs.push(
                                 {
-                                    aTargets: [columnNo - 1],
+                                    aTargets: [columnNoDelete - 1],
                                     mData: null,
                                     mRender: function (data, type, full) {
                                         return '<a href="#" onclick="App.Components.Table.deleteRow(this, \'' + ajaxActions.delete + '\');"><i class="fa fa-trash-o"></i></a>';
@@ -109,29 +195,74 @@ App.Components.Table = (function ($, Alert) {
                         console.log(action, msg);
                         try {
                             if (msg.data[0][0] == "success") {
-                                $thisRow.trigger("table:rowDeleted");
+                                $thisRow.trigger(_default.events.deleted);
                                 $thisRow.removeClass('row-selected');
                                 table.fnDeleteRow($thisRow[0]);
-                                Alert.showSuccess($resultContainer, "Akcja usunięcia przebiegła pomyślnie.")
+                                Alert.showSuccess($resultContainer, _default.alert.messages.success.delete)
                             } else if (msg.data[0][0] == "HAS_RESERVATIONS") {
-                                Alert.showWarning($resultContainer, "Nie można usunąć pokoju, istnieją przypisane do niego rezerwacje!", 6000);
+                                Alert.showWarning($resultContainer, _default.alert.messages.warning.hasReservations, 6000);
                             } else if (msg.data[0][0] == "HAS_ROOMS") {
-                                Alert.showWarning($resultContainer, "Nie można usunąć dodatku - istnieją przypisane do niego pokoje!", 6000);
+                                Alert.showWarning($resultContainer, _default.alert.messages.warning.hasRooms, 6000);
                             } else {
-                                Alert.showError($resultContainer, "Error occured during deleting action!");
+                                Alert.showError($resultContainer, _default.alert.messages.error.delete);
                             }
                         } catch (error) {
-                            Alert.showError($resultContainer, "JavaScript ERROR: " + error);
+                            Alert.showError($resultContainer, _default.alert.messages.error.js + error);
                         }
                     },
                     error: function (msg) {
-                        Alert.showError($resultContainer, "Wystąpił bład podczas zapisu do bazy danych!");
+                        Alert.showError($resultContainer, _default.alert.messages.error.delete);
                     }
                 });
             }
         },
+        editRow: function (that, action, editUrl, editTitle) {
+
+            var $this = $(that);
+            var $thisRow = $this.parents('tr');
+            var index = $thisRow.find('td:first').text();
+            var table = $this.parents('table').dataTable();
+            var $resultContainer = jQuery('#server-messages');
+
+            $.ajax({
+                type: 'POST',
+                url: action,
+                data: {dataFrom: "{'index':'" + index + "'}"},
+                success: function (msg) {
+                    console.log(action, msg);
+                    try {
+                        if (msg.data[0][0] == "success") {
+
+                            Modal.generate('edit-modal', editTitle, "", "Update", '#', false, true);
+                            if (editUrl != "") {
+                                Includer.load(editUrl, 'edit-modal-body');
+                                Modal.show('edit-modal');
+
+                                var $btn = Modal.getBtn('edit-modal');
+                                setTimeout(function () {
+                                    var formId = $('#edit-modal').find('form').attr('id');
+                                    _updateChosenSelect(formId);
+                                }, 500);
+
+                                $btn.on('click', function () {
+                                    var formId = $('#edit-modal').find('form').attr('id');
+                                    _updateRow(formId, 'room-update');
+                                });
+                            }
+                        } else {
+                            Alert.showError($resultContainer, _default.alert.messages.error.edit);
+                        }
+                    } catch (error) {
+                        Alert.showError($resultContainer, _default.alert.messages.error.js + error);
+                    }
+                },
+                error: function (msg) {
+                    Alert.showError($resultContainer, _default.alert.messages.error.edit);
+                }
+            });
+        },
         onRowSelected: function (tableId, fn, fnArgs) {
-            $('body').on('table:rowSelected', function (e, table_id, index, label) {
+            $('body').on(_default.events.selected, function (e, table_id, index, label) {
                 if (index) {
                     if (tableId == table_id) {
                         fnArgs["index"] = index;
@@ -140,17 +271,8 @@ App.Components.Table = (function ($, Alert) {
                     }
                 }
             });
-        },
-        onRowSelected_old: function (tableId, action, resultContainerId, hotelnameContainerId) {
-            $('body').on('table:rowSelected', function (e, table_id, index, label) {
-                if (index) {
-                    if (tableId == table_id) {
-                        Hotel.load(action, resultContainerId, index, hotelnameContainerId, label);
-                    }
-                }
-            });
-        },
+        }
 
     }
 
-})(jQuery, App.Components.Generator.Alert);
+})(jQuery, App.Components.Generator.Alert, App.Components.Includer, App.Components.Generator.Modal, App.Components.Form.Utils);

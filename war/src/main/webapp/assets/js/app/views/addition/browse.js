@@ -34,6 +34,10 @@ App.Views.Addition.Browse = (function (Table) {
                 editColumn: 6,
                 deleteColumn: 7
             }
+        },
+        edit: {
+            title: 'Edit Addition',
+            url: './views/additions/edit.jsp'
         }
     });
 })(App.Components.Table);

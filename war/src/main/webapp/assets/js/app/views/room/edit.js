@@ -1,21 +1,4 @@
-App.Views.Room.Add = (function (Table, Validator, Submitter, Select, Binder, Room, Utils) {
-
-    Table.create({
-        actions: {
-            get: 'additions-getData'
-        },
-        table: {
-            id: 'addition-table-small',
-            params: {
-                aoColumns: [
-                    { "sTitle": "Id" },
-                    { "sTitle": "Name" },
-                    { "sTitle": "Description" },
-                    { "sTitle": "Published" }
-                ]
-            }
-        }
-    });
+App.Views.Room.Edit = (function (Validator, Select, Room, Utils) {
 
     Select.create('additions-getData', 'room-addition-select', {
         label: 1,
@@ -23,7 +6,7 @@ App.Views.Room.Add = (function (Table, Validator, Submitter, Select, Binder, Roo
         multiSelect: true
     });
 
-    Validator.validate('room-add', {
+    Validator.validate('room-edit', {
         room_name: {
             required: true,
             letter_and_digit: true
@@ -63,12 +46,8 @@ App.Views.Room.Add = (function (Table, Validator, Submitter, Select, Binder, Roo
         }
     });
 
-    Submitter.submit('room-add', 'server-messages');
-
-    Binder.bindSelectTable('addition-table-small', 'room-addition-select', true);
-
-    Room.countCapacity('room-add');
+    Room.countCapacity('room-edit');
 
     Utils.activeCheckbox('[name="published"]');
 
-})(App.Components.Table, App.Components.Form.Validator, App.Components.Form.Submitter, App.Components.Select, App.Components.Binder, App.Models.Room, App.Utils);
+})(App.Components.Form.Validator, App.Components.Select, App.Models.Room, App.Utils);
