@@ -41,6 +41,7 @@ App.Components.Table = (function ($, Alert, Includer, Modal, Submitter) {
         //  setTimeout(function(){
         var $selectElements = $('#' + formId).find('select');
         $selectElements.each(function () {
+            var value;
             var $this = $(this);
             var array = [];
             var indexes = "" + $this.data('indexes');
@@ -50,10 +51,12 @@ App.Components.Table = (function ($, Alert, Includer, Modal, Submitter) {
             while (indexes.length > 0) {
                 var sep = indexes.indexOf(',');
                 if (sep == -1) {
-                    array.push(parseInt(indexes.substring(0, indexes.length)));
+                    value = indexes.substring(0, indexes.length);
+                    array.push(parseInt(value) || value);
                     break;
                 }
-                array.push(parseInt(indexes.substring(0, sep)));
+                value = indexes.substring(0, sep);
+                array.push(parseInt(value) || value);
                 indexes = indexes.substring(sep + 1, indexes.length);
             }
 

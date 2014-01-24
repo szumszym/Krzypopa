@@ -48,7 +48,11 @@ App.Components.Generator.Modal = (function ($) {
             $('#' + modalId).modal('show');
         },
         hide: function (modalId) {
-            $('#' + modalId).modal('hide');
+            var $modal = $('#' + modalId);
+            $modal.modal('hide');
+            setTimeout(function () {
+                $modal.remove();
+            }, 500);
         },
         getBody: function (modalId) {
             return $('#' + modalId + '-body');

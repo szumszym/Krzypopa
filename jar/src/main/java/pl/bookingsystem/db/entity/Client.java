@@ -42,6 +42,8 @@ public class Client implements Serializable {
     @Column(name = "register_date")
     private Date register_date;
 
+    @Column(name = "update_date")
+    private Date update_date;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<Reservation> reservations;
@@ -175,6 +177,14 @@ public class Client implements Serializable {
 
     public void setRegister_date(Date register_date) {
         this.register_date = register_date;
+    }
+
+    public Date getUpdate_date() {
+        return update_date;
+    }
+
+    public void setUpdate_date(Date update_date) {
+        this.update_date = update_date;
     }
 
     public List<Reservation> getReservations() {

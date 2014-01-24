@@ -3,7 +3,7 @@ App.Views.Hotel.Browse = (function (Table) {
         actions: {
             get: 'hotel-getData',
             edit: 'hotel-edit',
-            update: '-update',
+            update: 'hotel-update',
             delete: 'hotel-delete'
         },
         table: {

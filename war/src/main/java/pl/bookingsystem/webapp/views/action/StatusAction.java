@@ -16,6 +16,7 @@ import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Reservation;
 import pl.bookingsystem.db.entity.Status;
+import pl.bookingsystem.db.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -111,11 +112,8 @@ public class StatusAction extends ActionSupport implements SessionAware{
 
 
 //UPDATE SESSION
-                if (hotel != null) {
-                    HotelDAO hotelDAO = new HotelDAOImpl();
-                    Hotel hotel2 = hotelDAO.selectByID(Hotel.class, hotel.getId());
-                    session.put("hotel", hotel2);
-                }
+                updateHotelsInSession();
+
                 data = setMsg(SUCCESS);
                 return SUCCESS;
             } else {
@@ -160,6 +158,104 @@ public class StatusAction extends ActionSupport implements SessionAware{
             return ERROR;
         }
 
+    }
+
+
+    @Action(value = "status-update", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String statusUpdate() {
+        try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                Long index = jsonObject.getLong("index");
+
+                String type = jsonObject.getString("type");
+                String color = jsonObject.getString("color");
+                String description = jsonObject.getString("description");
+                if ((description.isEmpty())) {
+                    description = "-";
+                }
+
+
+//SET NEW PROPERTIES
+                StatusDAO statusDAO = new StatusDAOImpl();
+                Status status = statusDAO.selectByID(Status.class, index);
+                status.setType(type);
+                status.setColor(color);
+                status.setDescription(description);
+
+                statusDAO.update(status);
+
+//UPDATE SESSION
+                updateHotelsInSession();
+                session.put("edit", null);
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "status-edit", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String statusEdit() {
+        try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                Long index = Long.parseLong(jsonObject.getString("index"));
+
+                StatusDAO statusDAO = new StatusDAOImpl();
+                Status status = statusDAO.selectByID(Status.class, index);
+
+                session.put("edit", status);
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    private void updateHotelsInSession() {
+        Hotel hotel = (Hotel) session.get("hotel");
+        if (hotel != null) {
+            HotelDAO hotelDAO = new HotelDAOImpl();
+            Hotel updatedHotel = hotelDAO.selectByID(hotel.getId());
+            session.put("hotel", updatedHotel);
+
+            List<Hotel> sessionHotels;
+            User currentUser = (User) session.get("user");
+            Boolean isAdmin = (Boolean) session.get("isAdmin");
+            if (isAdmin) {
+                sessionHotels = hotelDAO.selectAllHotels();
+            } else {
+                sessionHotels = hotelDAO.selectAllHotelsOfUser(currentUser.getId());
+            }
+            session.put("hotels", sessionHotels);
+        }
     }
     @Override
     public void setSession(Map<String, Object> stringObjectMap) {

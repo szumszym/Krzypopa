@@ -154,7 +154,7 @@ public class HotelAction extends ActionSupport implements SessionAware {
 //ADDRESS
             String city = jsonObject.getString("city");
             String street = jsonObject.getString("street");
-            Integer building_no = Integer.parseInt(jsonObject.getString("building_no"));
+            String building_no = jsonObject.getString("building_no");
             String postcode = jsonObject.getString("postcode");
             String country = jsonObject.getString("country");
             Address address = new Address(city, street, building_no, postcode, country);
@@ -169,11 +169,12 @@ public class HotelAction extends ActionSupport implements SessionAware {
             if (user != null) {
                 Hotel hotel = new Hotel(name, description, phone_number, email, address, user);
 
-                List<Hotel> hotels = (List<Hotel>) session.get("hotels");
-                hotels.add(hotel);
-                session.put("hotels", hotels);
                 HotelDAO hotelDAO = new HotelDAOImpl();
                 hotelDAO.create(hotel);
+
+//UPDATE SESSION
+                updateHotelsInSession();
+
                 data = setMsg(SUCCESS);
                 return SUCCESS;
             } else {
@@ -223,6 +224,96 @@ public class HotelAction extends ActionSupport implements SessionAware {
 
     }
 
+
+    @Action(value = "hotel-update", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String hotelUpdate() {
+        try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+                User user = (User) session.get("user");
+                User.Type type = user.getType();
+
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                Long index = jsonObject.getLong("index");
+
+                String name = jsonObject.getString("name");
+                String email = jsonObject.getString("email");
+                String phone_number = jsonObject.getString("phone_number");
+                String description = jsonObject.getString("description");
+
+//ADDRESS
+                String city = jsonObject.getString("city");
+                String street = jsonObject.getString("street");
+                String building_no = jsonObject.getString("building_no");
+                String postcode = jsonObject.getString("postcode");
+                String country = jsonObject.getString("country");
+                Address address = new Address(city, street, building_no, postcode, country);
+
+
+//SET NEW PROPERTIES
+                HotelDAO hotelDAO = new HotelDAOImpl();
+                Hotel hotel = hotelDAO.selectByID(Hotel.class, index);
+                hotel.setName(name);
+                hotel.setEmail(email);
+                hotel.setPhone_number(phone_number);
+                hotel.setDescription(description);
+                hotel.setAddress(address);
+
+
+                hotelDAO.update(hotel);
+
+//UPDATE SESSION
+                updateHotelsInSession();
+                session.put("edit", null);
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "hotel-edit", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String hotelEdit() {
+        try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                Long index = Long.parseLong(jsonObject.getString("index"));
+
+                HotelDAO hotelDAO = new HotelDAOImpl();
+                Hotel hotel = hotelDAO.selectByID(Hotel.class, index);
+
+                session.put("edit", hotel);
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
+
     private User getUser(Long ownerId) {
 
         User user = null;
@@ -236,6 +327,25 @@ public class HotelAction extends ActionSupport implements SessionAware {
             user = (User) session.get("user");
         }
         return user;
+    }
+
+    private void updateHotelsInSession() {
+        Hotel hotel = (Hotel) session.get("hotel");
+        if (hotel != null) {
+            HotelDAO hotelDAO = new HotelDAOImpl();
+            Hotel updatedHotel = hotelDAO.selectByID(hotel.getId());
+            session.put("hotel", updatedHotel);
+
+            List<Hotel> sessionHotels;
+            User currentUser = (User) session.get("user");
+            Boolean isAdmin = (Boolean) session.get("isAdmin");
+            if (isAdmin) {
+                sessionHotels = hotelDAO.selectAllHotels();
+            } else {
+                sessionHotels = hotelDAO.selectAllHotelsOfUser(currentUser.getId());
+            }
+            session.put("hotels", sessionHotels);
+        }
     }
 
     @Override

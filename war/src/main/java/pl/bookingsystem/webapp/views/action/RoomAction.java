@@ -148,11 +148,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 roomDAO.create(room);
 
 //UPDATE SESSION
-                if (hotel != null) {
-                    HotelDAO hotelDAO = new HotelDAOImpl();
-                    Hotel hotel2 = hotelDAO.selectByID(hotel.getId());
-                    session.put("hotel", hotel2);
-                }
+                updateHotelsInSession();
 
                 data = setMsg(SUCCESS);
                 return SUCCESS;
@@ -168,82 +164,6 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
     }
 
-    @Action(value = "room-update", results = {
-            @Result(name = "success", type = "json"),
-            @Result(name = "error", type = "json")
-    })
-    public String roomUpdate() {
-        try {
-            Boolean isUser = (Boolean) session.get("isUser");
-            if (isUser) {
-                User user = (User) session.get("user");
-                User.Type type = user.getType();
-
-
-                JSONObject jsonObject = new JSONObject(dataFrom);
-                Long index = jsonObject.getLong("index");
-
-                String room_name = jsonObject.getString("room_name");
-                Integer roomno = Integer.parseInt(jsonObject.getString("roomno"));
-                String description = jsonObject.getString("description");
-                Integer capacity = Integer.parseInt(jsonObject.getString("capacity"));
-                Double price = Double.parseDouble(jsonObject.getString("price"));
-
-//BED
-                String bedCountString = jsonObject.getString("bed_count");
-                String bedTypeString = jsonObject.getString("bed_type");
-                String bed = bedCountString + "x" + bedTypeString;
-
-
-//ADDITIONS
-                List<Addition> additionsList = getAdditionsFromJSON(jsonObject);
-
-//HOTEL
-                Hotel hotel = (Hotel) session.get("hotel");
-
-
-//SET NEW PROPERTIES
-
-                RoomDAO roomDAO = new RoomDAOImpl();
-                Room room = roomDAO.selectByID(Room.class, index);
-                room.setName(room_name);
-                room.setNo_room(roomno);
-                room.setDescription(description);
-                room.setCapacity(capacity);
-                room.setPrice(price);
-                room.setBed(bed);
-                room.setAdditions(additionsList);
-
-
-//PUBLISH
-                Boolean published = false;
-                if (User.Type.ADMIN.equals(type) || User.Type.OWNER.equals(type)) {
-                    published = Boolean.parseBoolean(jsonObject.getString("published"));
-                }
-                room.setPublished(published);
-
-                roomDAO.update(room);
-
-//UPDATE SESSION
-                if (hotel != null) {
-                    HotelDAO hotelDAO = new HotelDAOImpl();
-                    Hotel hotel2 = hotelDAO.selectByID(hotel.getId());
-                    session.put("hotel", hotel2);
-                }
-
-                data = setMsg(SUCCESS);
-                return SUCCESS;
-            } else {
-                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
-                return ERROR;
-            }
-
-        } catch (Exception e) {
-            data = setMsg("ERROR!!!", e.getMessage());
-            return ERROR;
-        }
-
-    }
 
     @Action(value = "room-delete", results = {
             @Result(name = "success", type = "json"),
@@ -275,6 +195,69 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
     }
 
+    @Action(value = "room-update", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String roomUpdate() {
+        try {
+            Boolean isUser = (Boolean) session.get("isUser");
+            if (isUser) {
+
+                JSONObject jsonObject = new JSONObject(dataFrom);
+                Long index = jsonObject.getLong("index");
+
+                String room_name = jsonObject.getString("room_name");
+                Integer roomno = Integer.parseInt(jsonObject.getString("roomno"));
+                String description = jsonObject.getString("description");
+                Integer capacity = Integer.parseInt(jsonObject.getString("capacity"));
+                Double price = Double.parseDouble(jsonObject.getString("price"));
+                Boolean published = Boolean.parseBoolean(jsonObject.getString("published"));
+
+//BED
+                String bedCountString = jsonObject.getString("bed_count");
+                String bedTypeString = jsonObject.getString("bed_type");
+                String bed = bedCountString + "x" + bedTypeString;
+
+
+//ADDITIONS
+                List<Addition> additionsList = getAdditionsFromJSON(jsonObject);
+
+//SET NEW PROPERTIES
+
+                RoomDAO roomDAO = new RoomDAOImpl();
+                Room room = roomDAO.selectByID(Room.class, index);
+                room.setName(room_name);
+                room.setNo_room(roomno);
+                room.setDescription(description);
+                room.setCapacity(capacity);
+                room.setPrice(price);
+                room.setBed(bed);
+                room.setAdditions(additionsList);
+                room.setPublished(published);
+
+                roomDAO.update(room);
+
+//UPDATE SESSION
+                updateHotelsInSession();
+                session.put("edit", null);
+                session.put("edit_bedType", null);
+                session.put("edit_bedCount", null);
+                session.put("edit_additions", null);
+
+                data = setMsg(SUCCESS);
+                return SUCCESS;
+            } else {
+                data = setMsg("ERROR!!!", "You have no permission to execute this action!");
+                return ERROR;
+            }
+
+        } catch (Exception e) {
+            data = setMsg("ERROR!!!", e.getMessage());
+            return ERROR;
+        }
+
+    }
 
     @Action(value = "room-edit", results = {
             @Result(name = "success", type = "json"),
@@ -291,16 +274,16 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 RoomDAO roomDAO = new RoomDAOImpl();
                 Room room = roomDAO.selectByID(Room.class, index);
 
-                session.put("editRoom", room);
+                session.put("edit", room);
 
                 Bed bed = new Bed(room);
                 String bed_count = bed.getBed_count();
                 String bed_type = bed.getBed_type();
-                session.put("editRoom_bedCount", bed_count);
-                session.put("editRoom_bedType", bed_type);
+                session.put("edit_bedCount", bed_count);
+                session.put("edit_bedType", bed_type);
 
                 String additions = generateAdditionsStringArray(room);
-                session.put("editRoom_additions", additions);
+                session.put("edit_additions", additions);
 
                 data = setMsg(SUCCESS);
                 return SUCCESS;
@@ -338,6 +321,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
         }
         return additions;
     }
+
     private class Bed {
         private String bed_count;
         private String bed_type;
@@ -355,6 +339,25 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
         public String getBed_type() {
             return bed_type;
+        }
+    }
+
+    private void updateHotelsInSession() {
+        Hotel hotel = (Hotel) session.get("hotel");
+        if (hotel != null) {
+            HotelDAO hotelDAO = new HotelDAOImpl();
+            Hotel updatedHotel = hotelDAO.selectByID(hotel.getId());
+            session.put("hotel", updatedHotel);
+
+            List<Hotel> sessionHotels;
+            User currentUser = (User) session.get("user");
+            Boolean isAdmin = (Boolean) session.get("isAdmin");
+            if (isAdmin) {
+                sessionHotels = hotelDAO.selectAllHotels();
+            } else {
+                sessionHotels = hotelDAO.selectAllHotelsOfUser(currentUser.getId());
+            }
+            session.put("hotels", sessionHotels);
         }
     }
 

@@ -29,32 +29,32 @@ public class Address implements Serializable {
     private String street;
 
     @Column(name = "building_no")
-    private Integer building_no;
+    private String building_no;
 
     @Column(name = "apartment_no")
     private Integer apartment_no;
 
     @Column(name = "postcode")
-    private String poscode;
+    private String postcode;
 
     @Column(name = "country")
     private String country;
 
 
-    public Address(String city, String street, Integer building_no, String poscode, String country) {
+    public Address(String city, String street, String building_no, String postcode, String country) {
         this.city = city;
         this.street = street;
         this.building_no = building_no;
-        this.poscode = poscode;
+        this.postcode = postcode;
         this.country = country;
     }
 
-    public Address(String city, String street, Integer building_no, Integer apartment_no, String poscode, String country) {
+    public Address(String city, String street, String building_no, Integer apartment_no, String postcode, String country) {
         this.city = city;
         this.street = street;
         this.building_no = building_no;
         this.apartment_no = apartment_no;
-        this.poscode = poscode;
+        this.postcode = postcode;
         this.country = country;
     }
 
@@ -81,11 +81,11 @@ public class Address implements Serializable {
         this.street = street;
     }
 
-    public Integer getBuilding_no() {
+    public String getBuilding_no() {
         return building_no;
     }
 
-    public void setBuilding_no(Integer building_no) {
+    public void setBuilding_no(String building_no) {
         this.building_no = building_no;
     }
 
@@ -97,12 +97,12 @@ public class Address implements Serializable {
         this.apartment_no = apartment_no;
     }
 
-    public String getPoscode() {
-        return poscode;
+    public String getPostcode() {
+        return postcode;
     }
 
-    public void setPoscode(String poscode) {
-        this.poscode = poscode;
+    public void setPostcode(String poscode) {
+        this.postcode = poscode;
     }
 
     public String getCountry() {

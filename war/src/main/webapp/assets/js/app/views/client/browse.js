@@ -21,6 +21,10 @@ App.Views.Addition.Browse = (function (Table) {
                 editColumn: 8,
                 deleteColumn: 9
             }
+        },
+        edit: {
+            title: "Client edit",
+            url: './views/client/edit.jsp'
         }
     });
     Table.create({
@@ -37,10 +41,6 @@ App.Views.Addition.Browse = (function (Table) {
                     { "sTitle": "Phone" }
                 ]
             }
-        },
-        edit: {
-            title: "Client edit",
-            url: './views/client/edit.jsp'
         }
     });
 })(App.Components.Table);

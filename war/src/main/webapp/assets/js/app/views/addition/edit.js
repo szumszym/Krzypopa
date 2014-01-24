@@ -1,4 +1,5 @@
 App.Views.Addition.Edit = (function (Validator, Utils) {
+
     Validator.validate('additions-edit', {
         name: {
             required: true,
@@ -16,6 +17,7 @@ App.Views.Addition.Edit = (function (Validator, Utils) {
             number: true
         }
     });
+
     Utils.activeCheckbox('[name="published"]');
 
 })(App.Components.Form.Validator, App.Utils);

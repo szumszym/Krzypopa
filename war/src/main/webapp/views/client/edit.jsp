@@ -1,42 +1,23 @@
-<div class="box dark">
-<header>
-    <div class="icons">
-        <i class="fa fa-edit"></i>
-    </div>
-    <h5>Add New Employee</h5>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<form id="client-edit" class="form-horizontal">
 
-    <div class="toolbar">
-        <ul class="nav">
-            <li>
-                <a class="minimize-box" data-toggle="collapse" href="#div-2">
-                    <i class="fa fa-chevron-up"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <!-- /.toolbar -->
-</header>
-
-<div id="div-2" class="accordion-body collapse in body">
-
-<form id="user-add" action="employee-add" class="form-horizontal">
 <div class="form-group">
     <label class="control-label col-lg-4">First Name</label>
 
     <div class="col-lg-8">
-        <input type="text" name="first_name" placeholder="First Name"
-               class="form-control">
+        <input type="text" name="c_first_name" placeholder="First Name" class="form-control"
+               value='<s:property value="%{#session.edit.first_name}" />'>
     </div>
 </div>
 <!-- /.form-group -->
-
 
 <div class="form-group">
     <label class="control-label col-lg-4">Last Name</label>
 
     <div class="col-lg-8">
-        <input type="text" name="last_name" placeholder="Last Name"
-               class="form-control">
+        <input type="text" name="c_last_name" placeholder="Last Name" class="form-control"
+               value='<s:property value="%{#session.edit.last_name}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -45,8 +26,8 @@
     <label class="control-label col-lg-4">Email</label>
 
     <div class="col-lg-8">
-        <input type="email" name="email" id="au-email-1" placeholder="sample@sample.com"
-               class="form-control">
+        <input type="text" name="c_email" placeholder="sample@sample.com" class="form-control" id="ca-email"
+               value='<s:property value="%{#session.edit.email}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -55,28 +36,29 @@
     <label class="control-label col-lg-4">Confirm Email</label>
 
     <div class="col-lg-8">
-        <input type="text" name="emailNull" id="au-email-2" placeholder="sample@sample.com"
-               class="form-control">
+        <input type="text" name="c_emailNull" placeholder="sample@sample.com" class="form-control"
+               value='<s:property value="%{#session.edit.email}" />'>
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-pass-1" class="control-label col-lg-4">Password</label>
+    <label class="control-label col-lg-4">Password</label>
 
     <div class="col-lg-8">
-        <input class="form-control" type="password" name="password" id="au-pass-1"
-               data-original-title="Please use your secure password" data-placement="top">
+        <input class="form-control" type="password" name="c_password"
+               data-original-title="Please use your secure password"
+               data-placement="top" id="ca-pass" value='<s:property value="%{#session.edit.password}" />'>
     </div>
 </div>
 <!-- /.form-group -->
 
 <div class="form-group">
-    <label for="au-pass2" class="control-label col-lg-4">Confirm Password</label>
+    <label class="control-label col-lg-4">Confirm Password</label>
 
     <div class=" col-lg-8">
-        <input class="form-control" type="password" name="passwordNull"
-               id="au-pass2">
+        <input class="form-control" type="password" name="c_passwordNull"
+               value='<s:property value="%{#session.edit.password}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -85,7 +67,7 @@
     <label class="control-label col-lg-4">PESEL</label>
 
     <div class="col-lg-8">
-        <input type="text" name="pesel" class="form-control">
+        <input type="text" name="c_pesel" class="form-control" value='<s:property value="%{#session.edit.pesel}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -94,7 +76,7 @@
     <label class="control-label col-lg-4">NIP</label>
 
     <div class="col-lg-8">
-        <input type="text" name="nip" class="form-control">
+        <input type="text" name="c_nip" class="form-control" value='<s:property value="%{#session.edit.nip}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -104,7 +86,8 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input name="phone_number" class="form-control" type="text">
+            <input name="c_phone_number" class="form-control" type="text"
+                   value='<s:property value="%{#session.edit.phone_number}" />'>
         </div>
     </div>
 </div>
@@ -113,7 +96,8 @@
     <label class="control-label col-lg-4">City</label>
 
     <div class="col-lg-8">
-        <input type="text" name="city" placeholder="eg: Kraków" class=" form-control">
+        <input type="text" name="c_city" placeholder="eg: Kraków" class="form-control"
+               value='<s:property value="%{#session.edit.address.city}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -122,8 +106,8 @@
     <label class="control-label col-lg-4">Street</label>
 
     <div class="col-lg-8">
-        <input type="text" name="street" placeholder="eg: Zakopiańska"
-               class="form-control">
+        <input type="text" name="c_street" placeholder="eg: Zakopiańska" class="form-control"
+               value='<s:property value="%{#session.edit.address.street}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -132,8 +116,8 @@
     <label class="control-label col-lg-4">Building No.</label>
 
     <div class="col-lg-8">
-        <input type="text" name="building_no" placeholder="eg: 10"
-               class="form-control">
+        <input type="text" name="c_building_no" placeholder="eg: 10" class="form-control"
+               value='<s:property value="%{#session.edit.address.building_no}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -142,8 +126,8 @@
     <label class="control-label col-lg-4">Apartment No.</label>
 
     <div class="col-lg-8">
-        <input type="text" name="apartment_no" placeholder="eg: 10"
-               class="form-control">
+        <input type="text" name="c_apartment_no" placeholder="eg: 10" class="form-control"
+               value='<s:property value="%{#session.edit.address.apartment_no}" />'>
     </div>
 </div>
 <!-- /.form-group -->
@@ -153,17 +137,20 @@
 
     <div class="col-lg-8">
         <div class="input-group">
-            <input type="text" name="postcode" class="form-control">
+            <input type="text" name="c_postcode" class="form-control"
+                   value='<s:property value="%{#session.edit.address.postcode}" />'>
         </div>
     </div>
 </div>
 <!-- /.form-group -->
 
+
 <div class="form-group">
 <label class="control-label col-lg-4">Country</label>
 
 <div class="col-lg-8">
-<select name="country" data-placeholder="Choose a Country..." class="form-control chzn-select">
+<select name="c_country" data-placeholder="Choose a Country..." class="form-control chzn-select"
+        tabindex="2" data-indexes='<s:property value="%{#session.edit.address.country}" />'>
 <option value=""></option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
@@ -412,23 +399,5 @@
 </div>
 </div>
 
-<div class="form-group">
-    <label class="control-label col-lg-4">Add Employee</label>
-
-    <div class="col-lg-8">
-        <div class="input-group">
-
-            <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title="" value="Add"/>
-
-        </div>
-    </div>
-</div>
 </form>
-
-
-</div>
-</div>
-<script src="./assets/js/app/views/user/add.js"></script>
-<script>
-    $(".chzn-select").chosen();
-</script>
+<script src="./assets/js/app/views/client/edit.js"></script>

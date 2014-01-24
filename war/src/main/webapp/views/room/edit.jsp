@@ -2,12 +2,12 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <form id="room-edit" class="form-horizontal">
 
-<div class="form-group">
+    <div class="form-group">
         <label class="control-label col-lg-4">Name</label>
 
         <div class="col-lg-8">
             <input type="text" name="room_name" placeholder="Room"
-                   class="form-control" value='<s:property value="%{#session.editRoom.name}" />'>
+                   class="form-control" value='<s:property value="%{#session.edit.name}" />'>
 
         </div>
     </div>
@@ -18,7 +18,7 @@
 
         <div class="col-lg-8">
             <input type="text" name="roomno"
-                   class="form-control" value='<s:property value="%{#session.editRoom.no_room}" />'>
+                   class="form-control" value='<s:property value="%{#session.edit.no_room}" />'>
         </div>
     </div>
     <!-- /.form-group -->
@@ -28,7 +28,7 @@
 
         <div class="col-lg-8">
             <textarea name="description" placeholder="Description" class="form-control"><s:property
-                    value="%{#session.editRoom.description}"/></textarea>
+                    value="%{#session.edit.description}"/></textarea>
         </div>
     </div>
     <!-- /.row -->
@@ -38,7 +38,7 @@
 
         <div class="col-lg-4">
             <input type="text" name="bed_count" class="form-control"
-                   value='<s:property value="%{#session.editRoom_bedCount}" />'>
+                   value='<s:property value="%{#session.edit_bedCount}" />'>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
 
         <div class="col-lg-4">
             <input type="text" name="bed_type" class="form-control"
-                   value='<s:property value="%{#session.editRoom_bedType}" />'>
+                   value='<s:property value="%{#session.edit_bedType}" />'>
         </div>
     </div>
     <div class="form-group">
@@ -55,7 +55,7 @@
 
         <div class="col-lg-4">
             <input disabled type="text" name="capacity" id="roa-capacity" class="form-control"
-                   value='<s:property value="%{#session.editRoom.capacity}" />'>
+                   value='<s:property value="%{#session.edit.capacity}" />'>
         </div>
     </div>
     <!-- /.form-group -->
@@ -65,7 +65,7 @@
 
         <div class="col-lg-8">
             <input name="price" type="text" class="form-control"
-                   value='<s:property value="%{#session.editRoom.price}" />'>
+                   value='<s:property value="%{#session.edit.price}" />'>
         </div>
     </div>
 
@@ -74,7 +74,7 @@
 
         <div class="col-lg-8">
             <select id="room-addition-select" name="addition" class="form-control" multiple
-                    data-indexes='<s:property value="%{#session.editRoom_additions}" />'>
+                    data-indexes='<s:property value="%{#session.edit_additions}" />'>
             </select>
         </div>
     </div>
@@ -86,7 +86,7 @@
             <div class="checkbox">
                 <label>
                     <input name="published" class="uniform" type="checkbox"
-                           value='<s:property value="%{#session.editRoom.published}" />'>Published
+                           value='<s:property value="%{#session.edit.published}" />'>Published
                 </label>
             </div>
         </div>

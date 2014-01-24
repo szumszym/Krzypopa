@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `id`           BIGINT(20)   NOT NULL AUTO_INCREMENT,
   `city`         VARCHAR(255) NOT NULL,
   `street`       VARCHAR(255) NOT NULL,
-  `building_no`  INT(11)      NOT NULL,
+  `building_no` VARCHAR(11) NOT NULL,
   `apartment_no` INT(11) DEFAULT NULL,
   `postcode`     VARCHAR(8)   NOT NULL,
   `country`      VARCHAR(50)  NOT NULL,
@@ -81,17 +81,17 @@ CREATE TABLE IF NOT EXISTS `address` (
 --
 
 INSERT INTO `address` (`id`, `city`, `street`, `building_no`, `apartment_no`, `postcode`, `country`) VALUES
-  (1, 'Wroclaw', 'Oleśnicka', 7, 2, '44-234', 'Poland'),
-  (2, 'Krakow', 'Lubicz', 1, NULL, '30-200', 'Poland'),
-  (3, 'Berlin', 'Uber Strasse', 88, 2, '01-022', 'Gernamy'),
-  (4, 'Wrocław', 'Komandosow', 10, 6, '44-460', 'Poland'),
+  (1, 'Wroclaw', 'Oleśnicka', '7', 2, '44-234', 'Poland'),
+  (2, 'Krakow', 'Lubicz', '1', NULL, '30-200', 'Poland'),
+  (3, 'Berlin', 'Uber Strasse', '88a', 2, '01-022', 'Gernamy'),
+  (4, 'Wrocław', 'Komandosow', '10', 6, '44-460', 'Poland'),
   (5, 'Ustrzyki Górne', 'Bieszczadzka', 2, NULL, '76-060', 'Poland'),
-  (6, 'Wrocław', 'Swidnicka', 120, 10, '44-450', 'Poland'),
-  (7, 'Katowice', 'Krakowska', 2, 1, '33-450', 'Poland'),
-  (8, 'Szczecin', 'Gdanska', 56, 7, '12-450', 'Poland'),
-  (9, 'Kraków', 'Kupa', 2, NULL, '30-022', 'Poland'),
-  (10, 'Rzeszów', 'Podpromie', 13, NULL, '55-062', 'Poland');
-  ;
+  (6, 'Wrocław', 'Swidnicka', '120', 10, '44-450', 'Poland'),
+  (7, 'Katowice', 'Krakowska', '2', 1, '33-450', 'Poland'),
+  (8, 'Szczecin', 'Gdanska', '56', 7, '12-450', 'Poland'),
+  (9, 'Kraków', 'Kupa', '2', NULL, '30-022', 'Poland'),
+  (10, 'Rzeszów', 'Podpromie', '13', NULL, '55-062', 'Poland');
+;
 
 -- --------------------------------------------------------
 

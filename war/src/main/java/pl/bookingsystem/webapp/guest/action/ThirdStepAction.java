@@ -62,7 +62,7 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
             String password = jsonObject.getString("g_password");
             String city = jsonObject.getString("g_city");
             String street = jsonObject.getString("g_street");
-            Integer building_no = Integer.parseInt(jsonObject.getString("g_building_no"));
+            String building_no = jsonObject.getString("g_building_no");
             String postcode = jsonObject.getString("g_postcode");
             String country = jsonObject.getString("g_country");
             String apartment_no = jsonObject.getString("g_apartment_no");
