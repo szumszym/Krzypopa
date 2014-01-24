@@ -1,7 +1,19 @@
 used technologies:
 
-java
-    hibernate
-    richfaces
-    stripes
-    log4j
+Java:
+   - hibernate 4.3.0.CR2:
+        hibernate-generic-dao 1.2.0
+        mysql-connector-java 5.1.10
+   - struts2 2.1.8:
+        struts2-json-plugin 2.1.8
+   - JSON (org.json) 20131018
+
+   - jUnit 3.8.1
+   - log4j 1.2.17
+
+JavaScript:
+   - jQuery 1.10.2
+   - Bootstrap 3.0.2
+   - Chosen 1.0.0
+   - DataTables.net 1.9.4
+   - jQuery Validation 1.11.1
