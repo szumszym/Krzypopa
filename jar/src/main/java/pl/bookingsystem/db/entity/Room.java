@@ -40,7 +40,7 @@ public class Room implements Serializable {
             @JoinColumn(name = "room_id", nullable = false, updatable = false)},
             inverseJoinColumns = {@JoinColumn(name = "addition_id",
                     nullable = false, updatable = false)})
-    private List<Addition> additions= new LinkedList<Addition>();
+    private List<Addition> additions = new LinkedList<Addition>();
 
     @ManyToMany(mappedBy = "rooms")
     private List<Reservation> reservations = new LinkedList<Reservation>();
@@ -48,8 +48,12 @@ public class Room implements Serializable {
     @Column(name = "price")
     private Double price;
 
+    @Transient
+    private Double priceAdditions = 0.0;
+
     @Column(name = "published")
     private Boolean published;
+
 
     public Room() {
     }
@@ -57,19 +61,21 @@ public class Room implements Serializable {
     /**
      * Constructor without reservation and addidtions
      */
-    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Double price) {
+
+    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, Double price, Double priceAdditions) {
         this.no_room = no_room;
         this.name = name;
         this.bed = bed;
         this.capacity = capacity;
         this.hotel = hotel;
         this.price = price;
+        this.priceAdditions = priceAdditions;
     }
 
     /**
      * Constructor without reservation
      */
-    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, List<Addition> additions, Double price) {
+    public Room(Integer no_room, String name, String bed, Integer capacity, Hotel hotel, List<Addition> additions, Double price, Double priceAdditions) {
         this.no_room = no_room;
         this.name = name;
         this.bed = bed;
@@ -77,6 +83,7 @@ public class Room implements Serializable {
         this.hotel = hotel;
         this.additions = additions;
         this.price = price;
+        this.priceAdditions = priceAdditions;
     }
 
     /**
@@ -93,64 +100,100 @@ public class Room implements Serializable {
         this.price = price;
     }
 
-    public Integer getNo_room() { return no_room; }
+    public Integer getNo_room() {
+        return no_room;
+    }
 
-    public void setNo_room(Integer no_room) { this.no_room = no_room; }
+    public void setNo_room(Integer no_room) {
+        this.no_room = no_room;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getBed() { return bed; }
+    public String getBed() {
+        return bed;
+    }
 
-    public void setBed(String bed) { this.bed = bed; }
+    public void setBed(String bed) {
+        this.bed = bed;
+    }
 
-    public Integer getCapacity() { return capacity; }
+    public Integer getCapacity() {
+        return capacity;
+    }
 
-    public void setCapacity(Integer capacity) { this.capacity = capacity; }
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
 
-    public Hotel getHotel() { return hotel; }
+    public Hotel getHotel() {
+        return hotel;
+    }
 
-    public void setHotel(Hotel hotel) { this.hotel = hotel; }
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
 
-    public List<Addition> getAdditions() { return additions; }
+    public List<Addition> getAdditions() {
+        return additions;
+    }
 
-    public String getAdditions(int limit){
+    public String getAdditions(int limit) {
         String lista = "-";
 
-        int additionSize= this.additions.size();
-        if(additionSize>limit){
-            additionSize=limit;
+        int additionSize = this.additions.size();
+        if (additionSize > limit) {
+            additionSize = limit;
         }
         Addition[] addit = this.additions.toArray(new Addition[0]);
-        if(additionSize>0){
-            lista="";
+        if (additionSize > 0) {
+            lista = "";
         }
-        for(int i= 0 ; i < additionSize; i++){
-            lista= lista+addit[i].getName();
-            if(!(i==additionSize-1)){
-                lista= lista+ ", ";
+        for (int i = 0; i < additionSize; i++) {
+            lista = lista + addit[i].getName();
+            if (!(i == additionSize - 1)) {
+                lista = lista + ", ";
             }
         }
-        if(limit<additionSize){
-            lista=lista+", ...";
+        if (limit < additionSize) {
+            lista = lista + ", ...";
         }
         return lista;
     }
 
-    public void setAdditions(List<Addition> additions) { this.additions = additions; }
+    public void setAdditions(List<Addition> additions) {
+        this.additions = additions;
+    }
 
-    public List<Reservation> getReservations() { return reservations; }
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
 
-    public void setReservations(List<Reservation> reservations) { this.reservations = reservations; }
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public Double getPrice() {
         return price;
@@ -158,6 +201,14 @@ public class Room implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Double getPriceAdditions() {
+        return priceAdditions;
+    }
+
+    public void setPriceAdditions(Double priceAdditions) {
+        this.priceAdditions = priceAdditions;
     }
 
     public Boolean getPublished() {

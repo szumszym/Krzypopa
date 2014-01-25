@@ -74,7 +74,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
             int size = rooms.size();
             data = new String[size][];
             for (int j = 0; j < rooms.size(); j++) {
-                String[] room = new String[9];
+                String[] room = new String[10];
                 Room r = rooms.get(j);
                 room[0] = String.valueOf(r.getId());
                 room[1] = String.valueOf(r.getNo_room());
@@ -84,8 +84,11 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 room[5] = String.valueOf(r.getAdditions(3));
                 String description = r.getDescription();
                 room[6] = String.valueOf(description != null ? description : "-");
-                room[7] = String.valueOf(r.getPrice());
-                room[8] = String.valueOf(r.getPublished());
+                Double roomPrice = r.getPrice();
+                Double priceAdditions = r.getPriceAdditions();
+                room[7] = String.valueOf(roomPrice + " + " + priceAdditions);
+                room[8] = String.valueOf(roomPrice + priceAdditions);
+                room[9] = String.valueOf(r.getPublished());
 
                 data[j] = room;
             }
@@ -117,7 +120,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 Integer roomno = Integer.parseInt(jsonObject.getString("roomno"));
                 String description = jsonObject.getString("description");
                 Integer capacity = Integer.parseInt(jsonObject.getString("capacity"));
-                Double price = Double.parseDouble(jsonObject.getString("price"));
+                Double priceRoom = Double.parseDouble(jsonObject.getString("price"));
 
 //BED
                 String bedCountString = jsonObject.getString("bed_count");
@@ -126,15 +129,19 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
 
 //ADDITIONS
-                List<Addition> additionSet = getAdditionsFromJSON(jsonObject);
+                List<Addition> additionsList = getAdditionsFromJSON(jsonObject);
 
+                Double priceAdditions = 0.0;
+                for (Addition addition : additionsList) {
+                    priceAdditions += addition.getPrice();
+                }
 //HOTEL
                 Hotel hotel = (Hotel) session.get("hotel");
 
 
 //CREATE NEW ROOM AND SAVE
                 RoomDAO roomDAO = new RoomDAOImpl();
-                Room room = new Room(roomno, room_name, bed, capacity, hotel, additionSet, price);
+                Room room = new Room(roomno, room_name, bed, capacity, hotel, additionsList, priceRoom, priceAdditions);
                 room.setDescription(description);
 
 
@@ -244,6 +251,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 session.put("edit_bedType", null);
                 session.put("edit_bedCount", null);
                 session.put("edit_additions", null);
+                session.put("edit_priceTotal", null);
 
                 data = setMsg(SUCCESS);
                 return SUCCESS;
@@ -281,6 +289,11 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 String bed_type = bed.getBed_type();
                 session.put("edit_bedCount", bed_count);
                 session.put("edit_bedType", bed_type);
+
+                Double roomPrice = room.getPrice();
+                Double additionsPrice = room.getPriceAdditions();
+                Double priceTotal = roomPrice + additionsPrice;
+                session.put("edit_priceTotal", priceTotal);
 
                 String additions = generateAdditionsStringArray(room);
                 session.put("edit_additions", additions);

@@ -14,7 +14,6 @@ App = {
     Models: {
         Room: {},
         Hotel: {}
-
     },
     Views: {
         Addition: {},
@@ -23,7 +22,8 @@ App = {
         Reservation: {},
         Room: {},
         Status: {},
-        User: {}
+        User: {},
+        Guest: {}
     },
     Utils: {}
 };

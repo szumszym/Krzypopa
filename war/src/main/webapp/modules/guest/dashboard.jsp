@@ -4,8 +4,11 @@
 <head>
     <title>BookingSystem</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/lib/Font-Awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/lib/chosen/chosen.min.css">
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="./assets/lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap-2.css">
+    <link rel="stylesheet" href="./assets/css/dashboard.css">
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -31,35 +34,24 @@
 </div>
 <div class="jumbotron">
     <div class="container ">
-        <h1 class="text-center">Hello, in reservation world!</h1>
+        <h1 class="text-center">Hello in reservation world!</h1>
 
-        <p class="text-center text-muted">Making reservation is pretty easy just follow 3 steps process</p>
+        <p class="text-center text-muted">Make reservation in 3 easy steps!</p>
 
     </div>
 </div>
-
-<div class="darken-bg">
-    <div id="login" class="tab-pane active">
-        <s:form action="avadaible-rooms" cssClass="form-search">
-            <p class="text-muted text-center">
-                Enter city and dates
-            </p>
-            <s:textfield name="city" placeholder="city" cssClass="form-control"/>
-            <s:textfield name="dateFrom" placeholder="1990-01-01" cssClass="form-control"/>
-            <s:textfield name="dateTo" placeholder="1990-01-01" cssClass="form-control"/>
-            <s:submit cssClass="btn btn-lg btn-primary btn-block" value="Search"/>
-        </s:form>
-    </div>
+<div id="content" style="padding-bottom: 60px;">
+    <div id="context"></div>
 </div>
-<div class="box-si">
 
-</div>
+
 <div class="navbar navbar-inverse navbar-fixed-bottom">
     <div class="container">
-        <p class="footer-text">&#169 1999-2014 BookingSystem. All rights reserved, created by Szymon & Sebastian</p>
+        <p class="footer-text">&#169 2013-2014 BookingSystem. All rights reserved, created by Szymon & Sebastian</p>
     </div>
 </div>
 
+<div id="server-messages"></div>
 
 <script src="./assets/lib/jquery.min.js"></script>
 <script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
@@ -87,7 +79,7 @@
 <script src="./assets/js/app/models/Hotel.js"></script>
 <script src="./assets/js/app/models/Room.js"></script>
 
-<script src="./assets/js/app/main.js"></script>
+<script src="./assets/js/app/main-start.js"></script>
 
 </body>
 </html>

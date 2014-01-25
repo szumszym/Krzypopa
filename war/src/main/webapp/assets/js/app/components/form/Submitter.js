@@ -7,10 +7,11 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
                     add: 'Wystąpił bład podczas dodawania do bazy danych!',
                     update: 'Wystąpił bład podczas aktualizacji bazy danych!',
                     invalidForm: 'Błędnie wypełniony formularz!',
-                    js: 'JavaScript ERROR: '
+                    js: 'JavaScript ERROR: ',
+                    wrong_date: 'Niepoprawna data!'
                 },
                 warning: {
-
+                    no_rooms: 'Nie ma wolnych pokoi dla podanych kryteriów'
                 },
                 success: 'Operacja przbiegła pomyślnie'
             }
@@ -31,7 +32,7 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
     };
 
     return {
-        submit: function (formId, resultContainerId) {
+        submit: function (formId, resultContainerId, callback, callbackArgs) {
             var $form = jQuery('#' + formId);
             var $submitBtn = $form.find('[name="submit"]');
             $submitBtn.on('click', function () {
@@ -51,9 +52,17 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
                         success: function (msg) {
                             try {
                                 if (msg.data[0][0] == 'success') {
-                                    Alert.showSuccess($resultContainer, _default.alert.messages.success);
+                                    if (callback != undefined && callbackArgs != undefined) {
+                                        callback.apply(this, callbackArgs);
+                                    } else {
+                                        Alert.showSuccess($resultContainer, _default.alert.messages.success);
+                                    }
                                 } else if (msg.data[0][0] == 'overlapped') {
                                     Alert.showWarning($resultContainer, msg.data[0][1], 8000);
+                                } else if (msg.data[0][0] == 'NO_ROOMS') {
+                                    Alert.showWarning($resultContainer, _default.alert.messages.warning.no_rooms, 8000);
+                                } else if (msg.data[0][0] == 'WRONG_DATE') {
+                                    Alert.showWarning($resultContainer, _default.alert.messages.error.wrong_date, 8000);
                                 } else {
                                     Alert.showError($resultContainer, _default.alert.messages.error.add);
                                 }

@@ -43,15 +43,19 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
     public Session start(boolean withTransaction) {
         session = getSession();
         if (withTransaction) {
-            getSession().beginTransaction();
+            if (!getSession().getTransaction().isActive()) {
+                getSession().beginTransaction();
+            }
         }
         return session;
     }
 
+    @Override
     public Session start() {
         return start(true);
     }
 
+    @Override
     public void stop(boolean withCommit) {
         try {
             if (getSession().getTransaction().isActive()) {
@@ -62,9 +66,11 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
                 }
             }
         } finally {
-            session.flush();
-            session.close();
-            session = null;
+            if (session != null) {
+                session.flush();
+                session.close();
+                session = null;
+            }
         }
 
 
@@ -153,6 +159,11 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
         } catch (HibernateException e) {
             stop(false);
         }
+    }
+
+    @Override
+    public void deleteOnly(T object) {
+        super.deleteEntity(object);
     }
 
 

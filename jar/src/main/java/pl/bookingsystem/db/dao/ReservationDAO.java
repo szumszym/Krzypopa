@@ -17,5 +17,7 @@ public interface ReservationDAO extends BaseDAO<Reservation, Long> {
 
     List<Reservation> getAllReservationsFrom(Room room);
 
+    List<Reservation> getAllReservationsFrom(List<Room> rooms);
+
     List<Reservation> getAllReservationsWhichHas(Status status);
 }

@@ -16,7 +16,7 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> selectAllWithAddress() {
         List<Hotel> t;
-        try{
+        try {
             start();
             t = search(new Search(Hotel.class).addFetch("address"));
         } finally {
@@ -28,7 +28,7 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> selectAllWithUsers() {
         List<Hotel> t;
-        try{
+        try {
             start();
             t = search(new Search(Hotel.class).addFetch("users"));
         } finally {
@@ -40,7 +40,7 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> selectAllHotelsOfUser(Long userId) {
         List<Hotel> t;
-        try{
+        try {
             start();
             t = search(new Search(Hotel.class)
                     .addFetch("address")
@@ -51,12 +51,15 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
         return t;
     }
 
+
     @Override
-    public List<Hotel> selectAllHotels() {
+    public List<Hotel> selectAllHotelsOfClient(Long userId) {
         List<Hotel> t;
-        try{
+        try {
             start();
-            t =fetchAll();
+            t = search(new Search(Hotel.class)
+                    .addFetch("address")
+                    .addFilterSome("clients", Filter.equal("id", userId)));
         } finally {
             stop();
         }
@@ -64,7 +67,19 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     }
 
     @Override
-    public Hotel selectByID(Long hotelId){
+    public List<Hotel> selectAllHotels() {
+        List<Hotel> t;
+        try {
+            start();
+            t = fetchAll();
+        } finally {
+            stop();
+        }
+        return t;
+    }
+
+    @Override
+    public Hotel selectByID(Long hotelId) {
         return selectByID(Hotel.class, hotelId);
     }
 
@@ -90,11 +105,11 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     }
 
     @Override
-    public List<Hotel> getHotelFromCity(String city){
+    public List<Hotel> getHotelFromCity(String city) {
         List<Hotel> hotels;
-        try{
+        try {
             start();
-            hotels = search(new Search().addFilterLike("address.city", "%"+city+"%"));
+            hotels = search(new Search().addFilterLike("address.city", "%" + city + "%"));
         } finally {
             stop();
         }

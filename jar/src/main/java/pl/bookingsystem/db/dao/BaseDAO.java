@@ -2,6 +2,7 @@ package pl.bookingsystem.db.dao;
 
 
 import com.googlecode.genericdao.dao.hibernate.original.GenericDAO;
+import org.hibernate.Session;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,6 +13,10 @@ import java.util.List;
  */
 public interface BaseDAO<T, ID extends Serializable> extends GenericDAO<T, ID> {
 
+    Session start();
+
+    void stop(boolean withCommit);
+
     T selectByID(Class<T> clazz, Long id);
 
     List<T> selectByIDs(Class<T> clazz, List<Long> ids);
@@ -19,6 +24,8 @@ public interface BaseDAO<T, ID extends Serializable> extends GenericDAO<T, ID> {
     List<T> selectAll(Class<T> clazz);
 
     void create(T t);
+
+    void deleteOnly(T object);
 
     List<T> selectWith(String property);
 

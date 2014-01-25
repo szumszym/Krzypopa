@@ -15,7 +15,8 @@ App.Views.Room.AddGuest = (function (Table, Validator, Submitter, Select, Binder
                     { "sTitle": "Capacity"},
                     { "sTitle": "Additions" },
                     { "sTitle": "Desc" },
-                    { "sTitle": "Price" }
+                    { "sTitle": "Price: Room + Additions" },
+                    { "sTitle": "Price Total" }
                 ]
             }
         }
@@ -52,7 +53,7 @@ App.Views.Room.AddGuest = (function (Table, Validator, Submitter, Select, Binder
 
     Submitter.submit('room-add', 'server-messages');
 
-    Binder.bindSelectTable('room-table-guest', 'reservation-room-select-guest', true, "3");
+    Binder.bindSelectTable('room-table-guest', 'reservation-room-select-guest', true, ["3"]);
 
     Room.checkCapacity('room-table-quest', 'reservation-add-guest');
 

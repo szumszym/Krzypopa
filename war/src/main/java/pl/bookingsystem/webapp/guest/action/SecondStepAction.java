@@ -1,10 +1,5 @@
 package pl.bookingsystem.webapp.guest.action;
 
-/**
- * Author: rastek
- * Date: 19.01.14 @ 12:13
- */
-
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -33,32 +28,58 @@ import java.util.Map;
 import static pl.bookingsystem.webapp.action.Utils.*;
 
 @ParentPackage("json-default")
-@Namespace("")
+@Namespace("/")
 public class SecondStepAction extends ActionSupport implements SessionAware {
 
     private String[][] data;
     private Map<String, Object> session;
+
     public String[][] getData() {
 
         return data;
     }
+
     public String getDataFrom() {
         return dataFrom;
     }
+
     private String dataFrom;
+
     public void setDataFrom(String dataFrom) {
         this.dataFrom = dataFrom;
     }
 
-    @Action(value = "reservation-add-guest", results = {
-            @Result(name = "success", location = "/modules/guest/thirdStep.jsp"),
-            @Result(name = "error", location = "/modules/guest/notFound.jsp")
+    @Action(value = "secondStep-get-rooms", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
     })
-    public String secondstep() throws ParseException {
+    public String stepSecondGetAvailableRooms() {
+        try {
+            String[][] availableRoomsArray = (String[][]) session.get("available_rooms");
+
+            int size = availableRoomsArray.length;
+            data = new String[size][];
+            System.arraycopy(availableRoomsArray, 0, data, 0, size);
+
+            return SUCCESS;
+
+        } catch (Exception e) {
+            data = new String[][]{new String[]{"ERROR!!!"}};
+            return ERROR;
+        }
+
+    }
+
+    @Action(value = "secondStep", results = {
+            @Result(name = "success", type = "json"),
+            @Result(name = "error", type = "json")
+    })
+    public String secondStep() throws ParseException {
 
         JSONObject jsonObject = new JSONObject(dataFrom);
         String name = jsonObject.getString("name");
         Integer person_count = Integer.parseInt(jsonObject.getString("person_count"));
+        Double price = Double.valueOf(jsonObject.getString("price"));
 
         //DATES
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -81,18 +102,17 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
 
                     String date1 = sdf.format(dateFrom2);
                     String date2 = sdf.format(dateTo2);
-                    data = setMsg("overlapped", "'"+room.getName() + "' is already reserved between "+ date1 +" and "+date2);
+                    data = setMsg("overlapped", "'" + room.getName() + "' is already reserved between " + date1 + " and " + date2);
                     return ERROR;
                 }
             }
         }
 
-//SATUS
-        StatusDAO statusDAO = new StatusDAOImpl();
-        Status status = statusDAO.selectByID(Status.class, 1L);
+//STATUS
+        Status status = new Status("Nowa", "Nowa rezerwacja od klienta", "#000000");
 
 //PRICE
-        Double price = 0.0;
+       /* Double price = 0.0;
         for (Room room : rooms) {
             List<Addition> additions = room.getAdditions();
             for (Addition add : additions) {
@@ -101,35 +121,15 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
             price += room.getPrice();
         }
         int days = daysBetween(date_from, date_to);
-        price *= days;
+        price *= days;*/
 
         //CREATE NEW RESERVATION
         Reservation reservation = new Reservation(name, date_from, date_to, person_count, status, rooms, price);
 
         session.put("reservation", reservation);
 
-
+        data = setMsg(SUCCESS);
         return SUCCESS;
-    }
-
-    @Action(value = "login", results = {@Result(name = "success", location = "/modules/login/login.jsp")})
-    public String goToLogin() {
-        return SUCCESS;
-    }
-
-    @Action(value = "room-getAvadaible", results = {
-            @Result(name = "success", type = "json"),
-            @Result(name = "error", type = "json")
-    })
-    public String dataFromFirstStep() {
-        try {
-            data = (String[][]) session.get("avadaibleRooms");
-            return SUCCESS;
-        } catch (Exception e) {
-            data = new String[][]{new String[]{"ERROR!!!"}};
-            return ERROR;
-        }
-
     }
 
     @Override

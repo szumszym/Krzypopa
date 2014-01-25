@@ -4,15 +4,23 @@ App.Components.Binder = (function ($) {
         events: {
             selected: 'table:rowSelected',
             unselected: 'table:rowUnselected',
-            deleted: 'table:rowDeleted'
+            deleted: 'table:rowDeleted',
+            chosen: {
+                selected: 'select:ItemSelected',
+                unselected: 'select:ItemUnselected'
+            },
+            capacity: {
+                plus: 'capacity:plus',
+                minus: 'capacity:minus'
+            }
         }
     };
 
     return {
-        bindSelectTable: function (tableId, selectId, multiselectOpt, labelColNumber) {
+        bindSelectTable: function (tableId, selectId, multiselectOpt, labelColNumbersArray) {
             setTimeout(function () { //because of getting content of table by ajax
                 var multiselectable = multiselectOpt || false;
-                var labelColNum = labelColNumber || "2";
+                var labelColNumbers = labelColNumbersArray || ["2"];
                 var $tableElem = $('#' + tableId);
 
                 var $selectElem = $("#" + selectId);
@@ -27,10 +35,24 @@ App.Components.Binder = (function ($) {
                         $tableRows.each(function () {
                             var $this = $(this);
                             var index = $this.find('td:first').text();
+                            var labelsArray = [];
+                            for (var i = 0; i < labelColNumbers.length; i++) {
+                                labelsArray.push($this.find('td:eq(' + (labelColNumbers[i] - 1) + ')').text());
+                            }
+                            var $body = $('body');
                             if (jQuery.inArray('' + index, selectIndexes) > -1) {
-                                $this.addClass('row-selected');
+                                if (!$this.hasClass('row-selected')) {
+                                    $this.addClass('row-selected');
+                                    $body.trigger(_default.events.capacity.plus, [tableId, index, labelsArray]);
+                                    $body.trigger(_default.events.chosen.selected, [tableId, index, labelsArray]);
+                                }
                             } else {
-                                $this.removeClass('row-selected');
+                                if ($this.hasClass('row-selected')) {
+                                    $this.removeClass('row-selected');
+                                    $body.trigger(_default.events.capacity.minus, [tableId, index, labelsArray]);
+                                    $body.trigger(_default.events.chosen.unselected, [tableId, index, labelsArray]);
+                                }
+
                             }
                         })
                     });
@@ -56,12 +78,18 @@ App.Components.Binder = (function ($) {
 
                     if (e.type == "click") { //for trigger rowselected only!
                         var index = $this.find('td:first').text();
-                        var label = $this.find('td:eq(' + (labelColNum - 1) + ')').text();
+                        var labelsArray = [];
+                        for (var i = 0; i < labelColNumbers.length; i++) {
+                            labelsArray.push($this.find('td:eq(' + (labelColNumbers[i] - 1) + ')').text());
+                        }
                         var $body = $('body');
                         if ($this.hasClass('row-selected')) {
-                            $body.trigger(_default.events.selected, [tableId, index, label]);
+
+                            $body.trigger(_default.events.capacity.plus, [tableId, index, labelsArray]);
+                            $body.trigger(_default.events.selected, [tableId, index, labelsArray]);
                         } else {
-                            $body.trigger(_default.events.unselected, [tableId, index, label]);
+                            $body.trigger(_default.events.capacity.minus, [tableId, index, labelsArray]);
+                            $body.trigger(_default.events.unselected, [tableId, index, labelsArray]);
                         }
                     }
 

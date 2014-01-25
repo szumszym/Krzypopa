@@ -25,11 +25,11 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
     }
 
     @Override
-    public List selectAllOwners() {
+    public List<User> selectAllOwners() {
         List<User> t;
         try {
             start();
-            t =search(new Search(User.class)
+            t = search(new Search(User.class)
                     .addFilterEqual("type", User.Type.OWNER));
         } finally {
             stop();
@@ -38,11 +38,11 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
     }
 
     @Override
-    public List getEmployeesFromHotel(Hotel hotel){
+    public List<User> getEmployeesFromHotel(Hotel hotel) {
         List<User> t;
         try {
             start();
-            t =search(new Search(User.class)
+            t = search(new Search(User.class)
                     .addFilterEqual("type", User.Type.EMPLOYEE)
                     .addFilterSome("hotels", Filter.in(Filter.ROOT_ENTITY, hotel)));
         } finally {

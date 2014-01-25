@@ -1,9 +1,5 @@
 package pl.bookingsystem.webapp.guest.action;
 
-/**
- * Author: rastek
- * Date: 19.01.14 @ 12:13
- */
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.convention.annotation.Action;
@@ -26,7 +22,7 @@ import java.util.Map;
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
-@Namespace("")
+@Namespace("/")
 public class ThirdStepAction extends ActionSupport implements SessionAware {
 
     private String[][] data;
@@ -47,11 +43,11 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
         this.dataFrom = dataFrom;
     }
 
-    @Action(value = "guest-add", results = {
+    @Action(value = "thirdStep", results = {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
-    public String clientAdd() {
+    public String thirdStepClientAdd() {
         try {
             JSONObject jsonObject = new JSONObject(dataFrom);
             String first_name = jsonObject.getString("g_first_name");
@@ -98,11 +94,6 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
 
     }
 
-
-    @Action(value = "login", results = {@Result(name = "success", location = "/modules/login/login.jsp")})
-    public String goToLogin() {
-        return SUCCESS;
-    }
 
     @Override
     public void setSession(Map<String, Object> session) {

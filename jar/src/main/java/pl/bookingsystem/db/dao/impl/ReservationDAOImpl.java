@@ -5,6 +5,7 @@ import com.googlecode.genericdao.search.Search;
 import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.entity.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implement
     @Override
     public List<Reservation> getClientReservations(Client client) {
         List<Reservation> t;
-        try{
+        try {
             start();
             t = search(new Search(Reservation.class)
                     .addFetches("rooms", "rooms.hotel", "client")
@@ -29,9 +30,9 @@ public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implement
     @Override
     public List<Reservation> getHotelReservations(Hotel hotel) {
         List<Reservation> t;
-        try{
+        try {
             start();
-            t =search(new Search(Reservation.class)
+            t = search(new Search(Reservation.class)
                     .addFilterEqual("rooms.hotel", hotel)
                     .addFetch("rooms")
                     .addFetch("client")
@@ -45,9 +46,9 @@ public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implement
     @Override
     public List<Reservation> getAllReservations() {
         List<Reservation> t;
-        try{
+        try {
             start();
-            t =search(new Search(Reservation.class)
+            t = search(new Search(Reservation.class)
                     .addFetches("rooms", "rooms.hotel", "client")
                     .setDistinct(true));
         } finally {
@@ -59,7 +60,7 @@ public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implement
     @Override
     public List<Reservation> getAllReservationsFrom(Room room) {
         List<Reservation> t;
-        try{
+        try {
             start();
             t = search(new Search(Reservation.class)
                     .addFilterSome("rooms", Filter.in(Filter.ROOT_ENTITY, room))
@@ -70,10 +71,29 @@ public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implement
         return t;
     }
 
+
+    @Override
+    public List<Reservation> getAllReservationsFrom(List<Room> rooms) {
+        List<Reservation> t = new LinkedList<Reservation>();
+        for (Room room : rooms) {
+            try {
+                start();
+                List<Reservation> roomReservations = search(new Search(Reservation.class)
+                        .addFilterSome("rooms", Filter.in(Filter.ROOT_ENTITY, room))
+                        .setDistinct(true));
+
+                t.addAll(roomReservations);
+            } finally {
+                stop();
+            }
+        }
+        return t;
+    }
+
     @Override
     public List<Reservation> getAllReservationsWhichHas(Status status) {
         List<Reservation> t;
-        try{
+        try {
             start();
             t = search(new Search(Reservation.class)
                     .addFilterSome("status", Filter.in(Filter.ROOT_ENTITY, status))

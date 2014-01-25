@@ -6,15 +6,12 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.context.internal.ThreadLocalSessionContext;
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.bookingsystem.db.dao.HotelDAO;
-import pl.bookingsystem.db.dao.UserDAO;
-import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
-import pl.bookingsystem.db.dao.impl.UserDAOImpl;
-import pl.bookingsystem.db.entity.Address;
-import pl.bookingsystem.db.entity.Hotel;
-import pl.bookingsystem.db.entity.User;
+import pl.bookingsystem.db.dao.*;
+import pl.bookingsystem.db.dao.impl.*;
+import pl.bookingsystem.db.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -194,21 +191,65 @@ public class HotelAction extends ActionSupport implements SessionAware {
             @Result(name = "error", type = "json")
     })
     public String hotelDelete() {
+        HotelDAO hotelDAO = new HotelDAOImpl();
         try {
             JSONObject jsonObject = new JSONObject(dataFrom);
             Long index = Long.parseLong(jsonObject.getString("index"));
 
-            HotelDAO hotelDAO = new HotelDAOImpl();
             Hotel hotel = hotelDAO.selectByID(index);
-
             Hotel currentHotel = (Hotel) session.get("hotel");
 
-            if (!hotel.equals(currentHotel)) {
-                hotelDAO.deleteByID(index);
+            if (!index.equals(currentHotel.getId())) {
+                StatusDAO statusDAO = new StatusDAOImpl();
+                AdditionDAO additionDAO = new AdditionDAOImpl();
+                ClientDAO clientDAO = new ClientDAOImpl();
+                UserDAO userDAO = new UserDAOImpl();
+                RoomDAO roomDAO = new RoomDAOImpl();
+                ReservationDAO reservationDAO = new ReservationDAOImpl();
 
-                List<Hotel> hotels = (List<Hotel>) session.get("hotels");
-                hotels.remove(hotel);
-                session.put("hotels", hotels);
+                List<Status> hotelStatuses = statusDAO.getStatuses(hotel);
+                List<Addition> hotelAdditions = additionDAO.getAdditions(hotel);
+                List<Client> hotelClients = clientDAO.getClientsFromHotel(hotel.getId());
+                List<User> hotelUsers = userDAO.getEmployeesFromHotel(hotel);
+                List<Room> hotelRooms = roomDAO.getRooms(hotel);
+                List<Reservation> roomsReservations = reservationDAO.getAllReservationsFrom(hotelRooms);
+
+
+//DELETE STATUSES
+                for (Status status : hotelStatuses) {
+                    statusDAO.delete(status);
+                }
+
+//DELETE ADDITIONS
+                for (Addition addition : hotelAdditions) {
+                    additionDAO.delete(addition);
+                }
+
+//DELETE EMPLOYEE
+                for (User user : hotelUsers) {
+                    userDAO.delete(user);
+                }
+
+//DELETE ROOMS
+                for (Room room : hotelRooms) {
+                    roomDAO.delete(room);
+                }
+
+//DELETE RESERVATIONS
+                for (Reservation reservation : roomsReservations) {
+                    reservationDAO.delete(reservation);
+                }
+
+/*//DELETE CLIENTS
+                for (Client client : hotelClients) {
+                    clientDAO.delete(client);
+                }*/
+
+
+//DELETE HOTEL
+                hotelDAO.delete(hotel);
+
+                updateHotelsInSession();
 
                 data = setMsg(SUCCESS);
                 return SUCCESS;
@@ -218,6 +259,9 @@ public class HotelAction extends ActionSupport implements SessionAware {
             }
 
         } catch (Exception e) {
+
+// STOP SESSION - ROLLBACK
+            hotelDAO.stop(false);
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;
         }
@@ -333,8 +377,6 @@ public class HotelAction extends ActionSupport implements SessionAware {
         Hotel hotel = (Hotel) session.get("hotel");
         if (hotel != null) {
             HotelDAO hotelDAO = new HotelDAOImpl();
-            Hotel updatedHotel = hotelDAO.selectByID(hotel.getId());
-            session.put("hotel", updatedHotel);
 
             List<Hotel> sessionHotels;
             User currentUser = (User) session.get("user");

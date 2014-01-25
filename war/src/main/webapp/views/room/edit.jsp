@@ -61,11 +61,11 @@
     <!-- /.form-group -->
 
     <div class="form-group">
-        <label class="control-label col-lg-4">Price</label>
+        <label class="control-label col-lg-4">Price Total</label>
 
         <div class="col-lg-8">
             <input name="price" type="text" class="form-control"
-                   value='<s:property value="%{#session.edit.price}" />'>
+                   value='<s:property value="%{#session.edit_priceTotal}" />'>
         </div>
     </div>
 

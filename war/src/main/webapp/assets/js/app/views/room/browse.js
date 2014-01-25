@@ -17,19 +17,20 @@ App.Views.Room.Browse = (function (Table) {
                     { "sTitle": "Capacity"},
                     { "sTitle": "Additions" },
                     { "sTitle": "Desc" },
-                    { "sTitle": "Price" },
+                    { "sTitle": "Price: Room + Additions" },
+                    { "sTitle": "Price Total" },
                     null
 
                 ],
                 aoColumnDefs: [
                     {   sTitle: "Published",
-                        aTargets: [8],
+                        aTargets: [9],
                         mData: null,
                         "sWidth": "120px",
                         "sClass": "text-center",
                         mRender: function (data, type, full) {
 
-                            if (full[8] == "true") {
+                            if (full[9] == "true") {
                                 return '<i class="fa fa-check fa-2"></i>';
                             } else {
                                 return '<i class="fa fa-times fa-2"></i>';
@@ -37,8 +38,8 @@ App.Views.Room.Browse = (function (Table) {
                         }
                     }
                 ],
-                editColumn: 10,
-                deleteColumn: 11
+                editColumn: 11,
+                deleteColumn: 12
             }
         },
         edit: {

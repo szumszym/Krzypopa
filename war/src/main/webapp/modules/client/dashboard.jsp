@@ -241,6 +241,7 @@
 <script src="./assets/js/app/components/Select.js"></script>
 
 <script src="./assets/js/app/models/Room.js"></script>
+<script src="./assets/js/app/models/Hotel.js"></script>
 
 <script src="./assets/js/app/main.js"></script>
 </body>

@@ -1,70 +1,15 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<html>
-<head>
-    <title>BookingSystem</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="./assets/lib/bootstrap/css/bootstrap.css">
-</head>
-<body>
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Booking System</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <div class="navbar-form navbar-right">
-                <s:a action="login" namespace="" cssClass="btn btn-success">
-                    Sign In
-                </s:a>
-            </div>
-        </div>
-        <!--/.navbar-collapse -->
-    </div>
+<div id="step-third" class="container col-lg-8" style=" margin: 0 auto; float: none;">
+<div class="panel panel-default">
+<div class="panel-body">
+    <strong>Input Requested data </strong>
 </div>
-<div class="jumbotron">
-    <div class="container ">
-        <h1 class="text-center">Hello, in reservation world!</h1>
-
-        <p class="text-center text-muted">Making reservation is pretty easy just follow 3 steps process</p>
-
-    </div>
-</div>
-
-<div class="darken-bg">
-<div class="box dark">
-<header>
-    <div class="icons">
-        <i class="fa fa-edit"></i>
-    </div>
-    <h5>Add New Client</h5>
-
-    <div class="toolbar">
-        <ul class="nav">
-            <li>
-                <a class="minimize-box" data-toggle="collapse" href="#div-1">
-                    <i class="fa fa-chevron-up"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <!-- /.toolbar -->
-</header>
-
-<div id="div-1" class="accordion-body collapse in body">
-<form id="client-add-guest" class="form-horizontal" action="client-add-guest">
+<div class="panel-footer">
+<form id="step-third-form" class="form-horizontal" action="thirdStep">
 
 <div class="form-group">
     <label class="control-label col-lg-4">First Name</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_first_name" placeholder="First Name" class="form-control">
     </div>
 </div>
@@ -73,7 +18,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Last Name</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_last_name" placeholder="Last Name" class="form-control">
     </div>
 </div>
@@ -82,7 +27,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Email</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_email" placeholder="sample@sample.com" class="form-control" id="gu-email">
     </div>
 </div>
@@ -91,7 +36,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Confirm Email</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_emailNull" placeholder="sample@sample.com" class="form-control">
     </div>
 </div>
@@ -100,10 +45,8 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Password</label>
 
-    <div class="col-lg-8">
-        <input class="form-control" type="password" name="g_password"
-               data-original-title="Please use your secure password"
-               data-placement="top" id="gu-pass">
+    <div class="col-lg-6">
+        <input class="form-control" type="password" name="g_password" id="gu-pass">
     </div>
 </div>
 <!-- /.form-group -->
@@ -111,7 +54,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Confirm Password</label>
 
-    <div class=" col-lg-8">
+    <div class=" col-lg-6">
         <input class="form-control" type="password" name="g_passwordNull">
     </div>
 </div>
@@ -120,7 +63,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">PESEL</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_pesel" class="form-control">
     </div>
 </div>
@@ -129,7 +72,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">NIP</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_nip" class="form-control">
     </div>
 </div>
@@ -138,19 +81,15 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Phone</label>
 
-    <div class="col-lg-8">
-        <div class="input-group">
-            <input name="g_phone_number" class="form-control" type="text"
-                   data-mask="+99 999 999 999">
-            <span class="input-group-addon">+48 999 999 999</span>
-        </div>
+    <div class="col-lg-6">
+        <input name="g_phone_number" class="form-control" type="text">
     </div>
 </div>
 
 <div class="form-group">
     <label class="control-label col-lg-4">City</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_city" placeholder="eg: Kraków" class="form-control">
     </div>
 </div>
@@ -159,7 +98,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Street</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_street" placeholder="eg: Zakopiańska" class="form-control">
     </div>
 </div>
@@ -168,7 +107,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Building No.</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_building_no" placeholder="eg: 10" class="form-control">
     </div>
 </div>
@@ -177,7 +116,7 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Apartment No.</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <input type="text" name="g_apartment_no" placeholder="eg: 10" class="form-control">
     </div>
 </div>
@@ -186,11 +125,8 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Post code</label>
 
-    <div class="col-lg-8">
-        <div class="input-group">
-            <input type="text" name="g_postcode" class="form-control" data-mask="99-999">
-            <span class="input-group-addon">99-999</span>
-        </div>
+    <div class="col-lg-6">
+        <input type="text" name="g_postcode" class="form-control">
     </div>
 </div>
 <!-- /.form-group -->
@@ -199,9 +135,8 @@
 <div class="form-group">
 <label class="control-label col-lg-4">Country</label>
 
-<div class="col-lg-8">
-<select name="g_country" data-placeholder="Choose a Country..." class="form-control chzn-select"
-        tabindex="2">
+<div class="col-lg-6">
+<select name="g_country" data-placeholder="Choose a Country..." class="form-control chzn-select" tabindex="2">
 <option value=""></option>
 <option value="United States">United States</option>
 <option value="United Kingdom">United Kingdom</option>
@@ -453,62 +388,19 @@
 <div class="form-group">
     <label class="control-label col-lg-4">Register</label>
 
-    <div class="col-lg-8">
+    <div class="col-lg-6">
         <div class="input-group">
             <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title=""
                    value="Register"/>
         </div>
     </div>
 </div>
+
 </form>
 </div>
 </div>
-
-<!--row End -->
-
-
 </div>
-<div class="box-si">
-
-</div>
-<div class="navbar navbar-inverse navbar-fixed-bottom">
-    <div class="container">
-        <p class="footer-text">&#169 1999-2014 BookingSystem. All rights reserved, created by Szymon & Sebastian</p>
-    </div>
-</div>
-
-
-<script src="./assets/lib/jquery.min.js"></script>
-<script src="./assets/lib/bootstrap/js/bootstrap.min.js"></script>
-<script src="./assets/lib/chosen/chosen.jquery.js"></script>
-<script src="./assets/lib/jquery-validation-1.11.1/dist/jquery.validate.js"></script>
-<script src="./assets/lib/datatables/jquery.dataTables.js"></script>
-<script src="./assets/lib/datatables/DT_bootstrap.js"></script>
-
-<script src="./assets/js/app/namespace.js"></script>
-
-<script src="./assets/js/app/utils/Utils.js"></script>
-
-<script src="./assets/js/app/components/generator/Alert.js"></script>
-<script src="./assets/js/app/components/generator/Modal.js"></script>
-
-<script src="./assets/js/app/components/form/Utils.js"></script>
-<script src="./assets/js/app/components/form/Submitter.js"></script>
-<script src="./assets/js/app/components/form/Validator.js"></script>
-
-<script src="./assets/js/app/components/Binder.js"></script>
-<script src="./assets/js/app/components/Includer.js"></script>
-<script src="./assets/js/app/components/Table.js"></script>
-<script src="./assets/js/app/components/Select.js"></script>
-
-<script src="./assets/js/app/models/Hotel.js"></script>
-<script src="./assets/js/app/models/Room.js"></script>
-
-<script src="./assets/js/app/main.js"></script>
-
-<script src="./assets/js/app/views/client/add-guest.js"></script>
+<script src="./assets/js/app/views/guest/step-third.js"></script>
 <script>
     $(".chzn-select").chosen();
 </script>
-</body>
-</html>

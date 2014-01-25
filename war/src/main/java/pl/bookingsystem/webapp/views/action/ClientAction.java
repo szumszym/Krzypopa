@@ -25,18 +25,22 @@ import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
 @Namespace("")
-public class ClientAction extends ActionSupport implements SessionAware{
+public class ClientAction extends ActionSupport implements SessionAware {
     private static final Logger log = Logger.getLogger(ClientAction.class);
     private Map<String, Object> session;
 
     private String[][] data;
+
     public String[][] getData() {
         return data;
     }
+
     private String dataFrom;
+
     public String getDataFrom() {
         return dataFrom;
     }
+
     public void setDataFrom(String dataFrom) {
         this.dataFrom = dataFrom;
     }
@@ -249,7 +253,7 @@ public class ClientAction extends ActionSupport implements SessionAware{
                 String password = jsonObject.getString("c_password");
                 String city = jsonObject.getString("c_city");
                 String street = jsonObject.getString("c_street");
-                String building_no = jsonObject.getString("building_no");
+                String building_no = jsonObject.getString("c_building_no");
                 String postcode = jsonObject.getString("c_postcode");
                 String country = jsonObject.getString("c_country");
                 String apartment_no = jsonObject.getString("c_apartment_no");

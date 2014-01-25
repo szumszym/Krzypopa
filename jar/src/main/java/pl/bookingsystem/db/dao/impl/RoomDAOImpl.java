@@ -39,6 +39,7 @@ public class RoomDAOImpl extends BaseDAOImpl<Room, Long> implements RoomDAO {
         try {
             start();
             t = search(new Search(Room.class)
+                    .addFetch("hotel")
                     .addFilterLike("hotel.address.city", "%" + city + "%"));
         } finally {
             stop();
@@ -50,7 +51,7 @@ public class RoomDAOImpl extends BaseDAOImpl<Room, Long> implements RoomDAO {
     @Override
     public List<Room> getAllRoomsWhichHas(Addition addition) {
         List<Room> t;
-        try{
+        try {
             start();
 
             t = search(new Search(Room.class)

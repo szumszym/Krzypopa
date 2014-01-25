@@ -15,13 +15,14 @@ App.Views.Reservation.AddClient = (function (Table, Validator, Submitter, Select
                     { "sTitle": "Capacity"},
                     { "sTitle": "Additions" },
                     { "sTitle": "Desc" },
-                    { "sTitle": "Price" }
+                    { "sTitle": "Price: Room + Additions" },
+                    { "sTitle": "Price Total" }
                 ]
             }
         }
     });
 
-    Select.create('room-getData', 'reservation-room-select-guest', {
+    Select.create('room-getData', 'reservation-room-select', {
         label: 2,
         value: 0,
         multiSelect: true
@@ -52,10 +53,9 @@ App.Views.Reservation.AddClient = (function (Table, Validator, Submitter, Select
 
     Submitter.submit('reservation-add', 'server-messages');
 
-    Binder.bindSelectTable('room-table-small', 'reservation-room-select', true, "5");
+    Binder.bindSelectTable('room-table-small', 'reservation-room-select', true, ["5"]);
 
     Room.checkCapacity('room-table-small', 'reservation-add');
-    // Room.countCapacity('reservation-add');
 
 })(App.Components.Table, App.Components.Form.Validator, App.Components.Form.Submitter, App.Components.Select, App.Components.Binder, App.Models.Room);
 

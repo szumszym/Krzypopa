@@ -11,7 +11,8 @@ App.Components.Table = (function ($, Alert, Includer, Modal, Submitter) {
                 },
                 warning: {
                     hasReservations: 'Nie można usunąć pokoju, istnieją przypisane do niego rezerwacje!',
-                    hasRooms: 'Nie można usunąć dodatku - istnieją przypisane do niego pokoje!'
+                    hasRooms: 'Nie można usunąć dodatku - istnieją przypisane do niego pokoje!',
+                    currentHotel: 'Nie można usunąć aktualnie wybranego hotelu - skontaktuj się a administratorem!'
                 },
                 success: {
                     save: 'Operacja zapisu do bazy danych przbiegla pomyślnie',
@@ -202,6 +203,8 @@ App.Components.Table = (function ($, Alert, Includer, Modal, Submitter) {
                                 Alert.showWarning($resultContainer, _default.alert.messages.warning.hasReservations, 6000);
                             } else if (msg.data[0][0] == "HAS_ROOMS") {
                                 Alert.showWarning($resultContainer, _default.alert.messages.warning.hasRooms, 6000);
+                            } else if (msg.data[0][0] == "CURRENT_HOTEL") {
+                                Alert.showWarning($resultContainer, _default.alert.messages.warning.currentHotel, 6000);
                             } else {
                                 Alert.showError($resultContainer, _default.alert.messages.error.delete);
                             }
@@ -267,7 +270,7 @@ App.Components.Table = (function ($, Alert, Includer, Modal, Submitter) {
                 if (index) {
                     if (tableId == table_id) {
                         fnArgs["index"] = index;
-                        fnArgs["label"] = label;
+                        fnArgs["label"] = label[0];
                         fn.call(this, fnArgs);
                     }
                 }

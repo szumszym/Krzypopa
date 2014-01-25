@@ -31,7 +31,8 @@ App.Views.Reservation.Add = (function (Table, Validator, Submitter, Select, Bind
                     { "sTitle": "Capacity"},
                     { "sTitle": "Additions" },
                     { "sTitle": "Desc" },
-                    { "sTitle": "Price" }
+                    { "sTitle": "Price: Room + Additions" },
+                    { "sTitle": "Price Total" }
                 ]
             }
         }
@@ -84,7 +85,7 @@ App.Views.Reservation.Add = (function (Table, Validator, Submitter, Select, Bind
     Submitter.submit('reservation-add', 'server-messages');
 
     Binder.bindSelectTable('client-table-small', 'reservation-client-select', false);
-    Binder.bindSelectTable('room-table-small', 'reservation-room-select', true, "5");
+    Binder.bindSelectTable('room-table-small', 'reservation-room-select', true, ["5"]);
 
     Room.checkCapacity('room-table-small', 'reservation-add');
     //  Room.countCapacity('reservation-add');

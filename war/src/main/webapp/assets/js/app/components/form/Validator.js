@@ -27,8 +27,8 @@ App.Components.Form.Validator = (function ($) {
         }, jQuery.validator.format(_default.messages.later_than));
         jQuery.validator.addMethod("not_more_than", function (value, element, param) {
             var what = param[0];
-            var capacity = $(element).data(what);
-            return capacity >= value;
+            var whatValue = $(element).data(what);
+            return whatValue >= value;
 
         }, jQuery.validator.format(_default.messages.not_more_than));
         jQuery.validator.addMethod("accept", function (value, element, param) {
