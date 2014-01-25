@@ -26,7 +26,16 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
                     '<br>' +
                     'Click [OK] to log in again.',
                 btn: 'OK'
-
+            },
+            startpage: {
+                id: 'modal-start-page',
+                title: 'Congratulations!',
+                body: '<br>' +
+                    'Your reservation has been added sucessfully!' +
+                    '<br>' +
+                    'Thank you for using our services.<br><br>' +
+                    'Please come again to BookingSystem (:',
+                btn: 'OK'
             }
         }
     };
@@ -59,8 +68,12 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
                                     }
                                 } else if (msg.data[0][0] == 'overlapped') {
                                     Alert.showWarning($resultContainer, msg.data[0][1], 8000);
-                                } else if (msg.data[0][0] == 'NO_ROOMS') {
+                                } else if (msg.data[0][0] == 'SHOW_MODAL') {
                                     Alert.showWarning($resultContainer, _default.alert.messages.warning.no_rooms, 8000);
+                                } else if (msg.data[0][0] == 'NO_ROOMS') {
+                                    Modal.generate(_default.modal.startpage.id, _default.modal.startpage.title,
+                                        _default.modal.startpage.body, _default.modal.startpage.btn
+                                        , '/bookingsystem/', true);
                                 } else if (msg.data[0][0] == 'WRONG_DATE') {
                                     Alert.showWarning($resultContainer, _default.alert.messages.error.wrong_date, 8000);
                                 } else {

@@ -81,10 +81,11 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
 
             ReservationDAO reservationDAO = new ReservationDAOImpl();
             Reservation reservation = (Reservation) session.get("reservation");
+
             reservation.setClient(client);
             reservationDAO.create(reservation);
 
-            data = setMsg(SUCCESS);
+            data = setMsg("SHOW_MODAL");
             return SUCCESS;
 
         } catch (Exception e) {
