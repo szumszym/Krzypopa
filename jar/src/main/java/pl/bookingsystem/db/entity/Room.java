@@ -48,8 +48,7 @@ public class Room implements Serializable {
     @Column(name = "price")
     private Double price;
 
-    @Transient
-    private Double priceAdditions = 0.0;
+    private Double priceAdditions;
 
     @Column(name = "published")
     private Boolean published;

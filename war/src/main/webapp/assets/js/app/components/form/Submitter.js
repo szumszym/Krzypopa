@@ -11,7 +11,8 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
                     wrong_date: 'Niepoprawna data!'
                 },
                 warning: {
-                    no_rooms: 'Nie ma wolnych pokoi dla podanych kryteriów'
+                    no_rooms: 'Nie ma wolnych pokoi dla podanych kryteriów',
+                    email_exists: 'Email już istnieje w bazie danych!'
                 },
                 success: 'Operacja przbiegła pomyślnie'
             }
@@ -41,12 +42,15 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
     };
 
     return {
-        submit: function (formId, resultContainerId, callback, callbackArgs) {
+        submit: function (formId, resultContainerId, loading, callback, callbackArgs) {
             var $form = jQuery('#' + formId);
             var $submitBtn = $form.find('[name="submit"]');
             $submitBtn.on('click', function () {
+
                 var $resultContainer = jQuery('#' + resultContainerId);
                 if ($form.valid()) {
+                    if (loading != undefined && loading == true) $('#loading').show();
+
                     var send = FormUtils.formToJSON(formId);
                     var formAction = $form.attr('action');
                     var dataFromForm = {dataFrom: send};
@@ -56,9 +60,11 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
                         data: dataFromForm,
                         dataType: 'json',
                         error: function () {
+                            if (loading != undefined && loading == true) $('#loading').hide();
                             Alert.showError($resultContainer, _default.alert.messages.error.save);
                         },
                         success: function (msg) {
+                            if (loading != undefined && loading == true) $('#loading').hide();
                             try {
                                 if (msg.data[0][0] == 'success') {
                                     if (callback != undefined && callbackArgs != undefined) {
@@ -69,13 +75,15 @@ App.Components.Form.Submitter = (function (Alert, Modal, FormUtils, Includer) {
                                 } else if (msg.data[0][0] == 'overlapped') {
                                     Alert.showWarning($resultContainer, msg.data[0][1], 8000);
                                 } else if (msg.data[0][0] == 'SHOW_MODAL') {
-                                    Alert.showWarning($resultContainer, _default.alert.messages.warning.no_rooms, 8000);
-                                } else if (msg.data[0][0] == 'NO_ROOMS') {
                                     Modal.generate(_default.modal.startpage.id, _default.modal.startpage.title,
                                         _default.modal.startpage.body, _default.modal.startpage.btn
                                         , '/bookingsystem/', true);
+                                } else if (msg.data[0][0] == 'NO_ROOMS') {
+                                    Alert.showWarning($resultContainer, _default.alert.messages.warning.no_rooms, 8000);
                                 } else if (msg.data[0][0] == 'WRONG_DATE') {
                                     Alert.showWarning($resultContainer, _default.alert.messages.error.wrong_date, 8000);
+                                } else if (msg.data[0][0] == 'EMAIL_EXISTS') {
+                                    Alert.showWarning($resultContainer, _default.alert.messages.warning.email_exists, 8000);
                                 } else {
                                     Alert.showError($resultContainer, _default.alert.messages.error.add);
                                 }

@@ -61,6 +61,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
     })
     public String dataFromDB() {
         try {
+            Boolean isClient = (Boolean) session.get("isClient");
             Hotel hotel = (Hotel) session.get("hotel");
             RoomDAO roomDAO = new RoomDAOImpl();
             Long hotelId;
@@ -86,11 +87,18 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 room[6] = String.valueOf(description != null ? description : "-");
                 Double roomPrice = r.getPrice();
                 Double priceAdditions = r.getPriceAdditions();
+                if (priceAdditions == null) {
+                    priceAdditions = 0.0;
+                }
                 room[7] = String.valueOf(roomPrice + " + " + priceAdditions);
                 room[8] = String.valueOf(roomPrice + priceAdditions);
                 room[9] = String.valueOf(r.getPublished());
 
-                data[j] = room;
+
+                if (!isClient || r.getPublished()) {
+                    data[j] = room;
+                }
+
             }
 
             return SUCCESS;

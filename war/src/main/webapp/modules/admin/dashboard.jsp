@@ -60,14 +60,14 @@
                         <i class="fa fa-expand"></i>
                     </a>
                 </div>
-                <div class="btn-group">
-                    <a data-url="./views/account_settings/settings.jsp" data-placement="#context"
+                <div class="btn-group hidden">
+                <a data-url="./views/account_settings/settings.jsp" data-placement="#context"
                        data-original-title="Settings" class="btn btn-warning btn-sm" id="settings">
                         <i class="fa fa-cogs"></i>
                     </a>
                 </div>
-                <div class="btn-group">
-                    <a data-toggle="modal" data-original-title="Help" data-placement="bottom"
+                <div class="btn-group hidden">
+                <a data-toggle="modal" data-original-title="Help" data-placement="bottom"
                        class="btn btn-default btn-sm" href="#helpModal">
                         <i class="fa fa-question"></i>
                     </a>
@@ -108,27 +108,10 @@
 
     <!-- header.head -->
     <header class="head">
-        <div class="search-bar">
-            <a data-original-title="Show/Hide Menu" data-placement="bottom" data-tooltip="tooltip"
-               class="accordion-toggle btn btn-primary btn-sm visible-xs" data-toggle="collapse" href="#menu"
-               id="menu-toggle">
-                <i class="fa fa-expand"></i>
-            </a>
-
-            <form class="main-search">
-                <div class="input-group">
-                    <input type="text" class="input-small form-control" placeholder="Live Search ...">
-                <span class="input-group-btn">
-                                    <button class="btn btn-primary btn-sm text-muted" type="button"><i
-                                            class="fa fa-search"></i></button>
-                                </span>
-                </div>
-            </form>
-        </div>
 
         <!-- ."main-bar -->
-        <div class="main-bar">
-            <h3 class="col-lg-4">
+        <div class="main-bar" style="margin-left: 0">
+        <h3 class="col-lg-4">
                 <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
 
             <div class="menu-select-hotel col-lg-6" style="">
@@ -157,8 +140,8 @@
     <ul id="menu" class="collapse">
         <li class="nav-header">Menu</li>
         <%--<li class="nav-divider"></li>--%>
-        <li class="">
-            <a href="#">
+        <li class="hidden">
+        <a href="#">
                 <i class="fa fa-dashboard"></i>
                 <span class="link-title">Dashboard</span>
             </a>
@@ -277,9 +260,8 @@
                 </li>
             </ul>
         </li>
-        <%--USERS--%>
-        <li>
-            <a href="#">
+        <li class="hidden">
+        <a href="#">
                 <i class="fa fa-bar-chart-o"></i>&nbsp; Statistics
                 <span class="fa arrow"></span></a>
             <ul>

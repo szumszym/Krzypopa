@@ -12,7 +12,7 @@ public class ClientDAOImpl extends BaseDAOImpl<Client, Long> implements ClientDA
     @Override
     public Client checkRegisteredClient(String email, String password) {
         Client client;
-        try{
+        try {
             start();
             client = (Client) searchUnique(new Search(Client.class)/*.setResultMode(ISearch.RESULT_SINGLE)*/
                     .addFilterEqual("email", email)
@@ -24,9 +24,22 @@ public class ClientDAOImpl extends BaseDAOImpl<Client, Long> implements ClientDA
     }
 
     @Override
+    public boolean checkIfEmailIsInDB(String email) {
+        Client client;
+        try {
+            start();
+            client = (Client) searchUnique(new Search(Client.class)/*.setResultMode(ISearch.RESULT_SINGLE)*/
+                    .addFilterEqual("email", email));
+        } finally {
+            stop(false);
+        }
+        return client != null;
+    }
+
+    @Override
     public List<Client> findByClientName(String name, String surname) {
         List<Client> t;
-        try{
+        try {
             start();
             t = search(new Search(Client.class)
                     .addFilterEqual("first_name", name)
@@ -38,9 +51,9 @@ public class ClientDAOImpl extends BaseDAOImpl<Client, Long> implements ClientDA
     }
 
     @Override
-    public List<Client> getClientsFromHotel(Long hotelId){
+    public List<Client> getClientsFromHotel(Long hotelId) {
         List<Client> t;
-        try{
+        try {
             start();
             t = search(new Search(Client.class)
                     .addFilterSome("hotels", Filter.equal("id", hotelId)));
@@ -48,5 +61,5 @@ public class ClientDAOImpl extends BaseDAOImpl<Client, Long> implements ClientDA
             stop(false);
         }
         return t;
-      }
+    }
 }

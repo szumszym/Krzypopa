@@ -58,7 +58,7 @@ App.Models.Room = (function ($) {
         },
         countCapacity: function (formId) {
             var $form = $('#' + formId);
-            $form.on('keyup', _default.bedCountId + ',' + _default.bedTypeId, function () {
+            $form.on('keyup change', _default.bedCountId + ',' + _default.bedTypeId, function () {
                 var bedCount = $form.find(_default.bedCountId).val();
                 var bedType = $form.find(_default.bedTypeId).val();
                 if (bedCount == "") bedCount = 0;
@@ -86,7 +86,7 @@ App.Models.Room = (function ($) {
 
             var price = 0.0;
             var days = 0;
-            $form.on('keyup', _default.dateFromId + ',' + _default.dateToId, function () {
+            $form.on('keyup change', _default.dateFromId + ',' + _default.dateToId, function () {
 
                 //TODO: trigger na zmiane ceny pokoi
                 var dateFromVal = $form.find(_default.dateFromId).val();

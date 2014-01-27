@@ -57,7 +57,7 @@ App.Views.Guest.Second = (function (Validator, Submitter, Table, Select, Binder,
         }
     });
 
-    Submitter.submit('step-second-form', 'server-messages', Includer.load, ['./views/guest/third.jsp', 'context']);
+    Submitter.submit('step-second-form', 'server-messages', true, Includer.load, ['./views/guest/third.jsp', 'context']);
 
     Binder.bindSelectTable('step-second-room-table', 'step-second-room-select', true, ["6", "10"]);
 

@@ -10,8 +10,10 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.HotelDAO;
+import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
+import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Hotel;
@@ -171,6 +173,17 @@ public class ClientAction extends ActionSupport implements SessionAware {
                 String country = jsonObject.getString("c_country");
                 String apartment_no = jsonObject.getString("c_apartment_no");
 
+                ClientDAO clientDAO = new ClientDAOImpl();
+                if (clientDAO.checkIfEmailIsInDB(email)) {
+                    data = setMsg("EMAIL_EXISTS");
+                    return ERROR;
+                }
+                UserDAO userDAO = new UserDAOImpl();
+                if (userDAO.checkIfEmailIsInDB(email)) {
+                    data = setMsg("EMAIL_EXISTS");
+                    return ERROR;
+                }
+
                 Address address = new Address(city, street, building_no, postcode, country);
                 if (!apartment_no.isEmpty()) {
                     address.setApartment_no(Integer.valueOf(apartment_no));
@@ -184,7 +197,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
                 }
 
 //SAVE NEW CLIENT
-                ClientDAO clientDAO = new ClientDAOImpl();
+
                 clientDAO.create(client);
 
 //UPDATE HOTEL

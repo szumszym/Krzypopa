@@ -7,18 +7,18 @@ App.Views.Guest.First = (function (Validator, Submitter, Includer) {
             letter: true
         },
 
-        dateFrom: {
+        date_from: {
             required: true,
             date: true,
             later_than_today: true
         },
-        dateTo: {
+        date_to: {
             required: true,
             date: true,
             later_than: ['#dateFrom']
         }
     });
 
-    Submitter.submit('step-first-form', 'server-messages', Includer.load, ['./views/guest/second.jsp', 'context']);
+    Submitter.submit('step-first-form', 'server-messages', true, Includer.load, ['./views/guest/second.jsp', 'context']);
 
 })(App.Components.Form.Validator, App.Components.Form.Submitter, App.Components.Includer);

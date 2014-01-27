@@ -7423,3 +7423,23 @@ td.visible-print {
         display: none !important;
     }
 }
+
+.loading {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 999;
+    height: 99999px;
+    top: 0;
+    left: 0;
+}
+
+.loading-icon {
+    background-image: url('../img/loading.gif');
+    z-index: 999999;
+    position: fixed;
+    top: 50%;
+    left: 49%;
+    width: 55px;
+    height: 55px;
+}

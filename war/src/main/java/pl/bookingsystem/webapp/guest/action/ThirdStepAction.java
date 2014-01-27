@@ -10,8 +10,10 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.ReservationDAO;
+import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
+import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Client;
 import pl.bookingsystem.db.entity.Reservation;
@@ -68,6 +70,17 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
                 address.setApartment_no(Integer.valueOf(apartment_no));
             }
 
+            ClientDAO clientDAO = new ClientDAOImpl();
+            if (clientDAO.checkIfEmailIsInDB(email)) {
+                data = setMsg("EMAIL_EXISTS");
+                return ERROR;
+            }
+            UserDAO userDAO = new UserDAOImpl();
+            if (userDAO.checkIfEmailIsInDB(email)) {
+                data = setMsg("EMAIL_EXISTS");
+                return ERROR;
+            }
+
             Date register_date = new Date();
             Client client = new Client(first_name, last_name, pesel, email, phone_number, password, address, register_date);
             String nip = jsonObject.getString(("g_nip"));
@@ -75,7 +88,6 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
                 client.setNip(Long.parseLong(nip));
             }
 
-            ClientDAO clientDAO = new ClientDAOImpl();
             clientDAO.create(client);
 
 

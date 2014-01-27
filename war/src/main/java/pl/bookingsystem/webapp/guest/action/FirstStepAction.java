@@ -25,7 +25,7 @@ import static pl.bookingsystem.webapp.action.Utils.isOverlapping;
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
-@Namespace("/")
+@Namespace("")
 public class FirstStepAction extends ActionSupport implements SessionAware {
 
     private Map<String, Object> session;
@@ -48,7 +48,7 @@ public class FirstStepAction extends ActionSupport implements SessionAware {
     }
 
 
-    @Action(value = "firstStep", results = {
+    @Action(value = "first-page", results = {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
@@ -93,6 +93,9 @@ public class FirstStepAction extends ActionSupport implements SessionAware {
                     roomArray[7] = String.valueOf(description != null ? description : "-");
                     Double roomPrice = room.getPrice();
                     Double priceAdditions = room.getPriceAdditions();
+                    if (priceAdditions == null) {
+                        priceAdditions = 0.0;
+                    }
                     roomArray[8] = String.valueOf(roomPrice + "+" + priceAdditions);
                     roomArray[9] = String.valueOf(roomPrice + priceAdditions);
 

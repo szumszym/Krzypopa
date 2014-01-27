@@ -8,6 +8,8 @@ import java.util.List;
 public interface UserDAO extends BaseDAO<User, Long> {
     public User checkRegisteredUser(String username, String password);
 
+    boolean checkIfEmailIsInDB(String email);
+
     public List<User> selectAllOwners();
 
     public List<User> getEmployeesFromHotel(Hotel hotel);

@@ -7,9 +7,11 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
+import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.dao.UserDAO;
+import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
@@ -100,6 +102,17 @@ public class UserAction extends ActionSupport implements SessionAware {
             String postcode = jsonObject.getString("postcode");
             String country = jsonObject.getString("country");
 
+            ClientDAO clientDAO = new ClientDAOImpl();
+            if (clientDAO.checkIfEmailIsInDB(email)) {
+                data = setMsg("EMAIL_EXISTS");
+                return ERROR;
+            }
+            UserDAO userDAO = new UserDAOImpl();
+            if (userDAO.checkIfEmailIsInDB(email)) {
+                data = setMsg("EMAIL_EXISTS");
+                return ERROR;
+            }
+
 //ADDRESS
             Address address = new Address(city, street, building_no, postcode, country);
             String apartment_no = jsonObject.getString("apartment_no");
@@ -117,7 +130,6 @@ public class UserAction extends ActionSupport implements SessionAware {
             }
 
 //SAVE USER
-            UserDAO userDAO = new UserDAOImpl();
             userDAO.create(user);
 
 //ADD HOTEL IF EMPLOYEE
@@ -379,6 +391,7 @@ public class UserAction extends ActionSupport implements SessionAware {
         }
         return hotelsString;
     }
+
     public User.Type getUsertype(String s) {
         if (s.equals("ADMIN")) {
             return User.Type.ADMIN;

@@ -60,13 +60,13 @@
                             <i class="fa fa-expand"></i>
                         </a>
                     </div>
-                    <div class="btn-group">
+                    <div class="btn-group hidden">
                         <a data-url="./views/account_settings/settings.jsp" data-placement="#context"
                            data-original-title="Settings" class="btn btn-warning btn-sm" id="settings">
                             <i class="fa fa-cogs"></i>
                         </a>
                     </div>
-                    <div class="btn-group">
+                    <div class="btn-group hidden">
                         <a data-toggle="modal" data-original-title="Help" data-placement="bottom"
                            class="btn btn-default btn-sm" href="#helpModal">
                             <i class="fa fa-question"></i>
@@ -97,26 +97,8 @@
 
         <!-- header.head -->
         <header class="head">
-            <div class="search-bar">
-                <a data-original-title="Show/Hide Menu" data-placement="bottom" data-tooltip="tooltip"
-                   class="accordion-toggle btn btn-primary btn-sm visible-xs" data-toggle="collapse" href="#menu"
-                   id="menu-toggle">
-                    <i class="fa fa-expand"></i>
-                </a>
-
-                <form class="main-search">
-                    <div class="input-group">
-                        <input type="text" class="input-small form-control" placeholder="Live Search ...">
-                <span class="input-group-btn">
-                                    <button class="btn btn-primary btn-sm text-muted" type="button"><i
-                                            class="fa fa-search"></i></button>
-                                </span>
-                    </div>
-                </form>
-            </div>
-
             <!-- ."main-bar -->
-            <div class="main-bar">
+            <div class="main-bar" style="margin-left: 0">
                 <h3 class="col-lg-4">
                     <i class="fa fa-home"></i>&nbsp;DashBoard</h3>
 
@@ -143,7 +125,7 @@
         <ul id="menu" class="collapse">
             <li class="nav-header">Menu</li>
             <%--<li class="nav-divider"></li>--%>
-            <li class="">
+            <li class="hidden">
                 <a href="#">
                     <i class="fa fa-dashboard"></i>
                     <span class="link-title">Dashboard</span>

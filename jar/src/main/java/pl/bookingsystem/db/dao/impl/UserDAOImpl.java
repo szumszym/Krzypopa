@@ -25,6 +25,19 @@ public class UserDAOImpl extends BaseDAOImpl<User, Long> implements UserDAO {
     }
 
     @Override
+    public boolean checkIfEmailIsInDB(String email) {
+        User user;
+        try {
+            start();
+            user = (User) searchUnique(new Search(User.class)/*.setResultMode(ISearch.RESULT_SINGLE)*/
+                    .addFilterEqual("email", email));
+        } finally {
+            stop(false);
+        }
+        return user != null;
+    }
+
+    @Override
     public List<User> selectAllOwners() {
         List<User> t;
         try {

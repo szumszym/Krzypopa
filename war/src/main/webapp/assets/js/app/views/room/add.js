@@ -11,7 +11,7 @@ App.Views.Room.Add = (function (Table, Validator, Submitter, Select, Binder, Roo
                     { "sTitle": "Id" },
                     { "sTitle": "Name" },
                     { "sTitle": "Description" },
-                    { "sTitle": "Published" }
+                    { "sTitle": "Price" }
                 ]
             }
         }

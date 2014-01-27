@@ -1,10 +1,16 @@
+<div id="loading" class="loading" style="display: none;">
+    <div id="loading-icon">
+        <i class="loading-icon"></i>
+    </div>
+</div>
+
 <div id="step-first" class="container col-lg-8" style=" margin: 0 auto; float: none;">
     <div class="panel panel-default">
         <div class="panel-body">
             <strong>Input Requested data </strong>
         </div>
         <div class="panel-footer">
-            <form id="step-first-form" class="form-horizontal" action="firstStep">
+            <form id="step-first-form" class="form-horizontal" action="first-page">
                 <div class="form-group">
                     <label class="control-label col-lg-4">City</label>
 
