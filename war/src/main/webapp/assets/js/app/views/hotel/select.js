@@ -1,24 +1,33 @@
 App.Views.Hotel.Select = (function (Table, Binder, Hotel) {
-    Table.create({
-        actions: {
-            get: 'hotel-getData',
-            edit: 'hotel-edit',
-            delete: 'hotel-delete'
-        },
-        table: {
-            id: 'hotel-select-table',
-            params: {
-                aoColumns: [
-                    { "sTitle": "Id" },
-                    { "sTitle": "Name" },
-                    { "sTitle": "City" },
-                    { "sTitle": "Street" },
-                    { "sTitle": "Phone" },
-                    { "sTitle": "Email" }
+    App.Utils.refresh(3000,
+        [
+            {
+                fn: Table.create,
+                arg: [
+                    {
+                        actions: {
+                            get: 'hotel-getData',
+                            edit: 'hotel-edit',
+                            delete: 'hotel-delete'
+                        },
+                        table: {
+                            id: 'hotel-select-table',
+                            params: {
+                                aoColumns: [
+                                    { "sTitle": "Id" },
+                                    { "sTitle": "Name" },
+                                    { "sTitle": "City" },
+                                    { "sTitle": "Street" },
+                                    { "sTitle": "Phone" },
+                                    { "sTitle": "Email" }
+                                ]
+                            }
+                        }
+                    }
                 ]
             }
-        }
-    });
+        ]
+    );
     Table.onRowSelected('hotel-select-table', Hotel.load, {
         action: 'owner/select-hotel',
         resultContainerId: 'server-messages',

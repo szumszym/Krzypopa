@@ -108,7 +108,6 @@ App.Utils = (function ($) {
                 }, 1000);
             });
         },
-
         activeCheckbox: function (id) {
             if ($(id).val() == "true") {
                 $(id).prop('checked', true);
@@ -118,6 +117,25 @@ App.Utils = (function ($) {
             $(id).change(function () {
                 var $this = $(this);
                 $this.val($this.prop('checked'));
+            });
+        },
+        refresh: function (waitTime, fnArray) {
+            //call on start
+            for (var i = 0; i < fnArray.length; i++) {
+                fnArray[i]["fn"].apply(this, fnArray[i]["arg"]);
+                fnArray[i]["fn"].apply(this, fnArray[i]["arg"]);
+            }
+
+            var timeout = null;
+            $(document).on('mousemove', function () {
+                if (timeout !== null) {
+                    clearTimeout(timeout);
+                }
+                timeout = setTimeout(function () {
+                    for (var i = 0; i < fnArray.length; i++) {
+                        fnArray[i]["fn"].apply(this, fnArray[i]["arg"]);
+                    }
+                }, waitTime);
             });
         }
     }
