@@ -109,7 +109,9 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
         }
 
 //STATUS
-        Status status = new Status("Nowa", "Nowa rezerwacja od klienta", "#000000");
+        StatusDAO statusDAO = new StatusDAOImpl();
+        Status status = statusDAO.selectByID(Status.class, 1L);
+        // Status status = new Status("Nowa", "Nowa rezerwacja od klienta", "#000000");
 
 //CREATE NEW RESERVATION
         Reservation reservation = new Reservation(name, date_from, date_to, person_count, status, rooms, price);

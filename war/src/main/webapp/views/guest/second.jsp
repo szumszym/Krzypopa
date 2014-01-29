@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
 <div id="step-second" class="container">
     <div class="container">
         <div class="panel panel-default">
@@ -35,7 +37,8 @@
 
                             <div class="col-lg-8">
                                 <div class="input-group">
-                                    <input id="date_from" type="date" name="date_from" class="form-control">
+                                    <input id="date_from" type="date" name="date_from" class="form-control"
+                                           value='<s:property value="%{#session.dateFrom}" />' disabled>
                                 </div>
                             </div>
                         </div>
@@ -44,7 +47,8 @@
 
                             <div class="col-lg-8">
                                 <div class="input-group">
-                                    <input type="date" name="date_to" class="form-control">
+                                    <input type="date" name="date_to" class="form-control"
+                                           value='<s:property value="%{#session.dateTo}" />' disabled>
                                 </div>
                             </div>
                         </div>
@@ -83,6 +87,9 @@
 
                             <div class="col-lg-8">
                                 <div class="input-group">
+                                    <input id="back-second" type="button" class="btn btn-lg btn-warning"
+                                           data-original-title="" title="" value="Back"
+                                           style="margin-left: -9px; margin-right: 11px;">
                                     <input type="submit" name="submit" class="btn btn-lg btn-success"
                                            data-original-title="" title="" value="Continue"/>
                                 </div>

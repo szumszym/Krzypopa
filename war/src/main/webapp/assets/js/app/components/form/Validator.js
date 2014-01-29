@@ -14,6 +14,8 @@ App.Components.Form.Validator = (function ($) {
     var init = function () {
         jQuery.validator.addMethod("later_than_today", function (value, element, param) {
             var fDate = new Date();
+            fDate.setHours(0);
+            fDate.setMinutes(0);
             var sDate = new Date(value);
             return fDate <= sDate;
 
@@ -22,7 +24,7 @@ App.Components.Form.Validator = (function ($) {
             var firstDate = param[0];
             var fDate = new Date($(firstDate).val());
             var sDate = new Date(value);
-            return fDate < sDate;
+            return fDate <= sDate;
 
         }, jQuery.validator.format(_default.messages.later_than));
         jQuery.validator.addMethod("not_more_than", function (value, element, param) {

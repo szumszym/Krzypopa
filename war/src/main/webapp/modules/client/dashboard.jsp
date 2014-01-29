@@ -91,8 +91,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
-                            <i class="fa fa-tasks"></i>&nbsp;Reservations
+                        <a href="#" data-url="./views/reservation/reservation-browse-client.jsp"
+                           data-placement="#context">
+                        <i class="fa fa-tasks"></i>&nbsp;Reservations
                         </a>
                     </li>
                 </ul>
@@ -147,8 +148,8 @@
             </li>
 
             <li>
-                <a href="#" data-url="./views/reservation/reservation-browse.jsp" data-placement="#context">
-                    <i class="fa fa-th-list"></i>&nbsp;My reservations</a>
+                <a href="#" data-url="./views/reservation/reservation-browse-client.jsp" data-placement="#context">
+                <i class="fa fa-th-list"></i>&nbsp;My reservations</a>
             </li>
         </ul>
         <!-- /#menu -->

@@ -64,5 +64,7 @@ App.Views.Guest.Second = (function (Validator, Submitter, Table, Select, Binder,
     Room.countPrice('step-second-room-table', 'step-second-form');
     Room.checkCapacity('step-second-room-table', 'step-second-form');
 
+    Includer.loadOnClick('back-second', './views/guest/first.jsp', 'context');
+
 
 })(App.Components.Form.Validator, App.Components.Form.Submitter, App.Components.Table, App.Components.Select, App.Components.Binder, App.Models.Room, App.Components.Includer);

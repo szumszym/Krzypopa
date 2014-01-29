@@ -1,24 +1,86 @@
-App.Views.Guest.Third = (function (Validator, Submitter) {
+App.Views.Guest.Third = (function (Validator, Submitter, Utils) {
 
     Validator.validate('step-third-form', {
-        city: {
+        g_first_name: {
             required: true,
-            maxlength: 50,
+            rangelength: [2, 25],
             letter: true
         },
-
-        dateFrom: {
+        g_last_name: {
             required: true,
-            date: true,
-            later_than_today: true
+            rangelength: [2, 50],
+            letter: true
         },
-        dateTo: {
+        g_email: {
             required: true,
-            date: true,
-            later_than: ['#dateFrom']
+            email: true
+        },
+        g_emailNull: {
+            required: true,
+            equalTo: "#gu-email"
+        },
+        g_password: {
+            required: true,
+            rangelength: [6, 50]
+
+        },
+        g_passwordNull: {
+            required: true,
+            rangelength: [6, 50],
+            equalTo: "#gu-pass"
+        },
+
+        g_pesel: {
+            required: true,
+            rangelength: [6, 11],
+            digits: true
+        },
+
+        g_nip: {
+            rangelength: [6, 10],
+            digits: true
+        },
+
+        g_phone_number: {
+            rangelength: [9, 15],
+            phone: true
+        },
+
+        g_city: {
+            required: true,
+            letter: true
+
+        },
+
+        g_street: {
+            required: true,
+            letter: true
+
+        },
+
+        g_building_no: {
+            required: true,
+            digits: true
+        },
+
+        g_apartment_no: {
+            digits: true
+        },
+
+        g_postcode: {
+            required: true,
+            rangelength: [2, 16],
+            accept: "[0-9 -]+"
+
+        },
+
+        g_country: {
+            required: true
         }
     });
 
     Submitter.submit('step-third-form', 'server-messages');
 
-})(App.Components.Form.Validator, App.Components.Form.Submitter);
+    Utils.loadOnClick('back-third', './views/guest/second.jsp', 'context');
+
+})(App.Components.Form.Validator, App.Components.Form.Submitter, App.Utils);

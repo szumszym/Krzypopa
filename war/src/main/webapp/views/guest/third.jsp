@@ -386,11 +386,13 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-lg-4">Register</label>
+    <label class="control-label col-lg-4"></label>
 
     <div class="col-lg-6">
         <div class="input-group">
-            <input type="submit" name="submit" class="btn btn-primary" data-original-title="" title=""
+            <input id="back-third" type="button" class="btn btn-lg btn-warning" data-original-title="" title=""
+                   value="Back" style="margin-left: -9px; margin-right: 11px;">
+            <input type="submit" name="submit" class="btn btn-lg btn-primary" data-original-title="" title=""
                    value="Register"/>
         </div>
     </div>

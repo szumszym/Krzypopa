@@ -68,6 +68,7 @@ App.Models.Room = (function ($) {
             });
         },
         countPrice: function (tableId, formId) {
+
             var priceSum = 0.0;
             var $form = $('#' + formId);
             $('body').on(_default.events.selected + ' ' + _default.events.unselected + ' ' + _default.events.chosen.selected + ' ' + _default.events.chosen.unselected, function (e, table_id, index, rowValues) {
@@ -86,6 +87,8 @@ App.Models.Room = (function ($) {
 
             var price = 0.0;
             var days = 0;
+
+
             $form.on('keyup change', _default.dateFromId + ',' + _default.dateToId, function () {
 
                 //TODO: trigger na zmiane ceny pokoi
@@ -109,6 +112,19 @@ App.Models.Room = (function ($) {
                 var totalPrice = price * days;
                 $form.find(_default.priceId).val(totalPrice)
             });
+
+            $(document).ready(function () {
+                var dateFromVal = $form.find(_default.dateFromId).val();
+                var dateToVal = $form.find(_default.dateToId).val();
+                var dateFrom = _parseDate(dateFromVal);
+                var dateTo = _parseDate(dateToVal);
+
+                var days = _daysBetween(dateFrom, dateTo) || 0;
+
+                var priceSum = days;
+                $('body').trigger('price-days:changed', [priceSum]);
+            });
+
         }
 
     }

@@ -39,6 +39,11 @@ App.Components.Includer = (function ($) {
         },
         load: function (url, placementId) {
             $('#' + placementId).load(url);
+        },
+        loadOnClick: function (btnSelector, url, placementId) {
+            $('#' + btnSelector).on('click', function () {
+                $('#' + placementId).load(url);
+            });
         }
     }
 

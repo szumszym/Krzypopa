@@ -1,4 +1,4 @@
-App.Views.Reservation.Add = (function (Table, Validator, Submitter, Select, Binder, Room) {
+App.Views.Reservation.Add = (function (Table, Validator, Submitter, Select, Binder, Room, Utils) {
 
     Table.create({
         actions: {
@@ -90,5 +90,8 @@ App.Views.Reservation.Add = (function (Table, Validator, Submitter, Select, Bind
     Room.checkCapacity('room-table-small', 'reservation-add');
     //  Room.countCapacity('reservation-add');
 
-})(App.Components.Table, App.Components.Form.Validator, App.Components.Form.Submitter, App.Components.Select, App.Components.Binder, App.Models.Room);
+    Utils.setTodayTo('[name="date_from"]');
+    Utils.setTodayTo('[name="date_to"]', 1);
+
+})(App.Components.Table, App.Components.Form.Validator, App.Components.Form.Submitter, App.Components.Select, App.Components.Binder, App.Models.Room, App.Utils);
 

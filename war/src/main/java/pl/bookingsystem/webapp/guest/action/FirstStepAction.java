@@ -57,8 +57,10 @@ public class FirstStepAction extends ActionSupport implements SessionAware {
             JSONObject jsonObject = new JSONObject(dataFrom);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date_from = sdf.parse(jsonObject.getString("date_from"));
-            Date date_to = sdf.parse(jsonObject.getString("date_to"));
+            String dateFromString = jsonObject.getString("date_from");
+            Date date_from = sdf.parse(dateFromString);
+            String dateToString = jsonObject.getString("date_to");
+            Date date_to = sdf.parse(dateToString);
             String city = jsonObject.getString("city");
 
 
@@ -116,6 +118,9 @@ public class FirstStepAction extends ActionSupport implements SessionAware {
                 }
 
                 session.put("available_rooms", availableRoomsArray);
+                session.put("dateFrom", dateFromString);
+                session.put("dateTo", dateToString);
+
                 data = setMsg(SUCCESS);
                 return SUCCESS;
             }

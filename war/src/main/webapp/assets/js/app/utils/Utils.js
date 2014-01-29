@@ -137,6 +137,18 @@ App.Utils = (function ($) {
                     }
                 }, waitTime);
             });
+        },
+        setTodayTo: function (selector, plusDays) {
+            var plus = plusDays || 0;
+            var today = new Date();
+            today.setDate(today.getDate() + plus);
+            var day = today.getDate();
+            if (day < 10) day = '0' + day;
+            var month = today.getMonth() + 1;
+            if (month < 10) month = '0' + month;
+            var year = today.getFullYear();
+
+            $(selector).val(year + '-' + month + '-' + day);
         }
     }
 

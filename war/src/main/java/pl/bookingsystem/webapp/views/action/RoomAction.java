@@ -73,10 +73,19 @@ public class RoomAction extends ActionSupport implements SessionAware {
             }
             List<Room> rooms = roomDAO.getRooms(hotelId);
             int size = rooms.size();
+            for (Room r : rooms) {
+                if (isClient && !r.getPublished()) {
+                    size--;
+                }
+            }
             data = new String[size][];
             for (int j = 0; j < rooms.size(); j++) {
-                String[] room = new String[10];
                 Room r = rooms.get(j);
+                if (isClient && !r.getPublished()) {
+                    continue;
+                }
+                String[] room = new String[10];
+
                 room[0] = String.valueOf(r.getId());
                 room[1] = String.valueOf(r.getNo_room());
                 room[2] = String.valueOf(r.getName());
@@ -94,11 +103,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 room[8] = String.valueOf(roomPrice + priceAdditions);
                 room[9] = String.valueOf(r.getPublished());
 
-
-                if (!isClient || r.getPublished()) {
-                    data[j] = room;
-                }
-
+                data[j] = room;
             }
 
             return SUCCESS;
@@ -155,7 +160,7 @@ public class RoomAction extends ActionSupport implements SessionAware {
 
 //PUBLISH
                 Boolean published = false;
-                if (User.Type.OWNER.equals(type) || User.Type.OWNER.equals(type)) {
+                if (User.Type.ADMIN.equals(type) || User.Type.OWNER.equals(type)) {
                     published = Boolean.parseBoolean(jsonObject.getString("published"));
                 }
                 room.setPublished(published);
