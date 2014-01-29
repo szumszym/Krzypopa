@@ -1,4 +1,4 @@
-App.Views.Guest.Third = (function (Validator, Submitter, Utils) {
+App.Views.Guest.Third = (function (Validator, Submitter, Includer) {
 
     Validator.validate('step-third-form', {
         g_first_name: {
@@ -81,6 +81,6 @@ App.Views.Guest.Third = (function (Validator, Submitter, Utils) {
 
     Submitter.submit('step-third-form', 'server-messages');
 
-    Utils.loadOnClick('back-third', './views/guest/second.jsp', 'context');
+    Includer.loadOnClick('back-third', './views/guest/second.jsp', 'context');
 
-})(App.Components.Form.Validator, App.Components.Form.Submitter, App.Utils);
+})(App.Components.Form.Validator, App.Components.Form.Submitter, App.Components.Includer);
