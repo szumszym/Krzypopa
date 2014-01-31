@@ -14,5 +14,5 @@ public interface RoomDAO extends BaseDAO<Room, Long> {
 
     public List<Room> getRoomsFromCity(String city);
 
-    List<Room> getAllRoomsWhichHas(Addition addition);
+    List<Room> getAllRoomsWhichHave(Addition addition);
 }

@@ -117,7 +117,7 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
         Reservation reservation = new Reservation(name, date_from, date_to, person_count, status, rooms, price);
         reservation.setEntry_date(new Date());
         session.put("reservation", reservation);
-        session.put("available_rooms", null);
+
 
         data = setMsg(SUCCESS);
         return SUCCESS;

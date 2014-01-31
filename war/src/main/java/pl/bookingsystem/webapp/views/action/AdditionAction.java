@@ -150,7 +150,7 @@ public class AdditionAction extends ActionSupport implements SessionAware {
             Addition addition = additionDAO.selectByID(Addition.class, index);
 
             RoomDAO roomDAO = new RoomDAOImpl();
-            List<Room> rooms = roomDAO.getAllRoomsWhichHas(addition);
+            List<Room> rooms = roomDAO.getAllRoomsWhichHave(addition);
 
             int size = rooms != null ? rooms.size() : 0;
             if (size > 0) {

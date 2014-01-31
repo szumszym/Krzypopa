@@ -97,6 +97,9 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
             reservation.setClient(client);
             reservationDAO.create(reservation);
 
+//CLEANING SESSION
+            session.put("available_rooms", null);
+
             data = setMsg("SHOW_MODAL");
             return SUCCESS;
 

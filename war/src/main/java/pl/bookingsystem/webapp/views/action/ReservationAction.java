@@ -15,6 +15,7 @@ import pl.bookingsystem.db.entity.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,13 +68,15 @@ public class ReservationAction extends ActionSupport implements SessionAware {
                 reservations = reservationDAO.getClientReservations(client);
             }
 
-            int size = reservations != null ? reservations.size() : 0;
+            List<Reservation> distinctList = getDistinctListOf(reservations);
+
+            int size = distinctList != null ? distinctList.size() : 0;
             if (size > 0) {
                 data = new String[size][];
 
                 for (int j = 0; j < size; j++) {
                     String[] reservation = new String[12];
-                    Reservation r = reservations.get(j);
+                    Reservation r = distinctList.get(j);
                     String userEmail = r.getClient().getEmail();
                     List<Room> rooms = r.getRooms();
                     String roomNumbers = generateRoomNumbersString(rooms);
@@ -118,6 +121,19 @@ public class ReservationAction extends ActionSupport implements SessionAware {
             return ERROR;
         }
 
+    }
+
+    private List<Reservation> getDistinctListOf(List<Reservation> reservations) {
+        Long id = 0L;
+        List<Reservation> distinctList = new LinkedList<Reservation>();
+        for (Reservation reservation : reservations) {
+            Long res_id = reservation.getId();
+            if (!res_id.equals(id)) {
+                distinctList.add(reservation);
+                id = res_id;
+            }
+        }
+        return distinctList;
     }
 
 

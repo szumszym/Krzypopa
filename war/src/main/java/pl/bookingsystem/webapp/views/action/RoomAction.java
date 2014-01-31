@@ -72,18 +72,22 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 hotelId = Long.valueOf(jsonObject.getString("index"));
             }
             List<Room> rooms = roomDAO.getRooms(hotelId);
-            int size = rooms.size();
-            for (Room r : rooms) {
-                if (isClient && !r.getPublished()) {
-                    size--;
+
+            if (isClient) {
+                List<Room> publishedRooms = new LinkedList<Room>();
+                for (Room room : rooms) {
+                    if (room.getPublished()) {
+                        publishedRooms.add(room);
+                    }
                 }
+                rooms = publishedRooms;
             }
+
+            int size = rooms.size();
             data = new String[size][];
             for (int j = 0; j < rooms.size(); j++) {
                 Room r = rooms.get(j);
-                if (isClient && !r.getPublished()) {
-                    continue;
-                }
+
                 String[] room = new String[10];
 
                 room[0] = String.valueOf(r.getId());

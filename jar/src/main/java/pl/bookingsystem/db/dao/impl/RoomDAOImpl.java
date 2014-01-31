@@ -49,7 +49,7 @@ public class RoomDAOImpl extends BaseDAOImpl<Room, Long> implements RoomDAO {
 
 
     @Override
-    public List<Room> getAllRoomsWhichHas(Addition addition) {
+    public List<Room> getAllRoomsWhichHave(Addition addition) {
         List<Room> t;
         try {
             start();
