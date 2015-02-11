@@ -6,7 +6,6 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
-import org.hibernate.context.internal.ThreadLocalSessionContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.*;
@@ -202,14 +201,13 @@ public class HotelAction extends ActionSupport implements SessionAware {
             if (!index.equals(currentHotel.getId())) {
                 StatusDAO statusDAO = new StatusDAOImpl();
                 AdditionDAO additionDAO = new AdditionDAOImpl();
-                ClientDAO clientDAO = new ClientDAOImpl();
                 UserDAO userDAO = new UserDAOImpl();
                 RoomDAO roomDAO = new RoomDAOImpl();
                 ReservationDAO reservationDAO = new ReservationDAOImpl();
 
                 List<Status> hotelStatuses = statusDAO.getStatuses(hotel);
                 List<Addition> hotelAdditions = additionDAO.getAdditions(hotel);
-                List<Client> hotelClients = clientDAO.getClientsFromHotel(hotel.getId());
+
                 List<User> hotelUsers = userDAO.getEmployeesFromHotel(hotel);
                 List<Room> hotelRooms = roomDAO.getRooms(hotel);
                 List<Reservation> roomsReservations = reservationDAO.getAllReservationsFrom(hotelRooms);

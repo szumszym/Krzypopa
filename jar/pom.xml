@@ -23,6 +23,14 @@
             <version>5.1.10</version>
         </dependency>
 
+        <!-- PostgreSQL database driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.3-1101-jdbc41</version>
+        </dependency>
+
+
         <!-- Hibernate framework -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -47,6 +55,21 @@
             <artifactId>search-hibernate</artifactId>
             <version>1.2.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.1.108</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 

@@ -12,6 +12,4 @@ public interface ClientDAO extends BaseDAO<Client, Long> {
 
     public List<Client> findByClientName(String name, String surname);
 
-    public List<Client> getClientsFromHotel(Long hotelId);
-
 }

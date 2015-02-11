@@ -18,7 +18,7 @@ public class StatusDAOImpl extends BaseDAOImpl<Status, Long> implements StatusDA
         List<Status> t;
         try {
             start();
-            t =search(new Search(Status.class)
+            t = search(new Search(Status.class)
                     .addFilterIn("hotel.id", hotelId));
         } finally {
             stop();
@@ -28,7 +28,7 @@ public class StatusDAOImpl extends BaseDAOImpl<Status, Long> implements StatusDA
 
     @Override
     public List<Status> getStatuses(Hotel hotel) {
-       return getStatuses(hotel.getId());
+        return getStatuses(hotel.getId());
     }
 
 }

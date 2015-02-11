@@ -32,8 +32,14 @@ public class Hotel implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "hotels")
-    private List<Client> clients = new LinkedList<Client>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "hotel_client",
+            joinColumns = @JoinColumn(name = "hotel_id")
+    )
+    @Column(name = "client_id")
+    private List<Long> clientIds = new LinkedList<Long>();
+
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "hotels")
     private List<User> users = new LinkedList<User>();
@@ -75,34 +81,34 @@ public class Hotel implements Serializable {
     }
 
 
-    public Hotel(String name, String phone_number, String email, Address address, List<Client> clients, List<User> users) {
+    public Hotel(String name, String phone_number, String email, Address address, List<Long> clients, List<User> users) {
         this.name = name;
         this.phone_number = phone_number;
         this.email = email;
         this.address = address;
-        this.clients = clients;
+        this.clientIds = clients;
         this.users = users;
     }
 
-    public Hotel(String name, String description, String phone_number, String email, Address address, List<Client> clients, List<User> users) {
+    public Hotel(String name, String description, String phone_number, String email, Address address, List<Long> clients, List<User> users) {
         this.name = name;
         this.description = description;
         this.phone_number = phone_number;
         this.email = email;
         this.address = address;
-        this.clients = clients;
+        this.clientIds = clients;
         this.users = users;
     }
 
     public Hotel() {
     }
 
-    public Hotel(String name, String phone_number, String email, Address address, List<Client> clients, List<User> users, List<Room> rooms) {
+    public Hotel(String name, String phone_number, String email, Address address, List<Long> clients, List<User> users, List<Room> rooms) {
         this.name = name;
         this.phone_number = phone_number;
         this.email = email;
         this.address = address;
-        this.clients = clients;
+        this.clientIds = clients;
         this.users = users;
         this.rooms = rooms;
     }
@@ -156,12 +162,12 @@ public class Hotel implements Serializable {
         this.address = address;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public List<Long> getClientIds() {
+        return clientIds;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public void setClientIds(List<Long> clientIds) {
+        this.clientIds = clientIds;
     }
 
     public List<User> getUsers() {

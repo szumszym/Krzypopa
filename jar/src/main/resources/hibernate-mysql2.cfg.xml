@@ -8,9 +8,24 @@
     <session-factory>
         <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
 
+        <!--TODO: przykladowa konfuguracja dla PostgreSQL-->
+        <!--
+        &lt;!&ndash; Database connection settings &ndash;&gt;
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/bookingsystem?useUnicode=true&amp;characterEncoding=utf8</property>
+        <property name="hibernate.connection.username">postgresql</property>
+        <property name="hibernate.connection.password">root</property>
+
+        &lt;!&ndash; JDBC connection pool (use the built-in) &ndash;&gt;
+        <property name="connection.pool_size">1</property>
+
+        &lt;!&ndash; SQL dialect &ndash;&gt;
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+        -->
+
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/bookingsystem?useUnicode=true&amp;characterEncoding=utf8</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/bookingsystem_clients?useUnicode=true&amp;characterEncoding=utf8</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
 
@@ -19,7 +34,6 @@
 
         <!-- SQL dialect -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-
         <!-- Enable Hibernate's automatic session context management -->
         <property name="hibernate.current_session_context_class">thread</property>
 
@@ -36,14 +50,7 @@
 
 
         <mapping class="pl.bookingsystem.db.entity.Client"/>
-        <mapping class="pl.bookingsystem.db.entity.User"/>
-        <mapping class="pl.bookingsystem.db.entity.Address"/>
-        <mapping class="pl.bookingsystem.db.entity.Hotel"/>
-        <mapping class="pl.bookingsystem.db.entity.Room"/>
-        <mapping class="pl.bookingsystem.db.entity.Addition"/>
-        <mapping class="pl.bookingsystem.db.entity.Reservation"/>
-        <mapping class="pl.bookingsystem.db.entity.Status"/>
-        <mapping class="pl.bookingsystem.db.entity.Invoice"/>
+        <mapping class="pl.bookingsystem.db.entity.ClientAddress"/>
 
 
     </session-factory>

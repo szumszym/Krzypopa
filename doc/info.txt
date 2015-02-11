@@ -4,6 +4,7 @@ Java:
    - hibernate 4.3.0.CR2:
         hibernate-generic-dao 1.2.0
         mysql-connector-java 5.1.10
+        postgresql 9.3-1101-jdbc41
    - struts2 2.1.8:
         struts2-json-plugin 2.1.8
    - JSON (org.json) 20131018

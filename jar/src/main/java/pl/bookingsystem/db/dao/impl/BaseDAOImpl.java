@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import pl.bookingsystem.db.dao.BaseDAO;
 
@@ -15,29 +16,43 @@ import java.util.List;
 /**
  * Author: rastek
  * Date: 22.01.14 @ 10:49
+ * Update Date: 10.06.14 @ 19:59
  */
 public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAOImpl<T, ID> implements BaseDAO<T, ID> {
-    static final private Configuration configuration = new Configuration().configure();
-    static final private SessionFactory sessionFactory = configuration.buildSessionFactory(new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build());
-    /*new Configuration().configure().buildSessionFactory();//*/
-
+    static private SessionFactory SESSION_FACTORY;
     private Session session;
 
+    /**
+     * Default database is MySql database
+     */
     public BaseDAOImpl() {
-        super();
-        super.setSessionFactory(sessionFactory);
+        this("/hibernate-mysql.cfg.xml");
     }
 
-    protected Session getSession() {
+    /**
+     * @param cfgFile path to hibernate cfg.xml file to different database
+     */
+    public BaseDAOImpl(String cfgFile) {
+        super();
+
+        Configuration configuration = new AnnotationConfiguration();
+        configuration.configure(cfgFile);
+        SESSION_FACTORY = configuration.buildSessionFactory(new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build());
+
+        super.setSessionFactory(SESSION_FACTORY);
+    }
+
+
+    public Session getSession() {
         if (session == null) {
-            return sessionFactory.openSession();
+            return SESSION_FACTORY.openSession();
         } else {
-            return sessionFactory.getCurrentSession();
+            return SESSION_FACTORY.getCurrentSession();
         }
     }
 
     protected SessionFactory getSessionFactory() {
-        return sessionFactory;
+        return SESSION_FACTORY;
     }
 
     public Session start(boolean withTransaction) {

@@ -1,6 +1,5 @@
 package pl.bookingsystem.db.dao.impl;
 
-import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import pl.bookingsystem.db.dao.ClientDAO;
 import pl.bookingsystem.db.entity.Client;
@@ -8,6 +7,9 @@ import pl.bookingsystem.db.entity.Client;
 import java.util.List;
 
 public class ClientDAOImpl extends BaseDAOImpl<Client, Long> implements ClientDAO {
+    public ClientDAOImpl() {
+        super("/hibernate-mysql2.cfg.xml");
+    }
 
     @Override
     public Client checkRegisteredClient(String email, String password) {
@@ -50,16 +52,4 @@ public class ClientDAOImpl extends BaseDAOImpl<Client, Long> implements ClientDA
         return t;
     }
 
-    @Override
-    public List<Client> getClientsFromHotel(Long hotelId) {
-        List<Client> t;
-        try {
-            start();
-            t = search(new Search(Client.class)
-                    .addFilterSome("hotels", Filter.equal("id", hotelId)));
-        } finally {
-            stop(false);
-        }
-        return t;
-    }
 }

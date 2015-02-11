@@ -14,8 +14,8 @@ import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
-import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Client;
+import pl.bookingsystem.db.entity.ClientAddress;
 import pl.bookingsystem.db.entity.Reservation;
 
 import java.util.Date;
@@ -65,7 +65,7 @@ public class ThirdStepAction extends ActionSupport implements SessionAware {
             String country = jsonObject.getString("g_country");
             String apartment_no = jsonObject.getString("g_apartment_no");
 
-            Address address = new Address(city, street, building_no, postcode, country);
+            ClientAddress address = new ClientAddress(city, street, building_no, postcode, country);
             if (!apartment_no.isEmpty()) {
                 address.setApartment_no(Integer.valueOf(apartment_no));
             }

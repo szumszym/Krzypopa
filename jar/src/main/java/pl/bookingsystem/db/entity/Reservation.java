@@ -36,9 +36,13 @@ public class Reservation implements Serializable {
     @Column(name = "update_date")
     private Date update_date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    /*  @ManyToOne(fetch = FetchType.LAZY)
+      @JoinColumn(name = "client_id", referencedColumnName = "id")*/
+    @Transient
     private Client client;
+
+    @Column(name = "client_id", nullable = true)
+    private Long clientId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", referencedColumnName = "id", nullable = true)
@@ -61,7 +65,7 @@ public class Reservation implements Serializable {
         this.date_from = date_from;
         this.date_to = date_to;
         this.person_count = person_count;
-        this.client = client;
+        // this.client = client;
         this.status = status;
         this.rooms.addAll(rooms);
         this.price = price;
@@ -139,6 +143,14 @@ public class Reservation implements Serializable {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public Status getStatus() {

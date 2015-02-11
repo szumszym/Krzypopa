@@ -65,7 +65,7 @@ public class ReservationAction extends ActionSupport implements SessionAware {
                     reservations = reservationDAO.getHotelReservations(hotel);
                 }
             } else if (client != null) {
-                reservations = reservationDAO.getClientReservations(client);
+                reservations = reservationDAO.getClientReservations(client.getId());
             }
 
             List<Reservation> distinctList = getDistinctListOf(reservations);
@@ -77,7 +77,9 @@ public class ReservationAction extends ActionSupport implements SessionAware {
                 for (int j = 0; j < size; j++) {
                     String[] reservation = new String[12];
                     Reservation r = distinctList.get(j);
-                    String userEmail = r.getClient().getEmail();
+                    ClientDAO clientDAO = new ClientDAOImpl();
+                    Client client1 = clientDAO.selectByID(Client.class, r.getClientId());
+                    String userEmail = client1.getEmail();
                     List<Room> rooms = r.getRooms();
                     String roomNumbers = generateRoomNumbersString(rooms);
                     String hotelName;

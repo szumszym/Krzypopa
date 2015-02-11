@@ -3,7 +3,10 @@ package pl.bookingsystem.db.dao.impl;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import pl.bookingsystem.db.dao.ReservationDAO;
-import pl.bookingsystem.db.entity.*;
+import pl.bookingsystem.db.entity.Hotel;
+import pl.bookingsystem.db.entity.Reservation;
+import pl.bookingsystem.db.entity.Room;
+import pl.bookingsystem.db.entity.Status;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,13 +17,13 @@ import java.util.List;
  */
 public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implements ReservationDAO {
     @Override
-    public List<Reservation> getClientReservations(Client client) {
+    public List<Reservation> getClientReservations(Long client) {
         List<Reservation> t;
         try {
             start();
             t = search(new Search(Reservation.class)
-                    .addFetches("rooms", "rooms.hotel", "client")
-                    .addFilterEqual("client", client));
+                    .addFetches("rooms", "rooms.hotel")
+                    .addFilterEqual("clientId", client));
         } finally {
             stop();
         }
@@ -35,7 +38,7 @@ public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implement
             t = search(new Search(Reservation.class)
                     .addFilterEqual("rooms.hotel", hotel)
                     .addFetch("rooms")
-                    .addFetch("client")
+                    /*.addFetch("client")*/
                     .setDistinct(true));
         } finally {
             stop();
@@ -49,7 +52,7 @@ public class ReservationDAOImpl extends BaseDAOImpl<Reservation, Long> implement
         try {
             start();
             t = search(new Search(Reservation.class)
-                    .addFetches("rooms", "rooms.hotel", "client")
+                    .addFetches("rooms", "rooms.hotel"/*, "client"*/)
                     .setDistinct(true));
         } finally {
             stop();

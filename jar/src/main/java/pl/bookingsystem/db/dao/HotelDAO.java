@@ -17,8 +17,6 @@ public interface HotelDAO extends BaseDAO<Hotel, Long> {
 
     public List<Hotel> selectAllWithUsers();
 
-    List<Hotel> selectAllHotelsOfClient(Long userId);
-
     public List<Hotel> selectAllHotels();
 
     public List<Hotel> selectAllHotelsOfUser(Long userId);

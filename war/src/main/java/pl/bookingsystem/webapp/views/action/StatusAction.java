@@ -26,19 +26,23 @@ import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
 @Namespace("")
-public class StatusAction extends ActionSupport implements SessionAware{
+public class StatusAction extends ActionSupport implements SessionAware {
 
     private Map<String, Object> session;
 
     private String[][] data;
+
     public String[][] getData() {
 
         return data;
     }
+
     private String dataFrom;
+
     public String getDataFrom() {
         return dataFrom;
     }
+
     public void setDataFrom(String dataFrom) {
         this.dataFrom = dataFrom;
     }
@@ -145,7 +149,7 @@ public class StatusAction extends ActionSupport implements SessionAware{
             List<Reservation> reservations = reservationDAO.getAllReservationsWhichHas(status);
 
             int size = reservations != null ? reservations.size() : 0;
-            if(size>0){
+            if (size > 0) {
                 data = setMsg("HAS_RESERVATIONS");
                 return ERROR;
             } else {
@@ -257,6 +261,7 @@ public class StatusAction extends ActionSupport implements SessionAware{
             session.put("hotels", sessionHotels);
         }
     }
+
     @Override
     public void setSession(Map<String, Object> stringObjectMap) {
         this.session = stringObjectMap;

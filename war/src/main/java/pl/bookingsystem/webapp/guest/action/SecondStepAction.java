@@ -10,11 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ReservationDAO;
 import pl.bookingsystem.db.dao.RoomDAO;
-import pl.bookingsystem.db.dao.StatusDAO;
 import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
 import pl.bookingsystem.db.dao.impl.StatusDAOImpl;
-import pl.bookingsystem.db.entity.Addition;
 import pl.bookingsystem.db.entity.Reservation;
 import pl.bookingsystem.db.entity.Room;
 import pl.bookingsystem.db.entity.Status;
@@ -38,6 +36,19 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
 
         return data;
     }
+
+    private StatusDAOImpl statusDAO;
+
+    private ReservationDAO reservationDAO;
+
+    private RoomDAO roomDAO;
+
+    public SecondStepAction() {
+        statusDAO = new StatusDAOImpl();
+        reservationDAO = new ReservationDAOImpl();
+        roomDAO = new RoomDAOImpl();
+    }
+
 
     public String getDataFrom() {
         return dataFrom;
@@ -88,11 +99,9 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
 //ROOMS
         JSONArray jsonRoomIdsArray = (JSONArray) jsonObject.get("room_ids");
         List<Long> room_ids = convertJSONArrayToArrayList(jsonRoomIdsArray);
-        RoomDAO roomDAO = new RoomDAOImpl();
         List<Room> rooms = roomDAO.selectByIDs(Room.class, room_ids);
 
         //CHECK IF TERM IS AVADAIBLE
-        ReservationDAO reservationDAO = new ReservationDAOImpl();
         for (Room room : rooms) {
             List<Reservation> reservations = reservationDAO.getAllReservationsFrom(room);
             for (Reservation res : reservations) {
@@ -109,7 +118,6 @@ public class SecondStepAction extends ActionSupport implements SessionAware {
         }
 
 //STATUS
-        StatusDAO statusDAO = new StatusDAOImpl();
         Status status = statusDAO.selectByID(Status.class, 1L);
         // Status status = new Status("Nowa", "Nowa rezerwacja od klienta", "#000000");
 

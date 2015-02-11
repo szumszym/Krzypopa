@@ -75,9 +75,13 @@ public class Addition implements Serializable {
         this.description = description;
     }
 
-    public List<Room> getRooms() { return rooms; }
+    public List<Room> getRooms() {
+        return rooms;
+    }
 
-    public void setRooms(List<Room> rooms) { this.rooms = rooms; }
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
+    }
 
     public Double getPrice() {
         return price;

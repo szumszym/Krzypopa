@@ -14,8 +14,8 @@ import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
-import pl.bookingsystem.db.entity.Address;
 import pl.bookingsystem.db.entity.Client;
+import pl.bookingsystem.db.entity.ClientAddress;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.User;
 
@@ -66,7 +66,8 @@ public class ClientAction extends ActionSupport implements SessionAware {
                     clients = clientDAO.selectAll(Client.class);
                 } else if (isOwner || isEmployee) {
                     Hotel hotel = (Hotel) session.get("hotel");
-                    clients = clientDAO.getClientsFromHotel(hotel.getId());
+                    List<Long> clientIds = hotel.getClientIds();
+                    clients = clientDAO.selectByIDs(Client.class, clientIds);
                 }
 
                 int size = clients != null ? clients.size() : 0;
@@ -74,7 +75,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
                 for (int j = 0; j < size; j++) {
                     String[] tableS = new String[7];
                     Client c = clients.get(j);
-                    Address a = c.getAddress();
+                    ClientAddress a = c.getAddress();
                     tableS[0] = String.valueOf(c.getId());
                     tableS[1] = String.valueOf(String.valueOf(c.getLast_name() + " " + c.getFirst_name()));
                     tableS[2] = String.valueOf(c.getEmail());
@@ -121,11 +122,13 @@ public class ClientAction extends ActionSupport implements SessionAware {
                     clients = clientDAO.selectAll(Client.class);
                 } else if (isOwner || isEmployee) {
                     Hotel hotel = (Hotel) session.get("hotel");
-                    clients = clientDAO.getClientsFromHotel(hotel.getId());
+                    List<Long> clientIds = hotel.getClientIds();
+                    clients = clientDAO.selectByIDs(Client.class, clientIds);
                 }
-                int size = clients.size();
+
+                int size = clients != null ? clients.size() : 0;
                 data = new String[size][];
-                for (int j = 0; j < clients.size(); j++) {
+                for (int j = 0; j < size; j++) {
                     String[] tableS = new String[4];
                     Client c = clients.get(j);
 
@@ -168,7 +171,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
                 String password = jsonObject.getString("c_password");
                 String city = jsonObject.getString("c_city");
                 String street = jsonObject.getString("c_street");
-                String building_no = jsonObject.getString("building_no");
+                String building_no = jsonObject.getString("c_building_no");
                 String postcode = jsonObject.getString("c_postcode");
                 String country = jsonObject.getString("c_country");
                 String apartment_no = jsonObject.getString("c_apartment_no");
@@ -184,7 +187,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
                     return ERROR;
                 }
 
-                Address address = new Address(city, street, building_no, postcode, country);
+                ClientAddress address = new ClientAddress(city, street, building_no, postcode, country);
                 if (!apartment_no.isEmpty()) {
                     address.setApartment_no(Integer.valueOf(apartment_no));
                 }
@@ -272,7 +275,7 @@ public class ClientAction extends ActionSupport implements SessionAware {
                 String apartment_no = jsonObject.getString("c_apartment_no");
                 String nip = jsonObject.getString(("c_nip"));
 
-                Address address = new Address(city, street, building_no, postcode, country);
+                ClientAddress address = new ClientAddress(city, street, building_no, postcode, country);
                 if (!apartment_no.isEmpty()) {
                     address.setApartment_no(Integer.valueOf(apartment_no));
                 }
@@ -348,11 +351,10 @@ public class ClientAction extends ActionSupport implements SessionAware {
     private static void addClientToHotel(Client client, Hotel hotel) {
         HotelDAO hotelDAO = new HotelDAOImpl();
         ClientDAO clientDAO = new ClientDAOImpl();
-        Client _client = clientDAO.selectWith(client.getId(), "hotels");
-        Hotel _hotel = hotelDAO.selectWith(hotel.getId(), "clients");
+        Client _client = clientDAO.selectByID(Client.class, client.getId());
+        Hotel _hotel = hotelDAO.selectByID(hotel.getId());
 
-        _hotel.getClients().add(_client);
-        _client.getHotels().add(_hotel);
+        _hotel.getClientIds().add(_client.getId());
 
         hotelDAO.update(_hotel);
     }

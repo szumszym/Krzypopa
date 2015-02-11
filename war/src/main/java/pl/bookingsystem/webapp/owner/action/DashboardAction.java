@@ -26,8 +26,8 @@ public class DashboardAction extends ActionSupport implements SessionAware {
             @Result(name = "newowner", location = "/modules/owner/dashboard-new.jsp")
     })
     public String execute() {
-         Hotel hotel = (Hotel) session.get("hotel");
-        if(hotel!=null){
+        Hotel hotel = (Hotel) session.get("hotel");
+        if (hotel != null) {
             return SUCCESS;
         } else {
             return "newowner";

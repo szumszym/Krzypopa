@@ -16,7 +16,7 @@ public class AdditionDAOImpl extends BaseDAOImpl<Addition, Long> implements Addi
     @Override
     public List<Addition> getAdditions(Long hotelId) {
         List<Addition> t;
-        try{
+        try {
             start();
             t = search(new Search(Addition.class).addFilterIn("hotel.id", hotelId));
         } finally {

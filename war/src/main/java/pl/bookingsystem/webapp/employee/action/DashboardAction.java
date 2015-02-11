@@ -49,6 +49,7 @@ public class DashboardAction extends ActionSupport implements SessionAware, Appl
     public void setSession(Map<String, Object> session) {
         this.session = session;
     }
+
     @Override
     public void setApplication(Map<String, Object> application) {
         this.application = application;

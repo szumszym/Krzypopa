@@ -8,15 +8,12 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.ClientDAO;
-import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.dao.UserDAO;
 import pl.bookingsystem.db.dao.impl.ClientDAOImpl;
-import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.dao.impl.HotelDAOImpl;
 import pl.bookingsystem.db.dao.impl.UserDAOImpl;
 import pl.bookingsystem.db.entity.Address;
-import pl.bookingsystem.db.entity.User;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.User;
 

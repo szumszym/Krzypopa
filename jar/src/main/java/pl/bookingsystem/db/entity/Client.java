@@ -37,25 +37,27 @@ public class Client implements Serializable {
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private Address address;
+    private ClientAddress address;
 
     @Column(name = "register_date")
     private Date register_date;
 
     @Column(name = "update_date")
     private Date update_date;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    /*
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")*/
+    @Transient
     private List<Reservation> reservations;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "hotel_client", joinColumns = {
-            @JoinColumn(name = "client_id", nullable = false, updatable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "hotel_id",
-                    nullable = false, updatable = false)})
+    /*  @ManyToMany(fetch = FetchType.LAZY)
+      @JoinTable(name = "hotel_client", joinColumns = {
+              @JoinColumn(name = "client_id", nullable = false, updatable = false)},
+              inverseJoinColumns = {@JoinColumn(name = "hotel_id",
+                      nullable = false, updatable = false)})*/
+    @Transient
     private List<Hotel> hotels = new LinkedList<Hotel>();
 
-    public Client(String first_name, String last_name, Long pesel, String email, String phone_number, String password, Address address, Date register_date) {
+    public Client(String first_name, String last_name, Long pesel, String email, String phone_number, String password, ClientAddress address, Date register_date) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.pesel = pesel;
@@ -66,7 +68,7 @@ public class Client implements Serializable {
         this.register_date = register_date;
     }
 
-    public Client(String first_name, String last_name, Long pesel, String email, String phone_number, String password, Address address, Date register_date, Long nip) {
+    public Client(String first_name, String last_name, Long pesel, String email, String phone_number, String password, ClientAddress address, Date register_date, Long nip) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.pesel = pesel;
@@ -78,7 +80,7 @@ public class Client implements Serializable {
         this.nip = nip;
     }
 
-    public Client(String first_name, String last_name, Long pesel, Long nip, String email, String phone_number, String password, Address address, Date register_date, List<Reservation> reservations, List<Hotel> hotels) {
+    public Client(String first_name, String last_name, Long pesel, Long nip, String email, String phone_number, String password, ClientAddress address, Date register_date, List<Reservation> reservations, List<Hotel> hotels) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.pesel = pesel;
@@ -155,11 +157,11 @@ public class Client implements Serializable {
         this.password = password;
     }
 
-    public Address getAddress() {
+    public ClientAddress getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(ClientAddress address) {
         this.address = address;
     }
 
