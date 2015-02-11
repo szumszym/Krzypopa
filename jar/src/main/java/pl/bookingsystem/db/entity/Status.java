@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "status")
-public class Status implements Serializable {
+public class Status implements Serializable, BaseEntity {
 
 
     @Column(name = "id", unique = true)
@@ -15,6 +15,17 @@ public class Status implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
     @Column(name = "status_type")
     private String type;
 
@@ -24,7 +35,7 @@ public class Status implements Serializable {
     @OneToMany(mappedBy = "status")
     private List<Reservation> reservations = new LinkedList<Reservation>();
 
-    @Column(name = "color")
+    @Column (name = "color")
     private String color;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -82,13 +93,9 @@ public class Status implements Serializable {
         this.description = description;
     }
 
-    public String getColor() {
-        return color;
-    }
+    public String getColor() { return color; }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
+    public void setColor(String color) { this.color = color; }
 
     public Hotel getHotel() {
         return hotel;

@@ -2,6 +2,8 @@ package pl.bookingsystem.db.dao.impl;
 
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pl.bookingsystem.db.dao.HotelDAO;
 import pl.bookingsystem.db.entity.Addition;
 import pl.bookingsystem.db.entity.Hotel;
@@ -16,11 +18,12 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> selectAllWithAddress() {
         List<Hotel> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search(Hotel.class).addFetch("address"));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }
@@ -28,11 +31,12 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> selectAllWithUsers() {
         List<Hotel> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search(Hotel.class).addFetch("users"));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }
@@ -40,13 +44,14 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> selectAllHotelsOfUser(Long userId) {
         List<Hotel> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search(Hotel.class)
                     .addFetch("address")
                     .addFilterSome("users", Filter.equal("id", userId)));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }
@@ -54,11 +59,12 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> selectAllHotels() {
         List<Hotel> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = fetchAll();
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }
@@ -92,11 +98,12 @@ public class HotelDAOImpl extends BaseDAOImpl<Hotel, Long> implements HotelDAO {
     @Override
     public List<Hotel> getHotelFromCity(String city) {
         List<Hotel> hotels;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             hotels = search(new Search().addFilterLike("address.city", "%" + city + "%"));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return hotels;
     }

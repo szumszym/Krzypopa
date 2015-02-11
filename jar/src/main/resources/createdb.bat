@@ -1,0 +1,1 @@
+C:\development\tools\mysql-5.6.23-winx64\bin\mysql -u root < "DROP DATABASE ffff;"

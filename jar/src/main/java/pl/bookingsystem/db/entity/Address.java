@@ -15,13 +15,24 @@ import java.io.Serializable;
 @Entity
 @Table(name = "address")
 
-public class Address implements Serializable {
+public class Address implements Serializable , BaseEntity{
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
     @Column(name = "city")
     private String city;
 
@@ -61,7 +72,7 @@ public class Address implements Serializable {
     public Address() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -1,7 +1,10 @@
 package pl.bookingsystem.webapp.guest.action;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
 import org.hibernate.exception.JDBCConnectionException;
 import org.json.JSONObject;
@@ -23,8 +26,7 @@ import static pl.bookingsystem.webapp.action.Utils.isOverlapping;
 import static pl.bookingsystem.webapp.action.Utils.setMsg;
 
 @ParentPackage("json-default")
-@Namespace("/")
-@ResultPath(value = "/")
+@Namespace("")
 public class FirstStepAction extends ActionSupport implements SessionAware {
 
     private Map<String, Object> session;
@@ -57,8 +59,7 @@ public class FirstStepAction extends ActionSupport implements SessionAware {
 
     @Action(value = "first-page", results = {
             @Result(name = "success", type = "json"),
-            @Result(name = "error", type = "json"),
-            @Result(name = "connect_error", type = "redirect", location = "/503.html")
+            @Result(name = "error", type = "json")
     })
     public String stepFirstPutDataToSession() {
         try {

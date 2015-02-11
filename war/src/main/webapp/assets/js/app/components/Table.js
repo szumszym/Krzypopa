@@ -99,7 +99,14 @@ App.Components.Table = (function ($, Alert, Includer, Modal, Submitter) {
                 url: ajaxActions.get,
                 data: {dataFrom: '{index:' + paramToJAVA + '}'},
                 success: function (data) {
-                    var aaData = eval(data).data;
+                    var aaData;
+                    try {
+                        aaData = eval(data).data;
+                    } catch (Error) {
+                        $('#' + tableContainerId).html("No data!");
+                        return;
+                    }
+
                     if (aaData != undefined && aaData.length == 0) {
                         $('#' + tableContainerId).html("No data!");
                     }

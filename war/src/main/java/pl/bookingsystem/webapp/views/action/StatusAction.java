@@ -18,6 +18,7 @@ import pl.bookingsystem.db.entity.Reservation;
 import pl.bookingsystem.db.entity.Status;
 import pl.bookingsystem.db.entity.User;
 
+import javax.persistence.OptimisticLockException;
 import java.util.List;
 import java.util.Map;
 
@@ -205,6 +206,9 @@ public class StatusAction extends ActionSupport implements SessionAware {
                 return ERROR;
             }
 
+        } catch (OptimisticLockException o){
+            data = setMsg("ALREADY_MODIFIED");
+            return SUCCESS;
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;

@@ -19,6 +19,7 @@ import pl.bookingsystem.db.dao.impl.ReservationDAOImpl;
 import pl.bookingsystem.db.dao.impl.RoomDAOImpl;
 import pl.bookingsystem.db.entity.*;
 
+import javax.persistence.OptimisticLockException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -277,6 +278,9 @@ public class RoomAction extends ActionSupport implements SessionAware {
                 return ERROR;
             }
 
+        } catch (OptimisticLockException o){
+            data = setMsg("ALREADY_MODIFIED");
+            return SUCCESS;
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;

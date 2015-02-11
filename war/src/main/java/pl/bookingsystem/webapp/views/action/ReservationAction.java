@@ -13,6 +13,7 @@ import pl.bookingsystem.db.dao.*;
 import pl.bookingsystem.db.dao.impl.*;
 import pl.bookingsystem.db.entity.*;
 
+import javax.persistence.OptimisticLockException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -286,6 +287,9 @@ public class ReservationAction extends ActionSupport implements SessionAware {
                 return ERROR;
             }
 
+        } catch (OptimisticLockException o){
+            data = setMsg("ALREADY_MODIFIED");
+            return SUCCESS;
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;

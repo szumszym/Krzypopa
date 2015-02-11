@@ -1,6 +1,8 @@
 package pl.bookingsystem.db.dao.impl;
 
 import com.googlecode.genericdao.search.Search;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pl.bookingsystem.db.dao.AdditionDAO;
 import pl.bookingsystem.db.entity.Addition;
 import pl.bookingsystem.db.entity.Hotel;
@@ -16,11 +18,12 @@ public class AdditionDAOImpl extends BaseDAOImpl<Addition, Long> implements Addi
     @Override
     public List<Addition> getAdditions(Long hotelId) {
         List<Addition> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search(Addition.class).addFilterIn("hotel.id", hotelId));
         } finally {
-            stop(false);
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }

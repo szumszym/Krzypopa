@@ -6,5 +6,5 @@
 <struts>
     <constant name="struts.action.extension" value=","/>
     <constant name="struts.enable.SlashesInActionNames" value="true"/>
-    <constant name="struts.devMode" value="false" />
+    <constant name="struts.devMode" value="true" />
 </struts>

@@ -9,12 +9,24 @@ import java.util.List;
 @Entity
 @Table(name = "addition")
 
-public class Addition implements Serializable {
+public class Addition implements Serializable, BaseEntity {
 
     @Column(name = "id", unique = true)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     @Column(name = "name")
     private String name;
@@ -75,13 +87,9 @@ public class Addition implements Serializable {
         this.description = description;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
-    }
+    public List<Room> getRooms() { return rooms; }
 
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
-    }
+    public void setRooms(List<Room> rooms) { this.rooms = rooms; }
 
     public Double getPrice() {
         return price;

@@ -125,18 +125,6 @@ App.Utils = (function ($) {
                 fnArray[i]["fn"].apply(this, fnArray[i]["arg"]);
                 fnArray[i]["fn"].apply(this, fnArray[i]["arg"]);
             }
-
-            var timeout = null;
-            $(document).on('mousemove', function () {
-                if (timeout !== null) {
-                    clearTimeout(timeout);
-                }
-                timeout = setTimeout(function () {
-                    for (var i = 0; i < fnArray.length; i++) {
-                        fnArray[i]["fn"].apply(this, fnArray[i]["arg"]);
-                    }
-                }, waitTime);
-            });
         },
         setTodayTo: function (selector, plusDays) {
             var plus = plusDays || 0;

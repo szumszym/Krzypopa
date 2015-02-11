@@ -6,12 +6,16 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.StaleObjectStateException;
+import org.hibernate.context.internal.ThreadLocalSessionContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 import pl.bookingsystem.db.dao.*;
 import pl.bookingsystem.db.dao.impl.*;
 import pl.bookingsystem.db.entity.*;
 
+import javax.persistence.OptimisticLockException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -271,6 +275,7 @@ public class HotelAction extends ActionSupport implements SessionAware {
             @Result(name = "success", type = "json"),
             @Result(name = "error", type = "json")
     })
+    @Transactional
     public String hotelUpdate() {
         try {
             Boolean isUser = (Boolean) session.get("isUser");
@@ -297,15 +302,24 @@ public class HotelAction extends ActionSupport implements SessionAware {
 
 //SET NEW PROPERTIES
                 HotelDAO hotelDAO = new HotelDAOImpl();
-                Hotel hotel = hotelDAO.selectByID(Hotel.class, index);
-                hotel.setName(name);
-                hotel.setEmail(email);
-                hotel.setPhone_number(phone_number);
-                hotel.setDescription(description);
-                hotel.setAddress(address);
+
+                Hotel selectedHotel = null;
+                Hotel currentHotel = (Hotel) session.get("hotel");
+                List<Hotel> hotels = (List<Hotel>) session.get("hotels");
+                for(Hotel hotel : hotels) {
+                    if (index.equals(hotel.getId())) {
+                        selectedHotel = hotel;
+                        break;
+                    }
+                }
+                selectedHotel.setName(name);
+                selectedHotel.setEmail(email);
+                selectedHotel.setPhone_number(phone_number);
+                selectedHotel.setDescription(description);
+                selectedHotel.setAddress(address);
 
 
-                hotelDAO.update(hotel);
+                hotelDAO.update(selectedHotel);
 
 //UPDATE SESSION
                 updateHotelsInSession();
@@ -318,6 +332,9 @@ public class HotelAction extends ActionSupport implements SessionAware {
                 return ERROR;
             }
 
+        } catch (StaleObjectStateException o){
+            data = setMsg("ALREADY_MODIFIED");
+            return SUCCESS;
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;

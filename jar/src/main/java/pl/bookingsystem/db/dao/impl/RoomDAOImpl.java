@@ -2,6 +2,8 @@ package pl.bookingsystem.db.dao.impl;
 
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pl.bookingsystem.db.dao.RoomDAO;
 import pl.bookingsystem.db.entity.Addition;
 import pl.bookingsystem.db.entity.Hotel;
@@ -18,12 +20,13 @@ public class RoomDAOImpl extends BaseDAOImpl<Room, Long> implements RoomDAO {
     @Override
     public List<Room> getRooms(Long hotelId) {
         List<Room> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search(Room.class)
                     .addFilterIn("hotel.id", hotelId));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }
@@ -36,13 +39,14 @@ public class RoomDAOImpl extends BaseDAOImpl<Room, Long> implements RoomDAO {
     @Override
     public List<Room> getRoomsFromCity(String city) {
         List<Room> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search(Room.class)
                     .addFetch("hotel")
                     .addFilterLike("hotel.address.city", "%" + city + "%"));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }
@@ -51,14 +55,14 @@ public class RoomDAOImpl extends BaseDAOImpl<Room, Long> implements RoomDAO {
     @Override
     public List<Room> getAllRoomsWhichHave(Addition addition) {
         List<Room> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
-
             t = search(new Search(Room.class)
                     .addFilterSome("additions", Filter.in(Filter.ROOT_ENTITY, addition))
                     .setDistinct(true));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }

@@ -8,13 +8,24 @@ import java.util.List;
 
 @Entity
 @Table(name = "Client")
-public class Client implements Serializable {
+public class Client implements Serializable , BaseEntity{
 
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
     @Column(name = "first_name", nullable = false)
     private String first_name;
 

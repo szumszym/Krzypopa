@@ -2,9 +2,7 @@ package pl.bookingsystem.db.dao.impl;
 
 import com.googlecode.genericdao.dao.hibernate.original.GenericDAOImpl;
 import com.googlecode.genericdao.search.Search;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
@@ -19,7 +17,7 @@ import java.util.List;
  * Update Date: 10.06.14 @ 19:59
  */
 public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAOImpl<T, ID> implements BaseDAO<T, ID> {
-    static private SessionFactory SESSION_FACTORY;
+    private SessionFactory SESSION_FACTORY;
     private Session session;
 
     /**
@@ -45,9 +43,9 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
 
     public Session getSession() {
         if (session == null) {
-            return SESSION_FACTORY.openSession();
-        } else {
             return SESSION_FACTORY.getCurrentSession();
+        } else {
+            return session;//SESSION_FACTORY.getCurrentSession();
         }
     }
 
@@ -82,7 +80,6 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
             }
         } finally {
             if (session != null) {
-                session.flush();
                 session.close();
                 session = null;
             }
@@ -99,11 +96,12 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
     @Override
     public T selectByID(Class<T> clazz, Long id) {
         T t;
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session1.beginTransaction();
         try {
-            start();
             t = (T) searchUnique(new Search(clazz).addFilterEqual("id", id));
         } finally {
-            stop(false);
+            if(session1!= null && session1.isOpen())session1.close();
         }
         return t;
     }
@@ -111,11 +109,12 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
     @Override
     public List<T> selectByIDs(Class<T> clazz, List<Long> ids) {
         List<T> t;
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session1.beginTransaction();
         try {
-            start();
             t = search(new Search(clazz).addFilterIn("id", ids));
         } finally {
-            stop(false);
+            if(session1!= null && session1.isOpen())session1.close();
         }
         return t;
     }
@@ -123,56 +122,73 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
     @Override
     public List<T> selectAll(Class<T> clazz) {
         List<T> t;
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session1.beginTransaction();
         try {
-            start();
             t = search(new Search(clazz));
         } finally {
-            stop(false);
+            if(session1!= null && session1.isOpen())session1.close();
         }
         return t;
     }
 
     @Override
     public void create(T t) {
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session1.beginTransaction();
         try {
-            start();
             super.create(t);
-            stop(true);
+            transaction.commit();
         } catch (HibernateException e) {
-            stop(false);
+            transaction.rollback();
+        } finally {
+            if(session1!= null && session1.isOpen())session1.close();
         }
     }
 
     @Override
     public void update(T t) {
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session1.beginTransaction();
         try {
-            start();
             super.update(t);
-            stop(true);
+            transaction.commit();
+        } catch (StaleObjectStateException e) {
+            transaction.rollback();
+            throw new StaleObjectStateException(e.getEntityName(), e.getIdentifier());
         } catch (HibernateException e) {
-            stop(false);
+            transaction.rollback();
+        } finally {
+            if(session1!= null && session1.isOpen()){
+                session1.close();}
         }
     }
 
     @Override
     public void deleteByID(ID id) {
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session1.beginTransaction();
         try {
-            start();
             super.deleteById(id);
-            stop(true);
+            transaction.commit();
         } catch (HibernateException e) {
-            stop(false);
+            transaction.rollback();
+        } finally {
+            if(session1!= null && session1.isOpen())session1.close();
         }
     }
 
     @Override
     public void delete(T object) {
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session1.beginTransaction();
         try {
-            start();
             super.deleteEntity(object);
-            stop(true);
+            transaction.commit();
         } catch (HibernateException e) {
-            stop(false);
+            transaction.rollback();
+        } finally {
+            if(session1!= null && session1.isOpen())session1.close();
         }
     }
 
@@ -185,11 +201,12 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
     @Override
     public List<T> selectWith(String property) {
         List<T> t;
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search().addFetch(property));
         } finally {
-            stop(false);
+            if(session1!= null && session1.isOpen())session1.close();
         }
         return t;
     }
@@ -197,11 +214,12 @@ public abstract class BaseDAOImpl<T, ID extends Serializable> extends GenericDAO
     @Override
     public T selectWith(ID id, String property) {
         T t;
+        Session session1 = SESSION_FACTORY.getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = (T) searchUnique(new Search().addFilterEqual("id", id).addFetch(property));
         } finally {
-            stop(false);
+            if(session1!= null && session1.isOpen())session1.close();
         }
         return t;
     }

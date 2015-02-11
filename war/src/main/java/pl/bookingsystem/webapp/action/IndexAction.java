@@ -7,9 +7,8 @@ import org.apache.struts2.convention.annotation.ResultPath;
 
 @Namespace("/")
 @ResultPath(value = "/")
-@Result(name = "success", type = "redirect", location = "/index.jsp")
+@Result(name = "success", type = "redirect", location = "/modules/guest/dashboard.jsp")
 public class IndexAction extends ActionSupport {
-
     public IndexAction() {
         super();
     }

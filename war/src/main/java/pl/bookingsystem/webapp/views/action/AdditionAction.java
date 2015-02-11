@@ -18,6 +18,7 @@ import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Room;
 import pl.bookingsystem.db.entity.User;
 
+import javax.persistence.OptimisticLockException;
 import java.util.List;
 import java.util.Map;
 
@@ -130,6 +131,9 @@ public class AdditionAction extends ActionSupport implements SessionAware {
                 return ERROR;
             }
 
+        } catch (OptimisticLockException o){
+            data = setMsg("ALREADY_MODIFIED");
+            return SUCCESS;
         } catch (Exception e) {
             data = setMsg("ERROR!!!", e.getMessage());
             return ERROR;

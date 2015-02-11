@@ -9,13 +9,24 @@ import java.util.List;
 @Entity
 @Table(name = "room")
 
-public class Room implements Serializable {
+public class Room implements Serializable, BaseEntity {
 
     @Column(name = "id", unique = true)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
     @Column(name = "room_no")
     private Integer no_room;
 

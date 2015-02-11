@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "hotel")
-public class Hotel implements Serializable {
+public class Hotel implements Serializable, BaseEntity {
 
 
     @Column(name = "id", unique = true)
@@ -17,6 +17,17 @@ public class Hotel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY/*GenerationType.AUTO*/)
     private Long id;
 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
     @Column(name = "name")
     private String name;
 

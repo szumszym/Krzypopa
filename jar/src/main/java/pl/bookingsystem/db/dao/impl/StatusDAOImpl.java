@@ -1,6 +1,8 @@
 package pl.bookingsystem.db.dao.impl;
 
 import com.googlecode.genericdao.search.Search;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import pl.bookingsystem.db.dao.StatusDAO;
 import pl.bookingsystem.db.entity.Hotel;
 import pl.bookingsystem.db.entity.Status;
@@ -16,12 +18,13 @@ public class StatusDAOImpl extends BaseDAOImpl<Status, Long> implements StatusDA
     @Override
     public List<Status> getStatuses(Long hotelId) {
         List<Status> t;
+        Session session = getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
         try {
-            start();
             t = search(new Search(Status.class)
                     .addFilterIn("hotel.id", hotelId));
         } finally {
-            stop();
+            if(session!= null && session.isOpen())session.close();
         }
         return t;
     }

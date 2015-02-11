@@ -9,7 +9,13 @@ App.Components.Select = (function ($) {
                 type: 'POST',
                 url: ajaxAction,
                 success: function (data) {
-                    var aaData = eval(data).data;
+                    var aaData;
+                    try {
+                        aaData = eval(data).data;
+                    } catch (Error) {
+                        $('#' + tableContainerId).html("No data!");
+                        return;
+                    }
 
                     var $selectElem = $('#' + selectContainerId);
 
